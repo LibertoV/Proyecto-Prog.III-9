@@ -1,14 +1,15 @@
 package main;
 
 import javax.swing.SwingUtilities;
-import gui.JFramePrincipal;
+
+import gui.JFrameLogin;
 
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(() -> new JFramePrincipal());
+		SwingUtilities.invokeLater(() -> new JFrameLogin());
 	}
 
 }
