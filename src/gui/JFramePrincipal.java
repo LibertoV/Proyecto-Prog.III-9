@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
@@ -24,5 +25,7 @@ public class JFramePrincipal extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.add(panel);
+		this.setMinimumSize(new Dimension(800, 600));
+		this.setMaximumSize(new Dimension(1280, 720)); 
 	}
 }
