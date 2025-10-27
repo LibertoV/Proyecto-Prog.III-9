@@ -14,8 +14,8 @@ public class JFrameLogin extends JFramePrincipal {
         // Configuramos el layout del panel principal
         panel.setLayout(new GridBagLayout()); // Importante: GridBagLayout permite centrar fácilmente
 
-        ImageIcon logo = new ImageIcon("resources/images/Login.png");
-        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        ImageIcon logo = new ImageIcon("resources/images/logo.png");
+        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
         
         
@@ -63,7 +63,7 @@ public class JFrameLogin extends JFramePrincipal {
         center.gridx = 0;
         center.gridy = 0;
         center.anchor = GridBagConstraints.CENTER;
-        center.insets = new Insets(15, 0, 15, 0);
+        center.insets = new Insets(-120, 0, 140, 0);
         panel.add(imagen,center);
         center.gridy = 1;
         panel.add(loginPanel, center);
