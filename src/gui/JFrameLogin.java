@@ -2,7 +2,12 @@ package gui;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
+
+import domain.FrameManager;
 
 public class JFrameLogin extends JFramePrincipal {
     private static final long serialVersionUID = 1L;
@@ -11,9 +16,10 @@ public class JFrameLogin extends JFramePrincipal {
         super();
         panel = super.panel;
 
-        // Configuramos el layout del panel principal
-        panel.setLayout(new GridBagLayout()); // Importante: GridBagLayout permite centrar fácilmente
+        
+        panel.setLayout(new GridBagLayout());
 
+        
         ImageIcon logo = new ImageIcon("resources/images/logo.png");
         ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
@@ -60,13 +66,26 @@ public class JFrameLogin extends JFramePrincipal {
         
         
         GridBagConstraints center = new GridBagConstraints();
+        
         center.gridx = 0;
         center.gridy = 0;
         center.anchor = GridBagConstraints.CENTER;
         center.insets = new Insets(-120, 0, 140, 0);
+        
         panel.add(imagen,center);
         center.gridy = 1;
         panel.add(loginPanel, center);
+       
+        
+        loginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FrameManager.Login();
+				System.out.println("loged");
+			}
+        	
+        });
     }
 }
 
