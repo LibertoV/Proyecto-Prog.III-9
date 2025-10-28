@@ -11,6 +11,7 @@ public class FrameManager {
         loginFrame = new JFrameLogin();
         lobbyFrame = new JFrameLobby();
         loginFrame.setVisible(true);
+        lobbyFrame.setVisible(false);
         System.out.println("init");
     }
     

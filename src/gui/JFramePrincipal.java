@@ -14,7 +14,7 @@ public abstract class JFramePrincipal extends JFrame{
 	
 	public JFramePrincipal() {
 	
-		panel = new JPanel(new GridLayout());
+		panel = new JPanel();
 		panel.setOpaque(true);
 		panel.setBackground(new Color(171, 245, 182));
 		
