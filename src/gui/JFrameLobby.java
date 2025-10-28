@@ -1,22 +1,26 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector; 
+import java.util.EventObject;
+import java.util.Vector;
+import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
+import domain.DataLoad;
 import domain.FrameManager;
 
 public class JFrameLobby extends JFramePrincipal {
@@ -24,27 +28,25 @@ public class JFrameLobby extends JFramePrincipal {
 
     public JFrameLobby() {
         super();
-        panel = super.panel;
         
         panel.setLayout(new BorderLayout()); 
         
-        // ... (Configuración de SelectionPanel - Sin cambios) ...
         ImageIcon logo = new ImageIcon("resources/images/logo.png");
         ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
+        
         JButton loginButton = new JButton("Cerrar sesión");
         JPanel SelectionPanel = new JPanel(new GridLayout(1,3));
         
-        SelectionPanel.setOpaque(false); 
+        SelectionPanel.setOpaque(false);
+        SelectionPanel.setPreferredSize(new Dimension(SelectionPanel.getPreferredSize().width, 50));
+   
         SelectionPanel.add(imagen);
         SelectionPanel.add(new JLabel("Farmacias"));
-        SelectionPanel.add(new JLabel());//Para ajustar espacios
+        SelectionPanel.add(new JLabel());
         SelectionPanel.add(loginButton);
-        SelectionPanel.setPreferredSize(new Dimension(SelectionPanel.getPreferredSize().width, 50));
         
         
-        
-        // 1. Nombres de Columnas
         Vector<String> columnNames = new Vector<>();
         columnNames.add("Nombre");
         columnNames.add("Lugar");
@@ -52,75 +54,48 @@ public class JFrameLobby extends JFramePrincipal {
         columnNames.add("Pedidos");
         columnNames.add("SEL");
         
-        //Datos placeholder
-        Vector<Vector<Object>> data = new Vector<>();
+        Vector<Vector<Object>> data = DataLoad.cargaFarmacia("src/db/farmacias.csv");
         
-        // Fila 1
-        Vector<Object> farmaciaA = new Vector<>();
-        farmaciaA.add("Farmacia Central");
-        farmaciaA.add("Madrid");
-        farmaciaA.add("Stock Bajo");
-        farmaciaA.add("10 pendientes");
-        farmaciaA.add(Boolean.FALSE);
-        data.add(farmaciaA);
 
-        // Fila 2
-        Vector<Object> farmaciaB = new Vector<>();
-        farmaciaB.add("Farmacia Del Sur");
-        farmaciaB.add("Sevilla");
-        farmaciaB.add("Stock Óptimo");
-        farmaciaB.add("0 pendientes");
-        farmaciaB.add(Boolean.FALSE);
-        data.add(farmaciaB);
-        
-        // Fila 3
-        Vector<Object> farmaciaC = new Vector<>();
-        farmaciaC.add("Farmacia Norte");
-        farmaciaC.add("Bilbao");
-        farmaciaC.add("Stock Medio");
-        farmaciaC.add("5 pendientes");
-        farmaciaC.add(Boolean.FALSE);
-        data.add(farmaciaC);
-        
         
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             private static final long serialVersionUID = 1L;
+            
             @Override
             public boolean isCellEditable(int row, int column) {
-               return column == 4;
+               return column == 4 ;
             }
             
             
-            //esta funcion de abajo ha sido escrita con la ayuda de una IA generativa
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 4) {
-                    return Boolean.class; 
+                    return JButton.class; 
                 }
                 return String.class;
-            }   
+            }    
+            
         };
         
-        model.addTableModelListener(new TableModelListener() {
-        	 @Override
-             public void tableChanged(TableModelEvent e) {
-             	int row = e.getFirstRow();
-                 int column = e.getColumn();
-             	Boolean isChecked = (Boolean) model.getValueAt(row, column);
-             	System.out.println("Checkbox en fila " + row + ": " + isChecked);	
-             }
-        });
+        
         
         
         
 
         JTable tablaFarmacias = new JTable(model);
+        tablaFarmacias.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer()); 
+        tablaFarmacias.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(tablaFarmacias)); 
+        
+        tablaFarmacias.setRowHeight(25);
+        tablaFarmacias.getTableHeader().setReorderingAllowed(false);
+        
         
         JScrollPane scrollPane = new JScrollPane(tablaFarmacias);
         
-        panel.add(SelectionPanel, BorderLayout.NORTH); // Barra superior
         
+        panel.add(SelectionPanel, BorderLayout.NORTH); 
         panel.add(scrollPane, BorderLayout.CENTER); 
+        
         
         
         loginButton.addActionListener(new ActionListener() {
@@ -130,5 +105,74 @@ public class JFrameLobby extends JFramePrincipal {
 				System.out.println("deloged");
 			}
         });
+    }
+
+    private static class ButtonRenderer extends JButton implements TableCellRenderer {
+        private static final long serialVersionUID = 1L;
+        
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, 
+                                                       boolean isSelected, boolean hasFocus, 
+                                                       int row, int column) {
+            setText(value.toString()); 
+            return this;
+        }
+    }
+
+    private static class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
+    	
+    	//esta entidad ha sido creada con ayuda y guia de una ia generativa
+        private static final long serialVersionUID = 1L;
+        private final JButton button;
+        private String label;
+        private JTable table;
+        private int currentRow; 
+
+        public ButtonEditor(JTable table) {
+            this.table = table;
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(this);
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column) {
+            this.currentRow = row;
+            if (value != null) {
+                label = (String) value;
+                button.setText(label);
+            } else {
+                label = "";
+                button.setText("");
+            }
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return label; 
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject e) {
+            return true; 
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fireEditingStopped(); 
+            
+            String nombreFarmacia = (String) table.getModel().getValueAt(currentRow, 0); 
+            
+            System.out.println("Botón 'SEL' presionado en la fila: " + currentRow);
+            System.out.println("Farmacia seleccionada: " + nombreFarmacia);
+            JFrameConfirmacion nuevaVentana = new JFrameConfirmacion();
+            nuevaVentana.setVisible(true);	
+        }
     }
 }

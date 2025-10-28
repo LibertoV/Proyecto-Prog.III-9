@@ -14,8 +14,6 @@ public class JFrameLogin extends JFramePrincipal {
 
     public JFrameLogin() {
         super();
-        panel = super.panel;
-
         
         panel.setLayout(new GridBagLayout());
 
