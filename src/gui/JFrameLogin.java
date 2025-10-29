@@ -79,8 +79,7 @@ public class JFrameLogin extends JFramePrincipal {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FrameManager.Login();
-				System.out.println("loged");
+				new JFrameLobby();
 			}
         	
         });

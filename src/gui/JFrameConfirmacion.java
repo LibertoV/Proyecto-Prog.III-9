@@ -55,6 +55,7 @@ public class JFrameConfirmacion extends JFramePrincipal{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				new JFrameFarmaciaSel();
 				dispose();
 				//Debe actualizar el JFramePrincipal
 			}

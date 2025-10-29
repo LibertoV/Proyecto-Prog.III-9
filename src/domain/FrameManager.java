@@ -1,28 +1,24 @@
 package domain;
 
+import javax.swing.JFrame;
+
+import gui.JFrameFarmaciaSel;
 import gui.JFrameLobby;
 import gui.JFrameLogin;
+import gui.JFramePrincipal;
 
 public class FrameManager {
 	public static JFrameLogin loginFrame;
     public static JFrameLobby lobbyFrame;
+    public static JFrameFarmaciaSel FarmaciaFrame;
     
     public static void init() {
         loginFrame = new JFrameLogin();
-        lobbyFrame = new JFrameLobby();
+        JFramePrincipal.panelActual = loginFrame;
         loginFrame.setVisible(true);
-        lobbyFrame.setVisible(false);
+        
         System.out.println("init");
     }
     
-    public static void Login() {
-    	loginFrame.setVisible(false);
-        lobbyFrame.setVisible(true);
-    }
-    
-    public static void Relogin(){
-        lobbyFrame.setVisible(false);
-    	loginFrame.setVisible(true);
-    }
     
 }

@@ -101,7 +101,7 @@ public class JFrameLobby extends JFramePrincipal {
         loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FrameManager.Relogin();
+				new JFrameLogin();
 				System.out.println("deloged");
 			}
         });

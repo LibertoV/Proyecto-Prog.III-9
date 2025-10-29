@@ -10,9 +10,15 @@ import javax.swing.WindowConstants;
 public abstract class JFramePrincipal extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JPanel panel;
-	
+	public static JFrame panelActual;	
+
 	public JFramePrincipal() {
-	
+		if (!(this instanceof JFrameConfirmacion) && panelActual != null) {
+			System.out.println(panelActual);
+			panelActual.dispose();
+			panelActual = this;	
+		}
+		
 		panel = new JPanel();
 		panel.setOpaque(true);
 		panel.setBackground(new Color(171, 245, 182));
