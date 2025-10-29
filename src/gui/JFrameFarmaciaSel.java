@@ -121,12 +121,5 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         repaint();
     }
     
-	public static void main(String[] args) {
-        // Crear la ventana en el hilo de eventos de Swing
-		SwingUtilities.invokeLater(() -> {
-    		// Crear una instancia de EjemploLayouts y hacerla visible
-            JFrameFarmaciaSel farmacia = new JFrameFarmaciaSel();
-            farmacia.setVisible(true);
-        });
-    }
+	
 }

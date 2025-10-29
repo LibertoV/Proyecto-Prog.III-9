@@ -21,7 +21,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import domain.DataLoad;
-import domain.FrameManager;
 
 public class JFrameLobby extends JFramePrincipal {
     private static final long serialVersionUID = 1L;

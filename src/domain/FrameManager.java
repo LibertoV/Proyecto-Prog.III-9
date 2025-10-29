@@ -1,7 +1,5 @@
 package domain;
 
-import javax.swing.JFrame;
-
 import gui.JFrameFarmaciaSel;
 import gui.JFrameLobby;
 import gui.JFrameLogin;

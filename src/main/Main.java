@@ -3,8 +3,6 @@ package main;
 import javax.swing.SwingUtilities;
 
 import domain.FrameManager;
-import gui.JFrameLobby;
-import gui.JFrameLogin;
 
 
 public class Main {
