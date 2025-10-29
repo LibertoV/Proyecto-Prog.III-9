@@ -23,6 +23,7 @@ public class JFrameListaPedidos extends JFrameFarmaciaSel {
 	public JFrameListaPedidos() {
 		this.setTitle("Listado de pedidos");		
 		panel = new JPanel(new BorderLayout());
+		
 		panel.setBackground(new Color(171, 245, 182));
 		
 		

@@ -17,8 +17,8 @@ public class JFrameLogin extends JFramePrincipal {
         panel.setLayout(new GridBagLayout());
 
         
-        ImageIcon logo = new ImageIcon("resources/images/logo.png");
-        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
+        ImageIcon logo = new ImageIcon("resources/images/logoEmpresa1.png");
+        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
         
         
