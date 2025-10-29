@@ -45,6 +45,10 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         cabecera.setSize(new Dimension (800,60));
         cabecera.setBackground(new Color(171, 245, 182));
         
+        
+        ImageIcon logo1 = new ImageIcon("resources/images/imagenMenuTresRayas.png");
+        ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JLabel imagen1 = new JLabel(logoAjustado1);
         JButton options = new JButton("☰");
         options.setFont(new Font("Arial", Font.BOLD,20));
         options.setSize(60,60);
