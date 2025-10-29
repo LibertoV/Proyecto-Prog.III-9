@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 //LISTADO DE PEDIDOS
 
-public class JFrameListaPedidos extends JFrameFarmaciaSel {
+public class JFrameListaPedidos extends JFramePrincipal {
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -24,26 +24,24 @@ public class JFrameListaPedidos extends JFrameFarmaciaSel {
 		this.setTitle("Listado de pedidos");		
 		panel = new JPanel(new BorderLayout());
 		
-		panel.setBackground(new Color(171, 245, 182));
-		
-		
-		
 		//CABECERA DE LA PAGINA
 		
 				//Cambiar ya que si se hereda de la clase padre una cabecera de la que nos sirven cosas no hace falta esto 
 				//puediendose modificar directamente en la clase padre
 		JPanel cabeza = new JPanel(new BorderLayout());
-		cabeza.setBackground(new Color(171, 245, 182));
 		panel.add(cabeza,BorderLayout.NORTH);
+		
+		JPanel panel2 = new JPanel(new BorderLayout());
+		
 		ImageIcon logo = new ImageIcon("resources/images/Carrito.png");
-		ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JLabel imagen = new JLabel(logoAjustado);
 		cabeza.add(imagen, BorderLayout.EAST);
 		
 		
 		//ESTO IMAGEN SE PUEDE CAMBIAR PERO AL HEREDAR DE SEL TOGGLE MENU HACE QUE AL CLICKAR SE REPINTEE EL MENU SEL
 		ImageIcon logo2 = new ImageIcon("resources/images/Casa.png");
-		ImageIcon logoAjustado2 = new ImageIcon(logo2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+		ImageIcon logoAjustado2 = new ImageIcon(logo2.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JLabel imagen2 = new JLabel(logoAjustado2);
 		cabeza.add(imagen2, BorderLayout.WEST);
 		
@@ -51,20 +49,30 @@ public class JFrameListaPedidos extends JFrameFarmaciaSel {
 		
 		//TABLA
 		String[] cabecera = {"numero pedido", "Fecha de la orden", "Fecha de llegada", "Numero poductos","Productos totales"};
-		DefaultTableModel modelo = new DefaultTableModel(cabecera, 1);
-		JTable pedidos = new JTable(modelo);
-		JScrollPane scroll = new JScrollPane(pedidos);
-		panel.add(scroll, BorderLayout.CENTER);
 		
+		
+		DefaultTableModel modelo = new DefaultTableModel(cabecera, 1) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
+		
+		JTable pedidos = new JTable(modelo);
+		
+		pedidos.getTableHeader().setReorderingAllowed(false);
+		JScrollPane scroll = new JScrollPane(pedidos);
+		 	
+		panel2.add(scroll, BorderLayout.CENTER);
+				
 		modelo.addRow(new Object[]{
 			    "P-002", "2025-10-28", "2025-11-05", "4", "125.50 €"
 			});
-
 		
 		
+		panel.add(panel2, BorderLayout.CENTER);
 		this.add(panel);
-		
-		
+			
 	}
 
 	public static void main(String[] args) {
