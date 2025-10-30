@@ -110,11 +110,30 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         for (String opcion : opciones) {
             JButton btn = new JButton(opcion);
             btn.setHorizontalAlignment(SwingConstants.LEFT); 
+            
+            btn.addActionListener(e ->{
+            	gestionarMenu(opcion);
+            });
+            
             panel.add(btn);
         }
         
         panel.setVisible(false); // Inicialmente oculto
         return panel;
+    }
+    
+    private void gestionarMenu(String opcion) {
+    	switch(opcion) {
+    	case "Pedidos":
+    		new JFrameListaPedidos();
+    		dispose();
+    		break;
+    	case "Salir":
+    		new JFrameLobby();
+    		dispose();
+    		break;
+    	}
+    	
     }
     
     
