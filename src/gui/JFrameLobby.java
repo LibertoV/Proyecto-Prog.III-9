@@ -1,12 +1,17 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.EventObject;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
@@ -17,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +36,7 @@ public class JFrameLobby extends JFramePrincipal {
     private JTextField txtFiltro;
 	private Vector<Vector<Object>> datosOriginales;
 	private DefaultTableModel model;
+	protected int filaTablaFarmacia = -1;
     public JFrameLobby() {
         super();
         
@@ -88,8 +95,73 @@ public class JFrameLobby extends JFramePrincipal {
         tablaFarmacias.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer()); 
         tablaFarmacias.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(tablaFarmacias)); 
         
+        CustomRowRenderer rowRenderer = new CustomRowRenderer();
+        for (int i = 0; i < tablaFarmacias.getColumnCount() - 1; i++) {
+            tablaFarmacias.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+        }
+        
         tablaFarmacias.setRowHeight(25);
         tablaFarmacias.getTableHeader().setReorderingAllowed(false);
+        
+
+        
+        MouseMotionListener motionListener = new MouseMotionListener() {
+
+
+    		@Override
+    		public void mouseDragged(MouseEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void mouseMoved(MouseEvent e) {
+    			
+    			Point puntosRaton = new Point(e.getX(),e.getY());
+    			filaTablaFarmacia = tablaFarmacias.rowAtPoint(puntosRaton);
+    			tablaFarmacias.repaint();
+    			
+    		}
+    		
+    	};
+        
+    	MouseListener miMouseListener = new MouseListener() {
+
+    		@Override
+    		public void mouseClicked(MouseEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void mousePressed(MouseEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void mouseReleased(MouseEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void mouseEntered(MouseEvent e) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void mouseExited(MouseEvent e) {
+    			filaTablaFarmacia=-1;
+    			tablaFarmacias.repaint();
+    			
+    		}
+    		
+    	};
+    	
+    	tablaFarmacias.addMouseMotionListener(motionListener);
+    	tablaFarmacias.addMouseListener(miMouseListener);
         
         
         JScrollPane scrollPane = new JScrollPane(tablaFarmacias);
@@ -97,6 +169,10 @@ public class JFrameLobby extends JFramePrincipal {
         
         panel.add(SelectionPanel, BorderLayout.NORTH); 
         
+        datosOriginales = new Vector<>();
+        for (Vector<Object> fila : data) {
+            datosOriginales.add(new Vector<>(fila));
+        }
         
         txtFiltro = new JTextField(20);
         DocumentListener doclistener = new DocumentListener() {
@@ -145,17 +221,24 @@ public class JFrameLobby extends JFramePrincipal {
         });
     }
     
+    
+    
     private void filtroFarmacia(String filtro) {
     	Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
     	String filtroLower = filtro.toLowerCase();
     	
-    	for(Vector<Object> fila : datosOriginales) {
-    		String nombreFarmaia = fila.get(0).toString().toLowerCase();
-    		
-    		if(nombreFarmaia.contains(filtroLower)) {
-    			cargaFiltrada.add(fila);
-    			
+    	if(filtro.isEmpty()) {
+    		cargaFiltrada.addAll(datosOriginales);
+    	}else {
+    		for(Vector<Object> fila : datosOriginales) {
+        		String nombreFarmacia = fila.get(0).toString().toLowerCase();
+        		
+        		if(nombreFarmacia.contains(filtroLower)) {
+        			cargaFiltrada.add(fila);
+        			
+        		}
     		}
+    	
     	}
     	
     	model.setRowCount(0);
@@ -167,6 +250,8 @@ public class JFrameLobby extends JFramePrincipal {
     	
     	
     };
+    
+
     
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         private static final long serialVersionUID = 1L;
@@ -180,6 +265,7 @@ public class JFrameLobby extends JFramePrincipal {
                                                        boolean isSelected, boolean hasFocus, 
                                                        int row, int column) {
             setText(value.toString()); 
+            
             return this;
         }
     }
@@ -199,7 +285,8 @@ public class JFrameLobby extends JFramePrincipal {
             button.setOpaque(true);
             button.addActionListener(this);
         }
-
+        
+        
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value,
                                                      boolean isSelected, int row, int column) {
@@ -212,6 +299,8 @@ public class JFrameLobby extends JFramePrincipal {
                 button.setText("");
             }
             return button;
+            
+            
         }
 
         @Override
@@ -234,6 +323,45 @@ public class JFrameLobby extends JFramePrincipal {
             System.out.println("Farmacia seleccionada: " + nombreFarmacia);
             JFrameConfirmacion nuevaVentana = new JFrameConfirmacion();
             nuevaVentana.setVisible(true);	
+        }
+    }
+    
+    //Realizado con IA generativa
+    private class CustomRowRenderer extends JLabel implements TableCellRenderer {
+        private static final long serialVersionUID = 1L;
+
+        public CustomRowRenderer() {
+            setOpaque(true); 
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, // <-- Ignoraremos 'isSelected'
+                                                       int row, int column) {
+            
+            setText(value != null ? value.toString() : "");
+            
+            // 💡 Lógica para pintar SOLO si el ratón está encima
+            if (row == filaTablaFarmacia) {
+                // Fila actual sobre la que está el ratón (pintar de azul claro)
+                setBackground(new Color(173, 216, 230)); 
+                setForeground(table.getSelectionForeground()); // Color de texto claro/blanco
+            } else {
+                // Resto de filas (color por defecto)
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+            }
+            
+            // Aunque la tabla no resalte la selección, el foco puede ser útil
+            if (hasFocus) {
+                 // Opcional: puedes poner un borde para indicar el foco
+                 setBorder(UIManager.getBorder("Table.focusCellHighlightBorder")); 
+            } else {
+                 // Borde estándar de celda
+                 setBorder(UIManager.getBorder("TableHeader.cellBorder")); 
+            }
+            
+            return this;
         }
     }
 }
