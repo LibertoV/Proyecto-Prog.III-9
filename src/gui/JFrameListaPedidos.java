@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import domain.DataHistorial;
 import domain.DataPedidos;
 
 
@@ -98,11 +99,11 @@ public class JFrameListaPedidos extends JFramePrincipal {
         gbc.weightx = 1.0; 
         panelCentral.add(new JLabel(""), gbc);
         
-        Vector<String> columnas = new Vector<>();
+        Vector<Object> columnas = new Vector<>();
         columnas.add("Nº pedido");
         columnas.add("Fecha de la orden");
         columnas.add("Fecha de llegada");
-        columnas.add("Numero poductos");
+        columnas.add("Valor");
         columnas.add("Productos totales");
 
         Vector<Vector<Object>> datos= DataPedidos.cargarPedidos();
@@ -199,11 +200,29 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	    panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial de pedidos"));
 	    panelhistorial.setPreferredSize(new Dimension(400, 150));
 	    
-	    JLabel tablon = new JLabel("Aqui va una tabla con los datos de los pedidos ya entregados");
-	    tablon.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    Vector<Object> columnas = new Vector<>();
+	    columnas.add("Id");
+	    columnas.add("Fecha llegada");
+	    columnas.add("Productos recibidos");
 	    
+	    Vector<Vector<Object>> historial = DataHistorial.cargarHistorial();
+	    
+	    DefaultTableModel model = new DefaultTableModel(historial, columnas) {
+        	@Override
+        	public boolean isCellEditable(int row, int column) {
+        		return false;
+        	}
+        };
+        
+        JTable tablaHistorial = new JTable(model);
+        tablaHistorial.getTableHeader().setReorderingAllowed(false);
+        
+		JScrollPane scroll = new JScrollPane(tablaHistorial);
+
+		
+		
 	    panelhistorial.add(Box.createVerticalGlue());
-	    panelhistorial.add(tablon);
+	    panelhistorial.add(scroll);
 	    panelhistorial.add(Box.createVerticalGlue());
 	    
 	    return panelhistorial;
