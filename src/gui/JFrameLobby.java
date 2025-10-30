@@ -16,6 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -24,7 +27,9 @@ import domain.DataLoad;
 
 public class JFrameLobby extends JFramePrincipal {
     private static final long serialVersionUID = 1L;
-
+    private JTextField txtFiltro;
+	private Vector<Vector<Object>> datosOriginales;
+	private DefaultTableModel model;
     public JFrameLobby() {
         super();
         
@@ -54,10 +59,9 @@ public class JFrameLobby extends JFramePrincipal {
         columnNames.add("SEL");
         
         Vector<Vector<Object>> data = DataLoad.cargaFarmacia("src/db/farmacias.csv");
+        datosOriginales = data;
         
-
-        
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        model = new DefaultTableModel(datosOriginales, columnNames) {
             private static final long serialVersionUID = 1L;
             
             @Override
@@ -79,7 +83,6 @@ public class JFrameLobby extends JFramePrincipal {
         
         
         
-        
 
         JTable tablaFarmacias = new JTable(model);
         tablaFarmacias.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer()); 
@@ -93,10 +96,46 @@ public class JFrameLobby extends JFramePrincipal {
         
         
         panel.add(SelectionPanel, BorderLayout.NORTH); 
-        panel.add(scrollPane, BorderLayout.CENTER); 
         
         
+        txtFiltro = new JTextField(20);
+        DocumentListener doclistener = new DocumentListener() {
+			
+			
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtroFarmacia(txtFiltro.getText());
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtroFarmacia(txtFiltro.getText());
+				
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				System.out.println("Cambiando Texto");
+				
+			}
+			
+		};
         
+		txtFiltro.getDocument().addDocumentListener(doclistener);
+		JPanel panelFiltro = new JPanel();
+		panelFiltro.add(new JLabel("Busqueda de Farmacia: "));
+		panelFiltro.add(txtFiltro);
+		
+		JPanel FiltroPanel = new JPanel(new BorderLayout());
+        FiltroPanel.setBackground(panel.getBackground());
+        FiltroPanel.setOpaque(false);
+		FiltroPanel.add(panelFiltro,BorderLayout.NORTH);
+		FiltroPanel.add(scrollPane, BorderLayout.CENTER); 
+		panel.add(FiltroPanel,BorderLayout.CENTER);
+		
+		
         loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -105,7 +144,30 @@ public class JFrameLobby extends JFramePrincipal {
 			}
         });
     }
-
+    
+    private void filtroFarmacia(String filtro) {
+    	Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
+    	String filtroLower = filtro.toLowerCase();
+    	
+    	for(Vector<Object> fila : datosOriginales) {
+    		String nombreFarmaia = fila.get(0).toString().toLowerCase();
+    		
+    		if(nombreFarmaia.contains(filtroLower)) {
+    			cargaFiltrada.add(fila);
+    			
+    		}
+    	}
+    	
+    	model.setRowCount(0);
+    	for (Vector<Object> vector : cargaFiltrada) {
+			model.addRow(vector);
+		}
+    	model.fireTableDataChanged();
+    	
+    	
+    	
+    };
+    
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
         private static final long serialVersionUID = 1L;
         
