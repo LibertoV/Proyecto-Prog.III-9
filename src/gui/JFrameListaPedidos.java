@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image; 
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -42,7 +44,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.setTitle("Lista de Pedidos");
 		this.setSize(new Dimension(1000,750));
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE); // Añadido para que cierre
+		
 		
 		//Añadir la cabecera
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
@@ -72,6 +74,20 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelFiltro.add(new JLabel("Valor total: "));
 		panelFiltro.add(precioTotal);
 		panelCabecera.add(panelFiltro, BorderLayout.EAST);
+		
+		JButton Salir = new JButton("Salir");
+		panelCabecera.add(Salir, BorderLayout.WEST);
+		
+		Salir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new JFrameFarmaciaSel();
+				dispose(); //Arreglar esto
+			}
+        	
+        });
+
 		
 		return panelCabecera;
 		
@@ -104,7 +120,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
         columnas.add("Fecha de la orden");
         columnas.add("Fecha de llegada");
         columnas.add("Valor");
-        columnas.add("Productos totales");
+        columnas.add("Proveedor");
 
         Vector<Vector<Object>> datos= DataPedidos.cargarPedidos();
         
