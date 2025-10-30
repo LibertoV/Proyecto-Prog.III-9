@@ -30,8 +30,8 @@ public class JFrameLobby extends JFramePrincipal {
         
         panel.setLayout(new BorderLayout()); 
         
-        ImageIcon logo = new ImageIcon("resources/images/logo.png");
-        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+        ImageIcon logo = new ImageIcon("resources/images/logoEmpresa1.png");
+        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(90, 60, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
         
         JButton loginButton = new JButton("Cerrar sesión");

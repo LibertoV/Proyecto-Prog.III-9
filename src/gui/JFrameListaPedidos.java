@@ -26,8 +26,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		
 		//CABECERA DE LA PAGINA
 		
-				//Cambiar ya que si se hereda de la clase padre una cabecera de la que nos sirven cosas no hace falta esto 
-				//puediendose modificar directamente en la clase padre
+				
 		JPanel cabeza = new JPanel(new BorderLayout());
 		panel.add(cabeza,BorderLayout.NORTH);
 		
@@ -39,7 +38,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		cabeza.add(imagen, BorderLayout.EAST);
 		
 		
-		//ESTO IMAGEN SE PUEDE CAMBIAR PERO AL HEREDAR DE SEL TOGGLE MENU HACE QUE AL CLICKAR SE REPINTEE EL MENU SEL
 		ImageIcon logo2 = new ImageIcon("resources/images/Casa.png");
 		ImageIcon logoAjustado2 = new ImageIcon(logo2.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JLabel imagen2 = new JLabel(logoAjustado2);
@@ -70,7 +68,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			});
 		
 		
-		panel.add(panel2, BorderLayout.CENTER);
+		//panel.add(panel2, BorderLayout.CENTER);
 		this.add(panel);
 			
 	}
