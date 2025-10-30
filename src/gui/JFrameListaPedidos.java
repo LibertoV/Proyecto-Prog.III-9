@@ -146,7 +146,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	    
 	    JPanel panelHistorial = crearHistorialPedido();
 	    gbc.gridx = 1;
-	    gbc.weightx = 0.7; 
+	    gbc.weightx = 0.7;
+	   
 	    gbc.fill = GridBagConstraints.BOTH; 
 	    panelOpciones.add(panelHistorial, gbc);
 	    
