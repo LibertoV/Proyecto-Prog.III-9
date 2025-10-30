@@ -78,16 +78,12 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		JButton Salir = new JButton("Salir");
 		panelCabecera.add(Salir, BorderLayout.WEST);
 		
-		Salir.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new JFrameFarmaciaSel();
-				dispose(); //Arreglar esto
-			}
-        	
-        });
-
+		Salir.addActionListener(e->{
+			new JFrameFarmaciaSel();
+			dispose(); //Arreglar esto
+			
+		});
+		
 		
 		return panelCabecera;
 		
