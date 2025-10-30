@@ -79,8 +79,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCabecera.add(Salir, BorderLayout.WEST);
 		
 		Salir.addActionListener(e->{
+			dispose();
 			new JFrameFarmaciaSel();
-			dispose(); //Arreglar esto
+			
 			
 		});
 		
