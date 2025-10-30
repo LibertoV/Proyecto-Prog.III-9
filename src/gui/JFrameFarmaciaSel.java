@@ -71,8 +71,8 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         cabecera.setFont(new Font("Arial",Font.BOLD,22));
         cabecera.add(tituloLabel,BorderLayout.CENTER);
        
-        ImageIcon logo = new ImageIcon("resources/images/Perfil.png");
-        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        ImageIcon logo = new ImageIcon("resources/images/logoEmpresa1.png");
+        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(75, 50, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
         cabecera.add(imagen,BorderLayout.EAST);
         
@@ -103,7 +103,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
     private JPanel createMenuPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(9, 1, 0, 10)); // 9 filas, 1 columna, 10px de espacio
-        panel.setBackground(new Color(220, 240, 255)); // Azul claro
+        panel.setBackground(Color.lightGray); // gris claro
         panel.setPreferredSize(new Dimension(200, getHeight())); // Ancho del menú
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         String[] opciones = {"Buscar", "Prescripciones", "Pedidos", "Almacen", "Ventas", "Clientes","Trabajadores","Configuracion","Salir"};
