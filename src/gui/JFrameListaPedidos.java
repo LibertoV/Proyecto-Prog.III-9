@@ -9,6 +9,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image; 
 import java.awt.Insets;
+import java.util.Arrays;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,6 +27,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+
+import domain.DataPedidos;
 
 
 //LISTADO DE PEDIDOS
@@ -93,8 +98,18 @@ public class JFrameListaPedidos extends JFramePrincipal {
         gbc.weightx = 1.0; 
         panelCentral.add(new JLabel(""), gbc);
         
-        String[] cabecera = {"numero pedido", "Fecha de la orden", "Fecha de llegada", "Numero poductos","Productos totales"};
-        DefaultTableModel model = new DefaultTableModel(cabecera, 10) {
+        Vector<String> columnas = new Vector<>();
+        columnas.add("Nº pedido");
+        columnas.add("Fecha de la orden");
+        columnas.add("Fecha de llegada");
+        columnas.add("Numero poductos");
+        columnas.add("Productos totales");
+
+        Vector<Vector<Object>> datos= DataPedidos.cargarPedidos();
+        
+        
+        
+        DefaultTableModel model = new DefaultTableModel(datos, columnas) {
         	@Override
         	public boolean isCellEditable(int row, int column) {
         		return false;
@@ -182,7 +197,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	    JPanel panelhistorial = new JPanel();
 	    panelhistorial.setLayout(new BoxLayout(panelhistorial, BoxLayout.Y_AXIS));
 	    panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial de pedidos"));
-	    
 	    panelhistorial.setPreferredSize(new Dimension(400, 150));
 	    
 	    JLabel tablon = new JLabel("Aqui va una tabla con los datos de los pedidos ya entregados");
