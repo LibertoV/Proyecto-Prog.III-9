@@ -11,6 +11,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -21,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon; 
 import javax.swing.JCheckBox; 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -142,6 +145,23 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		gbc.weighty = 1.0; 
 		gbc.fill = GridBagConstraints.BOTH;
 		panelCentral.add(scroll, gbc);
+		
+		tablaPedidos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int fila = tablaPedidos.rowAtPoint(e.getPoint());
+					int columna = tablaPedidos.rowAtPoint(e.getPoint());
+					
+					if (fila > 0 && columna >0) {
+						new JFrameSelPedido();
+					}
+				}
+				
+			}
+		});
+		
+		
 		
 		JPanel OpcionesInferior = crearOpcionesInferior(); 
 		
