@@ -14,6 +14,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -21,19 +25,22 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon; 
-import javax.swing.JCheckBox; 
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import domain.DataHistorial;
 import domain.DataPedidos;
@@ -48,7 +55,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	
 	public JFrameListaPedidos() {
 		this.setTitle("Lista de Pedidos");
-		this.setSize(new Dimension(1000,750));
+		this.setSize(new Dimension(1200,850));
 		this.setLocationRelativeTo(null);
 		
 		
@@ -290,42 +297,81 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	    return panelañadir;
 	    
 	}
-	
-	
-	
+
 	private JPanel crearHistorialPedido() {
 	    JPanel panelhistorial = new JPanel();
 	    panelhistorial.setLayout(new BoxLayout(panelhistorial, BoxLayout.Y_AXIS));
 	    panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial de pedidos"));
-	    panelhistorial.setPreferredSize(new Dimension(400, 150));
-	    
+	    panelhistorial.setPreferredSize(new Dimension(400, 200)); 
+
 	    Vector<Object> columnas = new Vector<>();
 	    columnas.add("Id");
-	    columnas.add("Fecha llegada");
+	    columnas.add("Fecha llegada"); 
 	    columnas.add("Productos recibidos");
-	    
-	    Vector<Vector<Object>> historial = DataHistorial.cargarHistorial();
-	    
-	    DefaultTableModel model = new DefaultTableModel(historial, columnas) {
-        	@Override
-        	public boolean isCellEditable(int row, int column) {
-        		return false;
-        	}
-        };
-        
-        JTable tablaHistorial = new JTable(model);
-        tablaHistorial.getTableHeader().setReorderingAllowed(false);
-        
-		JScrollPane scroll = new JScrollPane(tablaHistorial);
 
-		
-		
+	    Vector<Vector<Object>> historial = DataHistorial.cargarHistorial();
+
+	    
+	    Vector<String> añosVector = new Vector<>();
+	    añosVector.add("Todos");
+
+	    for (Vector<Object> fila : historial) {
+	        Object fechaObj = fila.get(1); 
+
+	        if (fechaObj instanceof String) {
+	            String fechaStr = (String) fechaObj;
+	            
+	            if (fechaStr != null && fechaStr.length() >= 4) {
+	                String año = fechaStr.substring(0, 4); 
+	                
+	                if (!añosVector.contains(año)) {
+	                    añosVector.add(año);
+	                }
+	            }
+	        }
+	    }
+	    
+	    JComboBox<String> comboAños = new JComboBox<>(añosVector);
+
+	    JPanel panelFiltro = new JPanel();
+	    panelFiltro.setLayout(new FlowLayout(FlowLayout.LEFT));
+	    panelFiltro.add(new JLabel("Filtrar por año:"));
+	    panelFiltro.add(comboAños);
+	    panelFiltro.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelFiltro.getPreferredSize().height));
+
+
+	    DefaultTableModel model = new DefaultTableModel(historial, columnas) {
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+
+	    JTable tablaHistorial = new JTable(model);
+	    tablaHistorial.getTableHeader().setReorderingAllowed(false);
+
+	    JScrollPane scroll = new JScrollPane(tablaHistorial);
+
+	    tablaHistorial.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            if (e.getClickCount() == 2) {
+	                JFrameSelPedido frameSel = new JFrameSelPedido();
+	                frameSel.setVisible(true);
+	            }
+	        }
+	    });
+
 	    panelhistorial.add(Box.createVerticalGlue());
+	    panelhistorial.add(panelFiltro); 
+	    panelhistorial.add(Box.createRigidArea(new Dimension(0, 5))); 
 	    panelhistorial.add(scroll);
 	    panelhistorial.add(Box.createVerticalGlue());
-	    
+
 	    return panelhistorial;
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new JFrameListaPedidos());
