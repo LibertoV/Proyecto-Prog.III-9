@@ -78,7 +78,11 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelFiltro.add(precioTotal);
 		panelCabecera.add(panelFiltro, BorderLayout.EAST);
 		
-		JButton Salir = new JButton("Salir");
+		
+		ImageIcon logo1 = new ImageIcon("resources/images/Casa.png");
+        ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+		JButton Salir = new JButton(logoAjustado1);
+		Salir.setBorder(null);
 		panelCabecera.add(Salir, BorderLayout.WEST);
 		
 		Salir.addActionListener(e->{

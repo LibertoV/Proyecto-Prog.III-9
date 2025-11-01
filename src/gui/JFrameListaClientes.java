@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -107,7 +109,10 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 		panelCabecera.add(panelFiltro,BorderLayout.EAST);
 		
-		JButton MenuPrincipal = new JButton("Home");
+		ImageIcon logo1 = new ImageIcon("resources/images/Casa.png");
+        ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+		JButton MenuPrincipal = new JButton(logoAjustado1);
+		MenuPrincipal.setBorder(null);
 		panelCabecera.add(MenuPrincipal, BorderLayout.WEST);
 		
 		MenuPrincipal.addActionListener(e->{
