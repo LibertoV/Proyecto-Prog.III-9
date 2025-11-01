@@ -31,6 +31,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import domain.DataHistorial;
@@ -41,6 +43,7 @@ import domain.DataPedidos;
 
 public class JFrameListaPedidos extends JFramePrincipal {
 	private static final long serialVersionUID = 1L;
+	private DefaultTableModel modelo;
 	
 	
 	public JFrameListaPedidos() {
@@ -63,9 +66,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JTextField txtfiltro = new JTextField(10);
-		panelFiltro.add(new JLabel("Filtrado por id: "));
+		JLabel txtfiltro = new JLabel("10", SwingConstants.RIGHT);
+		txtfiltro.setPreferredSize(new Dimension(100,20));
+		txtfiltro.setBackground(Color.WHITE);
+		txtfiltro.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		txtfiltro.setOpaque(true);
+		panelFiltro.add(new JLabel("Numero de pedidos: "));
 		panelFiltro.add(txtfiltro);
+		
 		
 		JLabel precioTotal = new JLabel("0.00", SwingConstants.RIGHT);
 		precioTotal.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -97,6 +105,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		
 	}
 	
+	
 	private JPanel crearPanelCentral() {
 		JPanel panelCentral = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -106,6 +115,33 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		JTextField txtfiltro = new JTextField(10);
 		Proveedores.add(new JLabel("Filtrado por proveedor: "));
 		Proveedores.add(txtfiltro);
+		
+		DocumentListener filtro = new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtroPedido(txtfiltro.getText());
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtroPedido(txtfiltro.getText());
+				
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
+		txtfiltro.getDocument().addDocumentListener(filtro);
+
+		
+		
+		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 1; 
@@ -130,14 +166,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
         
         
         
-        DefaultTableModel model = new DefaultTableModel(datos, columnas) {
+        modelo = new DefaultTableModel(datos, columnas) {
         	@Override
         	public boolean isCellEditable(int row, int column) {
         		return false;
         	}
         };
         
-        JTable tablaPedidos = new JTable(model);
+        JTable tablaPedidos = new JTable(modelo);
         tablaPedidos.getTableHeader().setReorderingAllowed(false);
         
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
@@ -154,12 +190,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					int fila = tablaPedidos.rowAtPoint(e.getPoint());
-					int columna = tablaPedidos.rowAtPoint(e.getPoint());
+					JFrameSelPedido frameSel = new JFrameSelPedido();
+		            frameSel.setVisible(true);
 					
-					if (fila > 0 && columna >0) {
-						new JFrameSelPedido();
-					}
 				}
 				
 			}
@@ -180,6 +213,33 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCentral.add(OpcionesInferior,gbc);
 		
 		return panelCentral;
+		
+	}
+	
+	private void filtroPedido(String filtro) {
+		Vector<Vector<Object>> data = DataPedidos.cargarPedidos();
+		
+		Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
+    	String filtroLower = filtro.toLowerCase();
+    
+    	if (filtroLower.isEmpty()) {
+    		cargaFiltrada.addAll(data);
+    	}else {
+    		for(Vector<Object> fila : data) {
+    			String id = fila.get(0).toString().toLowerCase();
+    			String proveedor = fila.get(4).toString().toLowerCase();
+    			
+    			if(id.contains(filtroLower) || proveedor.contains(filtroLower)) {
+    				cargaFiltrada.add(fila);
+    			}
+    		}
+    	}
+    	
+    	modelo.setRowCount(0);
+    	for(Vector<Object> vector : cargaFiltrada) {
+    		modelo.addRow(vector);
+    	}
+    	modelo.fireTableDataChanged();
 		
 	}
 	
@@ -230,6 +290,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	    return panelañadir;
 	    
 	}
+	
+	
 	
 	private JPanel crearHistorialPedido() {
 	    JPanel panelhistorial = new JPanel();
