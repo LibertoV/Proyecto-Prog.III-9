@@ -96,7 +96,7 @@ public class JFrameLobby extends JFramePrincipal {
         tablaFarmacias.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(tablaFarmacias)); 
         
         CustomRowRenderer rowRenderer = new CustomRowRenderer();
-        for (int i = 0; i < tablaFarmacias.getColumnCount() - 1; i++) {
+        for (int i = 0; i < tablaFarmacias.getColumnCount() -1; i++) {
             tablaFarmacias.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
         }
         

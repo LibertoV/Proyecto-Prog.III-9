@@ -1,9 +1,14 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,10 +19,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import domain.DataCliente;
+
 
 
 
@@ -26,6 +35,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private JTextField txtFiltro;
 	private Vector<Vector<Object>> datosOriginales; 
 	private DefaultTableModel model;
+	protected int filaTablaClientes= -1;;
 	private static final long serialVersionUID = 1L;
 
 	public JFrameListaClientes(){
@@ -171,6 +181,71 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        };
 	        
 	        JTable tablaClientes = new JTable(model);
+	        
+	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
+	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
+	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+	        }
+	        
+	        MouseMotionListener motionListener = new MouseMotionListener() {
+
+
+	    		
+
+				@Override
+	    		public void mouseDragged(MouseEvent e) {
+	    			// TODO Auto-generated method stub
+	    			
+	    		}
+
+	    		@Override
+	    		public void mouseMoved(MouseEvent e) {
+	    			
+	    			Point puntosRaton = new Point(e.getX(),e.getY());
+	    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
+	    			tablaClientes.repaint();
+	    			
+	    		}
+	    		
+	    	};
+	        
+	    	MouseListener miMouseListener = new MouseListener() {
+
+	    		@Override
+	    		public void mouseClicked(MouseEvent e) {
+	    			// TODO Auto-generated method stub
+	    			
+	    		}
+
+	    		@Override
+	    		public void mousePressed(MouseEvent e) {
+	    			// TODO Auto-generated method stub
+	    			
+	    		}
+
+	    		@Override
+	    		public void mouseReleased(MouseEvent e) {
+	    			// TODO Auto-generated method stub
+	    			
+	    		}
+
+	    		@Override
+	    		public void mouseEntered(MouseEvent e) {
+	    			// TODO Auto-generated method stub
+	    			
+	    		}
+
+	    		@Override
+	    		public void mouseExited(MouseEvent e) {
+	    			filaTablaClientes=-1;
+	    			tablaClientes.repaint();
+	    			
+	    		}
+	    		
+	    	};
+	    	
+	    	tablaClientes.addMouseMotionListener(motionListener);
+	    	tablaClientes.addMouseListener(miMouseListener);
 	        	        
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
 	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
@@ -189,11 +264,45 @@ public class JFrameListaClientes extends JFramePrincipal{
 			return panelInferior;
 		}
 		
+		//Copiado de lo que realizo la IA
+		private class CustomRowRenderer extends JLabel implements TableCellRenderer {
+	        private static final long serialVersionUID = 1L;
+
+	        public CustomRowRenderer() {
+	            setOpaque(true); 
+	        }
+
+	        @Override
+	        public Component getTableCellRendererComponent(JTable table, Object value,
+	                                                       boolean isSelected, boolean hasFocus, // <-- Ignoraremos 'isSelected'
+	                                                       int row, int column) {
+	            
+	            setText(value != null ? value.toString() : "");
+	            
+	            // 💡 Lógica para pintar SOLO si el ratón está encima
+	            if (row == filaTablaClientes) {
+	                // Fila actual sobre la que está el ratón (pintar de azul claro)
+	                setBackground(new Color(173, 216, 230)); 
+	                setForeground(table.getSelectionForeground()); // Color de texto claro/blanco
+	            } else {
+	                // Resto de filas (color por defecto)
+	                setBackground(table.getBackground());
+	                setForeground(table.getForeground());
+	            }
+	            
+	            // Aunque la tabla no resalte la selección, el foco puede ser útil
+	            if (hasFocus) {
+	                 // Opcional: puedes poner un borde para indicar el foco
+	                 setBorder(UIManager.getBorder("Table.focusCellHighlightBorder")); 
+	            } else {
+	                 // Borde estándar de celda
+	                 setBorder(UIManager.getBorder("TableHeader.cellBorder")); 
+	            }
+	            
+	            return this;
+	        }
+	    }	 
 		 
 		 
-		 
-		 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new JFrameListaClientes());
-	}
+	
 }
