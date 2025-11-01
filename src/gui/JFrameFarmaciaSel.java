@@ -31,6 +31,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
 	
 	public JFrameFarmaciaSel() {
 		super();
+		this.setTitle("Menu Principal Farmacia");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
