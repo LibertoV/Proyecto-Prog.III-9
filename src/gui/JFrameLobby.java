@@ -278,9 +278,11 @@ public class JFrameLobby extends JFramePrincipal {
         private String label;
         private JTable table;
         private int currentRow; 
+        private JFrameLobby parent;
 
         public ButtonEditor(JTable table) {
             this.table = table;
+            this.parent = parent;
             button = new JButton();
             button.setOpaque(true);
             button.addActionListener(this);
@@ -321,7 +323,7 @@ public class JFrameLobby extends JFramePrincipal {
             
             System.out.println("Botón 'SEL' presionado en la fila: " + currentRow);
             System.out.println("Farmacia seleccionada: " + nombreFarmacia);
-            JFrameConfirmacion nuevaVentana = new JFrameConfirmacion();
+            JDialogConfirmacion nuevaVentana = new JDialogConfirmacion(parent);
             nuevaVentana.setVisible(true);	
         }
     }
