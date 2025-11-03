@@ -60,9 +60,9 @@ public class CajasFarmaciaSel extends JFrame{
 		Vector<String> columnNames = new Vector<>();
         columnNames.add("N*");
         columnNames.add("Fecha");
-        columnNames.add("Pedido");
-        columnNames.add("Factura");
         columnNames.add("Proveedor");
+        columnNames.add("Factura");
+        columnNames.add("Pedido");
 		
 		DefaultTableModel model = new DefaultTableModel(dataClientes, columnNames) {
             private static final long serialVersionUID = 1L;
