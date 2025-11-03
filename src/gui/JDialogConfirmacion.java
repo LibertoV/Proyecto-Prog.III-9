@@ -13,6 +13,8 @@ import javax.swing.SwingUtilities;
 
 public class JDialogConfirmacion extends JDialog {
 
+	private static final long serialVersionUID = 1L;
+
 	public JDialogConfirmacion(JFramePrincipal padre) {
 		super(padre, "Confirmacion", true);
 

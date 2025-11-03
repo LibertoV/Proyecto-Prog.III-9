@@ -42,8 +42,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import domain.DataHistorial;
-import domain.DataPedidos;
+import db.DataHistorial;
+import db.DataPedidos;
 
 
 //LISTADO DE PEDIDOS

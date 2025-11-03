@@ -27,7 +27,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import domain.DataCliente;
+import db.DataCliente;
 
 
 

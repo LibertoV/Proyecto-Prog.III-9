@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import domain.DataLoad;
+import db.DataLoad;
 
 public class JFrameLobby extends JFramePrincipal {
     private static final long serialVersionUID = 1L;
@@ -65,7 +65,7 @@ public class JFrameLobby extends JFramePrincipal {
         columnNames.add("Pedidos");
         columnNames.add("SEL");
         
-        Vector<Vector<Object>> data = DataLoad.cargaFarmacia("src/db/farmacias.csv");
+        Vector<Vector<Object>> data = DataLoad.cargaFarmacia("resources/db/farmacias.csv");
         datosOriginales = data;
         
         model = new DefaultTableModel(datosOriginales, columnNames) {

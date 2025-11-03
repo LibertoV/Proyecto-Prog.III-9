@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import domain.CajasFarmaciaSel;
+
 
 
 
@@ -87,7 +89,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         JTable pantalla1 = new JTable();
         JTable pantalla2 = new JTable();
         JTable pantalla3 = new JTable();
-        JTable pantalla4 = new JTable();
+        JPanel pantalla4 = CajasFarmaciaSel.UltClientes();
         gridLayoutPanel.add(pantalla1);
         gridLayoutPanel.add(pantalla2);
         gridLayoutPanel.add(pantalla3);
