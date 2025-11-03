@@ -88,7 +88,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         JPanel gridLayoutPanel = new JPanel(new GridLayout(2, 2, 15, 15));
         JTable pantalla1 = new JTable();
         JTable pantalla2 = new JTable();
-        JTable pantalla3 = new JTable();
+        JPanel pantalla3 = CajasFarmaciaSel.PedProveedores();
         JPanel pantalla4 = CajasFarmaciaSel.UltClientes();
         gridLayoutPanel.add(pantalla1);
         gridLayoutPanel.add(pantalla2);
