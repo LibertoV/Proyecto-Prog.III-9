@@ -1,17 +1,27 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Scrollbar;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import domain.FrameManager;
+
 
 public class JFrameFichaCliente extends JFramePrincipal{
 
@@ -20,20 +30,100 @@ public class JFrameFichaCliente extends JFramePrincipal{
 	
 	public JFrameFichaCliente(){
 		this.setTitle("Ficha Clientes");
-		this.setSize(new Dimension(500,375));
+		this.setSize(new Dimension(400,300));
 		this.setLocationRelativeTo(null);
 		
 		
-		this.add(crearPanelUsuario(), FlowLayout.LEFT);
+		this.add(crearPanelPrincipal(), BorderLayout.CENTER);
+		
+	}
+	
+
+	private JPanel crearPanelRecetas() {
+		JList<String> recetasList = new JList<>();//aqui vendria el modelo de recetas de cada cliente
+		recetasList.setBorder(BorderFactory.createTitledBorder("Recetas activas"));
+		JPanel recetas = new JPanel(new BorderLayout(8,8));
+		recetas.add(new JScrollPane(recetasList),BorderLayout.CENTER);
+		return recetas;
 	}
 
-	private Component crearPanelUsuario() {
-		JPanel panelPrincipal = new JPanel(new FlowLayout());
+
+	private JPanel crearPanelPrincipal() {
+		JPanel total = new JPanel();
+		JPanel panelPrincipal = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+		panelPrincipal.setBorder(null);
+		panelPrincipal.add(crearPanelUsuario());
+		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+		panelInferior.add(crearPanelRecetas());
+		total.add(panelPrincipal);
+		total.add(panelInferior);
+		return total;
+	}
+
+
+	private JPanel crearPanelUsuario() {
+		JPanel panelPrincipal = new JPanel(new GridLayout(6,2,5,5));
+		JPanel botones = new JPanel(new FlowLayout());
 		
-		JPanel panelNombre = new JPanel();
-		panelNombre.add(new JLabel("Nombre Usuario"));
-		panelNombre.add(new JTextField(20));
-		panelPrincipal.add(panelNombre,FlowLayout.LEFT);
+		panelPrincipal.add(new JLabel("Nombre Usuario:"));
+		JTextField panelNombre = new JTextField(10);
+		panelPrincipal.add(panelNombre,BorderLayout.WEST);
+		panelNombre.setEnabled(false);
+		
+		panelPrincipal.add(new JLabel("DNI:"));
+		JTextField panelDni = new JTextField(10);
+		panelPrincipal.add(panelDni,BorderLayout.WEST);
+		panelDni.setEnabled(false);
+		
+		panelPrincipal.add(new JLabel("Teléfono:"));
+		JTextField panelTelefono = new JTextField(10);
+		panelPrincipal.add(panelTelefono);
+		panelTelefono.setEnabled(false);
+		
+		panelPrincipal.add(new JLabel("Email:"));
+		JTextField panelEmail = new JTextField(10);
+		panelPrincipal.add(panelEmail);
+		panelEmail.setEnabled(false);
+		
+		
+		panelPrincipal.add(new JLabel("Dirección"));
+		JTextField panelDireccion = new JTextField(10);
+		panelPrincipal.add(panelDireccion,BorderLayout.WEST);
+		panelDireccion.setEnabled(false);
+		
+		
+		
+		JButton editar = new JButton("Editar");
+		
+		JButton guardar = new JButton("Guardar");
+		guardar.setEnabled(false);
+		editar.addActionListener((e)->{
+			panelNombre.setEnabled(true);
+			panelDni.setEnabled(true);
+			panelTelefono.setEnabled(true);
+			panelEmail.setEnabled(true);
+			panelDireccion.setEnabled(true);
+			guardar.setEnabled(true);
+			editar.setEnabled(false);
+		});
+		guardar.addActionListener((e)->{
+			panelNombre.setEnabled(false);
+			panelDni.setEnabled(false);
+			panelTelefono.setEnabled(false);
+			panelEmail.setEnabled(false);
+			panelDireccion.setEnabled(false);
+			guardar.setEnabled(false);
+			editar.setEnabled(true);
+			JOptionPane.showMessageDialog(this,
+					 "Cambios guardados",
+					 "Info",
+					 JOptionPane.INFORMATION_MESSAGE
+					 );
+			
+		});
+		botones.add(editar);
+		botones.add(guardar);
+		panelPrincipal.add(botones);
 		return panelPrincipal;
 	}
 	
