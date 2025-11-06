@@ -187,70 +187,70 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        
 	        JTable tablaClientes = new JTable(model);
 	        
-	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
-	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
-	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-	        }
+//	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
+//	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
+//	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
+//	        }
 	        
-	        MouseMotionListener motionListener = new MouseMotionListener() {
-
-
-	    		
-
-				@Override
-	    		public void mouseDragged(MouseEvent e) {
-	    			// TODO Auto-generated method stub
-	    			
-	    		}
-
-	    		@Override
-	    		public void mouseMoved(MouseEvent e) {
-	    			
-	    			Point puntosRaton = new Point(e.getX(),e.getY());
-	    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
-	    			tablaClientes.repaint();
-	    			
-	    		}
-	    		
-	    	};
-	        
-	    	MouseListener miMouseListener = new MouseListener() {
-
-	    		@Override
-	    		public void mouseClicked(MouseEvent e) {
-	    			// TODO Auto-generated method stub
-	    			
-	    		}
-
-	    		@Override
-	    		public void mousePressed(MouseEvent e) {
-	    			// TODO Auto-generated method stub
-	    			
-	    		}
-
-	    		@Override
-	    		public void mouseReleased(MouseEvent e) {
-	    			// TODO Auto-generated method stub
-	    			
-	    		}
-
-	    		@Override
-	    		public void mouseEntered(MouseEvent e) {
-	    			// TODO Auto-generated method stub
-	    			
-	    		}
-
-	    		@Override
-	    		public void mouseExited(MouseEvent e) {
-	    			filaTablaClientes=-1;
-	    			tablaClientes.repaint();
-	    			
-	    		}
-	    		
-	    	};
+//	        MouseMotionListener motionListener = new MouseMotionListener() {
+//
+//
+//	    		
+//
+//				@Override
+//	    		public void mouseDragged(MouseEvent e) {
+//	    			// TODO Auto-generated method stub
+//	    			
+//	    		}
+//
+//	    		@Override
+//	    		public void mouseMoved(MouseEvent e) {
+//	    			
+//	    			Point puntosRaton = new Point(e.getX(),e.getY());
+//	    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
+//	    			tablaClientes.repaint();
+//	    			
+//	    		}
+//	    		
+//	    	};
+//	        
+//	    	MouseListener miMouseListener = new MouseListener() {
+//
+//	    		@Override
+//	    		public void mouseClicked(MouseEvent e) {
+//	    			// TODO Auto-generated method stub
+//	    			
+//	    		}
+//
+//	    		@Override
+//	    		public void mousePressed(MouseEvent e) {
+//	    			// TODO Auto-generated method stub
+//	    			
+//	    		}
+//
+//	    		@Override
+//	    		public void mouseReleased(MouseEvent e) {
+//	    			// TODO Auto-generated method stub
+//	    			
+//	    		}
+//
+//	    		@Override
+//	    		public void mouseEntered(MouseEvent e) {
+//	    			// TODO Auto-generated method stub
+//	    			
+//	    		}
+//
+//	    		@Override
+//	    		public void mouseExited(MouseEvent e) {
+//	    			filaTablaClientes=-1;
+//	    			tablaClientes.repaint();
+//	    			
+//	    		}
+//	    		
+//	    	};
 	    	
-	    	tablaClientes.addMouseMotionListener(motionListener);
-	    	tablaClientes.addMouseListener(miMouseListener);
+//	    	tablaClientes.addMouseMotionListener(motionListener);
+//	    	tablaClientes.addMouseListener(miMouseListener);
 	        	        
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
 	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
@@ -261,7 +261,12 @@ public class JFrameListaClientes extends JFramePrincipal{
 	    
 		private JPanel crearPanelInferior() {
 			JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
-			JButton verFichaCliente = new JButton("Ver Ficha");
+			
+			String ficha = "Ver ficha";
+			JButton verFichaCliente = new JButton(ficha);
+			verFichaCliente.addActionListener(e ->{
+            	gestionarMenu(ficha);
+            });
 			JButton exportarCSV = new JButton("Exportar CSV");
 			panelInferior.add(verFichaCliente);
 			panelInferior.add(exportarCSV);
@@ -269,7 +274,16 @@ public class JFrameListaClientes extends JFramePrincipal{
 			return panelInferior;
 		}
 		
-		//Copiado de lo que realizo la IA
+		private void gestionarMenu(String ficha) {
+	    	switch(ficha) {
+	    	case "Ver ficha":
+	    		new JFrameFichaCliente();
+	    		dispose();
+	    		break;
+	    	}
+	    }
+		
+		//Copiado de lo que realizo la IAG
 		private class CustomRowRenderer extends JLabel implements TableCellRenderer {
 	        private static final long serialVersionUID = 1L;
 

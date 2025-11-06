@@ -135,6 +135,10 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
     		new JFrameListaClientes();
     		dispose();
     		break;
+    	case "Ventas":
+    		new JFrameVentas();
+    		dispose();
+    		break;
     	case "Salir":
     		new JFrameLobby();
     		dispose();

@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import domain.CajasClientePedido;
 import domain.FrameManager;
 
 
@@ -35,17 +36,15 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		
 		
 		this.add(crearPanelPrincipal(), BorderLayout.CENTER);
+		JButton cerrar = new JButton("Cerrar");
+		cerrar.addActionListener((e)->{
+			new JFrameListaClientes();
+			dispose();
+		});
+		this.add(cerrar,BorderLayout.SOUTH);
 		
 	}
 	
-
-	private JPanel crearPanelRecetas() {
-		JList<String> recetasList = new JList<>();//aqui vendria el modelo de recetas de cada cliente
-		recetasList.setBorder(BorderFactory.createTitledBorder("Recetas activas"));
-		JPanel recetas = new JPanel(new BorderLayout(8,8));
-		recetas.add(new JScrollPane(recetasList),BorderLayout.CENTER);
-		return recetas;
-	}
 
 
 	private JPanel crearPanelPrincipal() {
@@ -55,11 +54,32 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		panelPrincipal.add(crearPanelUsuario());
 		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
 		panelInferior.add(crearPanelRecetas());
+		JPanel panelTablaPedidos = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+		panelTablaPedidos.setBorder(null);;
+		panelTablaPedidos.add(crearPanelTabla(),BorderLayout.EAST);
+		
 		total.add(panelPrincipal);
 		total.add(panelInferior);
+		total.add(panelTablaPedidos);
+		
 		return total;
 	}
 
+	private JPanel crearPanelTabla() {
+		JPanel panelTabla = CajasClientePedido.TableUtl();
+		
+		return panelTabla;
+	}
+
+
+
+	private JPanel crearPanelRecetas() {
+		JList<String> recetasList = new JList<>();//aqui vendria el modelo de recetas de cada cliente
+		recetasList.setBorder(BorderFactory.createTitledBorder("Recetas activas"));//IAG
+		JPanel recetas = new JPanel(new BorderLayout(8,8));
+		recetas.add(new JScrollPane(recetasList),BorderLayout.CENTER);
+		return recetas;
+	}
 
 	private JPanel crearPanelUsuario() {
 		JPanel panelPrincipal = new JPanel(new GridLayout(6,2,5,5));
