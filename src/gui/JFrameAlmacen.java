@@ -30,7 +30,7 @@ public class JFrameAlmacen extends JFramePrincipal {
     Vector<String> columnNames;
 
     JFrameAlmacen() {
-        this.setTitle("Lista de Pedidos");
+        this.setTitle("Almacen");
         this.setSize(new Dimension(1200, 850));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
