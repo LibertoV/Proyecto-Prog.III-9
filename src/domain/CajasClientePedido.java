@@ -21,7 +21,7 @@ public class CajasClientePedido extends JFrame {
 	
 	public static JPanel TableUtl() {
 		JPanel panelPrincipal = new JPanel(new BorderLayout());
-		JLabel encabezado = new JLabel("Ultimos clientes");
+		//JLabel encabezado = new JLabel("Ultimos clientes");
 		
 		Vector<Vector<Object>> dataPedidos = DataPedidos.cargarPedidos();
 		
@@ -43,9 +43,10 @@ public class CajasClientePedido extends JFrame {
             
         };
         JTable pedidos = new JTable(model);
+        pedidos.getTableHeader().setReorderingAllowed(false);
 		JScrollPane miScroll = new JScrollPane(pedidos);
 		
-		panelPrincipal.add(encabezado, BorderLayout.NORTH);
+		//panelPrincipal.add(encabezado, BorderLayout.NORTH);
 		panelPrincipal.add(miScroll, BorderLayout.CENTER);
         
 		return panelPrincipal;

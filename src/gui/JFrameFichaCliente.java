@@ -55,7 +55,7 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
 		panelInferior.add(crearPanelRecetas());
 		JPanel panelTablaPedidos = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
-		panelTablaPedidos.setBorder(null);;
+		panelTablaPedidos.setBorder(null);
 		panelTablaPedidos.add(crearPanelTabla(),BorderLayout.EAST);
 		
 		total.add(panelPrincipal);

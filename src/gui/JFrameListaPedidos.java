@@ -183,6 +183,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
         JTable tablaPedidos = new JTable(modelo);
         tablaPedidos.getTableHeader().setReorderingAllowed(false);
         
+        
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
 		
 		gbc.gridx = 0;

@@ -11,47 +11,59 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-import db.DataVentas;
+import db.DataCliente;
+import db.DataTrabajador;
 
-public class JFrameVentas extends JFramePrincipal{
 
+public class JFrameListaTrabajadores extends JFramePrincipal {
+
+	
 	private static final long serialVersionUID = 1L;
 	private Vector<Vector<Object>> datosOriginales; 
-	private DefaultTableModel model;
 	private JTextField txtFiltro;
+	private DefaultTableModel model;
 	
 	
-	public JFrameVentas() {
-		this.setTitle("Lista de Clientes");
+	public JFrameListaTrabajadores() {
+		
+		
+		this.setTitle("Lista de Trabajadores");
 		this.setSize(new Dimension(1000,750));
 		this.setLocationRelativeTo(null);
 		
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
-	
+		this.add(crearPanelInferior(),BorderLayout.SOUTH);
 	}
 
+	private JPanel crearPanelInferior() {
+		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JButton historial = new JButton("Historial");
+		panelInferior.add(historial);
+		return panelInferior;
+	}
 
 	private JPanel crearPanelCentral() {
 		JPanel panelCentral = new JPanel(new BorderLayout());
 		Vector<String> columnNames = new Vector<>();
         columnNames.add("ID");
-        columnNames.add("Fecha");
-        columnNames.add("Cliente");
-        columnNames.add("Farmaceutico");
-        columnNames.add("Producto");
-        columnNames.add("Cantidad");
-        columnNames.add("Precio");
-        
+        columnNames.add("Nombre");
+        columnNames.add("DNI");
+        columnNames.add("Telefono");
+        columnNames.add("Puesto");
+        columnNames.add("Turno");
         
         model = new DefaultTableModel(datosOriginales, columnNames) {
             
@@ -61,94 +73,56 @@ public class JFrameVentas extends JFramePrincipal{
             
         };
         
-        JTable tablaVentas = new JTable(model);
-        tablaVentas.getTableHeader().setReorderingAllowed(false);
-//        CustomRowRenderer rowRenderer = new CustomRowRenderer();
-//        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
-//            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-//        }
-        
-//        MouseMotionListener motionListener = new MouseMotionListener() {
-//
-//
-//    		
-//
-//			@Override
-//    		public void mouseDragged(MouseEvent e) {
-//    			// TODO Auto-generated method stub
-//    			
-//    		}
-//
-//    		@Override
-//    		public void mouseMoved(MouseEvent e) {
-//    			
-//    			Point puntosRaton = new Point(e.getX(),e.getY());
-//    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
-//    			tablaClientes.repaint();
-//    			
-//    		}
-//    		
-//    	};
-//        
-//    	MouseListener miMouseListener = new MouseListener() {
-//
-//    		@Override
-//    		public void mouseClicked(MouseEvent e) {
-//    			// TODO Auto-generated method stub
-//    			
-//    		}
-//
-//    		@Override
-//    		public void mousePressed(MouseEvent e) {
-//    			// TODO Auto-generated method stub
-//    			
-//    		}
-//
-//    		@Override
-//    		public void mouseReleased(MouseEvent e) {
-//    			// TODO Auto-generated method stub
-//    			
-//    		}
-//
-//    		@Override
-//    		public void mouseEntered(MouseEvent e) {
-//    			// TODO Auto-generated method stub
-//    			
-//    		}
-//
-//    		@Override
-//    		public void mouseExited(MouseEvent e) {
-//    			filaTablaClientes=-1;
-//    			tablaClientes.repaint();
-//    			
-//    		}
-//    		
-//    	};
-    	
-//    	tablaClientes.addMouseMotionListener(motionListener);
-//    	tablaClientes.addMouseListener(miMouseListener);
-        	        
-        JScrollPane scrollPane = new JScrollPane(tablaVentas);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Ventas"));
+        JTable tablaClientes = new JTable(model);
+        tablaClientes.getTableHeader().setReorderingAllowed(false);
+
+        JScrollPane scrollPane = new JScrollPane(tablaClientes);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Trabajadores"));
 		panelCentral.add(scrollPane);
 		
 		return panelCentral;
 	}
 
-
 	private JPanel crearPanelCabecera() {
+		JComponent componentes[] = new JComponent[12];
 		JPanel panelCabecera = new JPanel(new BorderLayout());
-		panelCabecera.setBorder(BorderFactory.createEmptyBorder(4,4,5,5));
+		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		JComboBox<String> filtroCombo = new JComboBox<>(new String[]{"Todos", "Últimos 7 días"});
-		panelFiltro.add(filtroCombo);
+		JButton añadir = new JButton("+ Añadir Trabajador");
+		panelFiltro.add(añadir, BorderLayout.EAST);
+		
+		añadir.addActionListener((e)->{
+			componentes[0] =  new JLabel("ID ");
+			componentes[1] = new JTextField(30);
+			componentes[2] =  new JLabel("Nombre ");
+			componentes[3] = new JTextField(30);
+			componentes[4] =  new JLabel("DNI ");
+			componentes[5] = new JTextField(30);
+			componentes[6] =  new JLabel("Telefono ");
+			componentes[7] = new JTextField(30);
+			componentes[8] =  new JLabel("Puesto ");
+			componentes[9] = new JTextField(30);
+			componentes[10] =  new JLabel("Turno ");
+			componentes[11] = new JTextField(30);
+			int resultado = JOptionPane.showConfirmDialog(null,componentes, "Añadir un Trabajador",JOptionPane.OK_CANCEL_OPTION);
+					if(resultado == JOptionPane.OK_OPTION) {
+						System.out.println("Hemos pulsado "+ resultado);
+						
+					}else if (resultado == JOptionPane.ERROR_MESSAGE){
+						System.out.println("Hemos pulsado "+ resultado);
+					}
+					
+			
+		});
+		JButton editar = new JButton("Editar");
+		panelFiltro.add(editar,BorderLayout.EAST);
+		JButton eliminar = new JButton("Eliminar");
+		panelFiltro.add(eliminar,BorderLayout.EAST);
 		
 		
-		
-		
-		Vector<Vector<Object>> data = DataVentas.cargarVentas("src/db/ventas.csv");
+		Vector<Vector<Object>> data = DataTrabajador.cargarTrabajadores("src/db/trabajadores.csv");
 		
 		datosOriginales = new Vector<>();
         for (Vector<Object> fila : data) {
@@ -163,13 +137,13 @@ public class JFrameVentas extends JFramePrincipal{
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				filtroVenta(txtFiltro.getText());
+				filtroTrabajador(txtFiltro.getText());
 				
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				filtroVenta(txtFiltro.getText());
+				filtroTrabajador(txtFiltro.getText());
 				
 			}
 
@@ -183,7 +157,7 @@ public class JFrameVentas extends JFramePrincipal{
         
 		txtFiltro.getDocument().addDocumentListener(doclistener);
 		JPanel panelBusqueda = new JPanel();
-		panelBusqueda.add(new JLabel("Buscar Venta"));
+		panelBusqueda.add(new JLabel("Buscar Trabajador"));
 		panelBusqueda.add(txtFiltro);
 		panelCabecera.add(panelBusqueda,BorderLayout.CENTER);
 		
@@ -205,12 +179,11 @@ public class JFrameVentas extends JFramePrincipal{
 		
 		return panelCabecera;
 		
-		
-		
-	};
-	private void filtroVenta(String filtro) {
+	}
+	
+	private void filtroTrabajador(String filtro) {
 		 
-		 Vector<Vector<Object>> data = DataVentas.cargarVentas("src/db/ventas.csv");
+		 Vector<Vector<Object>> data = DataTrabajador.cargarTrabajadores("src/db/trabajadores.csv");
 			
 			datosOriginales = new Vector<>();
 	        for (Vector<Object> fila : data) {
@@ -225,10 +198,10 @@ public class JFrameVentas extends JFramePrincipal{
 	    		cargaFiltrada.addAll(datosOriginales);
 	    	}else {
 	    		for(Vector<Object> fila : datosOriginales) {
-	        		String fecha = fila.get(1).toString().toLowerCase();
-	        		String cliente = fila.get(2).toString().toLowerCase();
-	        		String farmaceutico = fila.get(3).toString().toLowerCase();
-	        		if(fecha.contains(filtroLower)|| cliente.contains(filtroLower)|| farmaceutico.contains(filtroLower)) {
+	        		String nombreCliente = fila.get(1).toString().toLowerCase();
+	        		String dniCliente = fila.get(2).toString().toLowerCase();
+	        		
+	        		if(nombreCliente.contains(filtroLower)|| dniCliente.contains(filtroLower)) {
 	        			cargaFiltrada.add(fila);
 	        			
 	        		}
@@ -246,6 +219,7 @@ public class JFrameVentas extends JFramePrincipal{
 	    	
 	    };
 	    
-	
-	
+	    public static void main(String[] args) {
+	        SwingUtilities.invokeLater(() -> new JFrameListaTrabajadores());
+	    }
 }

@@ -186,7 +186,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        };
 	        
 	        JTable tablaClientes = new JTable(model);
-	        
+	        tablaClientes.getTableHeader().setReorderingAllowed(false);
 //	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
 //	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
 //	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);

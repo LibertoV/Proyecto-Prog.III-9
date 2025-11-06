@@ -122,6 +122,7 @@ public class JFrameAlmacen extends JFramePrincipal {
         };
 
         JTable tablaAlmacen = new JTable(modelo);
+        tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         JScrollPane miScrollPane = new JScrollPane(tablaAlmacen);
         return miScrollPane;
     }
