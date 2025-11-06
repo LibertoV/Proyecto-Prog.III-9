@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
@@ -29,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import db.DataLoad;
+import db.DataFarmacias;
 
 public class JFrameLobby extends JFramePrincipal {
     private static final long serialVersionUID = 1L;
@@ -47,15 +48,14 @@ public class JFrameLobby extends JFramePrincipal {
         JLabel imagen = new JLabel(logoAjustado);
         
         JButton loginButton = new JButton("Cerrar sesión");
-        JPanel SelectionPanel = new JPanel(new GridLayout(1,3));
+        JPanel SelectionPanel = new JPanel(new FlowLayout());
         
         SelectionPanel.setOpaque(false);
         SelectionPanel.setPreferredSize(new Dimension(SelectionPanel.getPreferredSize().width, 50));
    
         SelectionPanel.add(imagen);
         SelectionPanel.add(new JLabel("Farmacias"));
-        SelectionPanel.add(new JLabel());
-        SelectionPanel.add(loginButton);
+        SelectionPanel.add(loginButton,FlowLayout.RIGHT);
         
         
         Vector<String> columnNames = new Vector<>();
@@ -65,7 +65,7 @@ public class JFrameLobby extends JFramePrincipal {
         columnNames.add("Pedidos");
         columnNames.add("SEL");
         
-        Vector<Vector<Object>> data = DataLoad.cargaFarmacia("resources/db/farmacias.csv");
+        Vector<Vector<Object>> data = DataFarmacias.cargaFarmacia("resources/db/farmacias.csv");
         datosOriginales = data;
         
         model = new DefaultTableModel(datosOriginales, columnNames) {

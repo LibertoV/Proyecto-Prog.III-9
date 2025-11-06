@@ -2,7 +2,7 @@ package db;
 //IAG
 import java.util.Vector;
 
-public class DataLoad {
+public class DataFarmacias {
 	public static Vector<Vector<Object>> cargaFarmacia(String path){
 		Vector<Vector<Object>> data = new Vector<>();
 		

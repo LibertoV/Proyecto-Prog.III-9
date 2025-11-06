@@ -143,6 +143,10 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
     		new JFrameLobby();
     		dispose();
     		break;
+    	case "Almacen":
+    		new JFrameAlmacen();
+    		dispose();
+    		break;
     	}
     	
     }
