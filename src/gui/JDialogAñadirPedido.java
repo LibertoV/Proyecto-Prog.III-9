@@ -23,14 +23,14 @@ import javax.swing.table.DefaultTableModel;
 public class JDialogAñadirPedido extends JDialog {
 	
 	private JTable tablaProductos;
-    private DefaultTableModel modelo;
-
+    public DefaultTableModel modelo;
 	
 	public JDialogAñadirPedido(JFrameListaPedidos parent) {
 		super(parent, "Añadir nuevo pedido", true);
 		setLayout(new BorderLayout(10,10));
 		setSize(new Dimension(500,600));
 		setLocationRelativeTo(parent);
+		setResizable(false);
 		
         add(crearPanelDetalles(), BorderLayout.NORTH);
 
@@ -105,7 +105,8 @@ public class JDialogAñadirPedido extends JDialog {
         panelBotonesTabla.add(btnAnadirFila);
         panelBotonesTabla.add(btnEliminarFila);
         btnAnadirFila.addActionListener(e -> {
-            modelo.addRow(new Object[]{"Nombre producto...", 1, 0.0});
+        	JDialogAñadirProducto dialog = new JDialogAñadirProducto(this);
+        	dialog.setVisible(true);
         });
         
         btnEliminarFila.addActionListener(e -> {
