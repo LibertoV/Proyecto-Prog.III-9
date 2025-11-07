@@ -80,6 +80,18 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
         
         tablaClientes = new JTable(model);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
+        tablaClientes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int fila = tablaClientes.rowAtPoint(e.getPoint());
+					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+															// para porteriormente saber su información
+					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador();
+					frameSel.setVisible(true);
+				}
+			}
+		});
 
 
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
