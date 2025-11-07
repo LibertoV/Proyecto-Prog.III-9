@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -34,6 +36,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	private Vector<Vector<Object>> datosOriginales; 
 	private JTextField txtFiltro;
 	private DefaultTableModel model;
+	private JTable tablaClientes;
 	
 	
 	public JFrameListaTrabajadores() {
@@ -73,7 +76,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
             
         };
         
-        JTable tablaClientes = new JTable(model);
+        tablaClientes = new JTable(model);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
@@ -119,7 +122,30 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		JButton editar = new JButton("Editar");
 		panelFiltro.add(editar,BorderLayout.EAST);
 		JButton eliminar = new JButton("Eliminar");
+		
+		eliminar.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	int fila = tablaClientes.getSelectedRow();
+	        	
+	        	if (fila == -1) {
+	        		JOptionPane.showMessageDialog(JFrameListaTrabajadores.this, "Por favor seleccione un pedido para eliminar", "Ningun pedido seleccionado" ,JOptionPane.YES_NO_OPTION);
+	        	} else {
+	        		int seleccionado = JOptionPane.showConfirmDialog(JFrameListaTrabajadores.this, "Estas seguro de que deseas eliminar el pedido seleccionado",
+	        				"Confirmar eliminicacion", JOptionPane.YES_NO_OPTION); //Esto devuelve 0 si es SI, 1 si si es no y -1 si se cierra
+	        		if (seleccionado == 0) {
+	        			Object idPedido = model.getValueAt(fila, 0);
+	        			
+	        			//Aqui deberia ir el codigo necesario para eliminar el pedido de la base de datos y luego recargar la pagina
+	        			
+	        		}
+	        	}
+	        }
+	    });
+
+		
 		panelFiltro.add(eliminar,BorderLayout.EAST);
+		
 		
 		
 		Vector<Vector<Object>> data = DataTrabajador.cargarTrabajadores("src/db/trabajadores.csv");

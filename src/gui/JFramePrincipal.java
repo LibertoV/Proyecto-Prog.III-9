@@ -13,7 +13,7 @@ public abstract class JFramePrincipal extends JFrame{
 	public static JFrame panelActual;	
 
 	public JFramePrincipal() {
-		if (!(this instanceof JFrameSelPedido) && panelActual != null) {
+		if (!(this instanceof JFrameSelPedido) && !(this instanceof JFrameFichaCliente) && panelActual != null) {
 			System.out.println(panelActual);
 			panelActual.dispose();
 			panelActual = this;	

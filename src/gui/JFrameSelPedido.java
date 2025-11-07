@@ -4,13 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class JFrameSelPedido extends JFramePrincipal {
 	
@@ -24,7 +32,7 @@ public class JFrameSelPedido extends JFramePrincipal {
 		this.add(crearCabecera(), BorderLayout.NORTH);
 		
 		//Cuerpo
-		//this.add(CrearCuerpo(), BorderLayout.CENTER);
+		this.add(crearCuerpo(), BorderLayout.CENTER);
 		
 		//Parte de abajo
 		this.add(crearAbajo(), BorderLayout.SOUTH);
@@ -68,9 +76,72 @@ public class JFrameSelPedido extends JFramePrincipal {
 	}
 	
 	public JPanel crearCuerpo() {
+		JPanel cuerpo = new JPanel(); 
+		cuerpo.setLayout(new BoxLayout(cuerpo, BoxLayout.Y_AXIS));
+		cuerpo.setBorder(new EmptyBorder(10, 15, 10, 15));
+		cuerpo.setBackground(Color.WHITE);
+
+		JPanel infoGeneral = new JPanel(new GridLayout(4, 2, 5, 5));
+		infoGeneral.setBorder(BorderFactory.createTitledBorder("Información general"));
+		infoGeneral.setBackground(Color.WHITE);
+
+		infoGeneral.add(new JLabel("Fecha de pedido:"));
+		infoGeneral.add(new JLabel("2025-11-06"));
+
+		infoGeneral.add(new JLabel("Fecha de llegada estimada:"));
+		infoGeneral.add(new JLabel("2025-11-10"));
+
+		infoGeneral.add(new JLabel("Proveedor:"));
+		infoGeneral.add(new JLabel("Amazon"));
+
+		infoGeneral.add(new JLabel("Método de envío:"));
+		infoGeneral.add(new JLabel("Urgente (24h)"));
+
+		JPanel panelProductos = new JPanel(new BorderLayout());
+		panelProductos.setBorder(BorderFactory.createTitledBorder("Productos del pedido"));
+		panelProductos.setBackground(Color.WHITE);
+
+		String[] columnas = {"Producto", "Cantidad", "Precio unitario (€)"};
+		Object[][] datos = {
+				{"Ibuprofeno M3", 200, 1},
+				{"Paracetamol", 10, 2},
+				{"Aspirinas", 50, 5},
+				{"Enantium", 100, 2}
+		};
+
+		JTable tabla = new JTable(new DefaultTableModel(datos, columnas)) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+
+		};
+		tabla.getTableHeader().setReorderingAllowed(false);
+		JScrollPane scroll = new JScrollPane(tabla);
+		panelProductos.add(scroll, BorderLayout.CENTER);
+
+		JPanel resumen = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		resumen.setBackground(Color.WHITE);
+		JLabel totalProd = new JLabel("Total productos: ");
+		JLabel prod = new JLabel("360");
 		
+		JLabel totalPrec = new JLabel("Precio total: ");
+		JLabel prec = new JLabel("1000€");
 		
-		return panel;
+		resumen.add(totalProd);
+		resumen.add(prod);
+		resumen.add(Box.createRigidArea(new Dimension(20,0)));
+		resumen.add(totalPrec);
+		resumen.add(prec);
+		
+        cuerpo.add(infoGeneral);
+        cuerpo.add(Box.createRigidArea(new Dimension(0, 10)));
+        cuerpo.add(panelProductos);
+        cuerpo.add(Box.createRigidArea(new Dimension(0, 5)));
+        cuerpo.add(resumen);
+
+        return cuerpo;
+
 		
 	}
 	

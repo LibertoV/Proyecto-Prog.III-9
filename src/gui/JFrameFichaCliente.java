@@ -31,8 +31,9 @@ public class JFrameFichaCliente extends JFramePrincipal{
 	
 	public JFrameFichaCliente(){
 		this.setTitle("Ficha Clientes");
-		this.setSize(new Dimension(400,300));
+		this.setSize(new Dimension(600,800));
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		
 		this.add(crearPanelPrincipal(), BorderLayout.CENTER);

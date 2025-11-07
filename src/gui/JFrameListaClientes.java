@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -187,6 +188,22 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        
 	        JTable tablaClientes = new JTable(model);
 	        tablaClientes.getTableHeader().setReorderingAllowed(false);
+	        
+	        tablaClientes.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						int fila = tablaClientes.rowAtPoint(e.getPoint());
+						Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+																// para porteriormente saber su información
+						JFrameFichaCliente clientesel = new JFrameFichaCliente();
+						clientesel.setVisible(true);
+					}
+				}
+			});
+
+	        
+	        
 //	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
 //	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
 //	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
@@ -320,8 +337,14 @@ public class JFrameListaClientes extends JFramePrincipal{
 	            
 	            return this;
 	        }
-	    }	 
-		 
+	    }	  
+		public static void main(String[] args) {
+			// TODO Auto-generated method stub
+			
+			SwingUtilities.invokeLater(() -> new JFrameListaClientes());
+			
+		}
+
 		 
 	
 }

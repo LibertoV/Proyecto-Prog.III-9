@@ -1,0 +1,158 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
+public class JDialogAñadirPedido extends JDialog {
+	
+	private JTable tablaProductos;
+    private DefaultTableModel modelo;
+
+	
+	public JDialogAñadirPedido(JFrameListaPedidos parent) {
+		super(parent, "Añadir nuevo pedido", true);
+		setLayout(new BorderLayout(10,10));
+		setSize(new Dimension(500,600));
+		setLocationRelativeTo(parent);
+		
+        add(crearPanelDetalles(), BorderLayout.NORTH);
+
+        add(crearPanelTabla(), BorderLayout.CENTER);
+
+        add(crearParteAbajo(), BorderLayout.SOUTH);
+		
+		
+		
+	}
+	private Component crearPanelDetalles() {
+		JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createTitledBorder("Datos del Pedido"));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); 
+        gbc.anchor = GridBagConstraints.WEST; 
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("Proveedor:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1.0; 
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        JTextField txtProveedor = new JTextField(30);
+        panel.add(txtProveedor, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.0; 
+
+        panel.add(new JLabel("Fecha Pedido (aaaa-mm-dd):"), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.0; 
+
+        JTextField txtFechaPedido = new JTextField(15);
+        panel.add(txtFechaPedido, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Fecha Estimada (aaaa-mm-dd):"), gbc);
+
+        gbc.gridx = 1;
+        JTextField txtFechaEstimada = new JTextField(15);
+        panel.add(txtFechaEstimada, gbc);
+
+        return panel;
+	}
+	
+	private Component crearPanelTabla() {
+		JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBorder(BorderFactory.createTitledBorder("Productos del Pedido"));
+
+        String[] columnas = {"Producto", "Cantidad", "Precio Unitario (€)"};
+        Object[][] datos = {
+
+        };
+        
+        modelo = new DefaultTableModel(datos, columnas);
+        tablaProductos = new JTable(modelo);
+
+        JScrollPane scroll = new JScrollPane(tablaProductos);
+        panel.add(scroll, BorderLayout.CENTER);
+
+        JPanel panelBotonesTabla = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnAnadirFila = new JButton("Añadir Producto");
+        JButton btnEliminarFila = new JButton("Eliminar Producto");
+        
+        panelBotonesTabla.add(btnAnadirFila);
+        panelBotonesTabla.add(btnEliminarFila);
+        btnAnadirFila.addActionListener(e -> {
+            modelo.addRow(new Object[]{"Nombre producto...", 1, 0.0});
+        });
+        
+        btnEliminarFila.addActionListener(e -> {
+            int filaSel = tablaProductos.getSelectedRow();
+            if (filaSel != -1) {
+                modelo.removeRow(filaSel);
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                        "Seleccione un producto de la tabla para eliminar.", 
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        
+        panel.add(panelBotonesTabla, BorderLayout.SOUTH);
+		return panel;
+	}
+	
+	private Component crearParteAbajo() {
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnGuardar = new JButton("Guardar");
+        JButton btnCancelar = new JButton("Cancelar");
+
+        panel.add(btnGuardar);
+        panel.add(btnCancelar);
+
+        btnGuardar.addActionListener(e -> {
+
+            int filas = modelo.getRowCount();
+            if (filas == 0) {
+                 JOptionPane.showMessageDialog(this, "Debe añadir al menos un producto.", "Error", JOptionPane.WARNING_MESSAGE);
+                 
+            }
+
+            
+            JOptionPane.showMessageDialog(this, "Pedido guardado con exito");
+
+            dispose();
+        });
+
+        btnCancelar.addActionListener(e -> {
+            dispose();
+        });
+		return panel;
+	}
+
+
+	public static void main(JFrameListaPedidos parent) {
+		SwingUtilities.invokeLater(()->new JDialogAñadirPedido(parent));
+	}
+}

@@ -117,13 +117,13 @@ public class DataHistorial {
 
         Vector<Object> histS = new Vector<>();
         histS.add("019");
-        histS.add("2025-10-23");
+        histS.add("2023-10-23");
         histS.add("20");
         data.add(histS);
 
         Vector<Object> histT = new Vector<>();
         histT.add("020");
-        histT.add("2025-10-24");
+        histT.add("2024-10-24");
         histT.add("30");
         data.add(histT);
 
