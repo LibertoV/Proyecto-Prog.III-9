@@ -41,6 +41,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import db.DataHistorial;
@@ -158,6 +159,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Fecha de llegada");
 		columnas.add("Valor");
 		columnas.add("Proveedor");
+		columnas.add("Eliminar");
+		
 
 		Vector<Vector<Object>> datos = DataPedidos.cargarPedidos();
 
@@ -170,6 +173,57 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 		tablaPedidos = new JTable(modelo);
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
+		tablaPedidos.setRowHeight(20);
+
+		
+		TableCellRenderer rendererPersonalizado = new TableCellRenderer() {
+		    @Override
+		    public Component getTableCellRendererComponent(
+		            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+		        JLabel label = new JLabel();
+		        label.setOpaque(true);
+
+		        if (isSelected) {
+		            label.setBackground(table.getSelectionBackground());
+		            label.setForeground(table.getSelectionForeground());
+		        } else {
+		            label.setBackground(Color.WHITE);
+		            label.setForeground(Color.BLACK);
+		        }
+
+		        String nombreColumna = table.getColumnName(column);
+
+		        if (nombreColumna.equals("Eliminar")) {
+		            ImageIcon iconoOriginal = new ImageIcon("resources/images/Buscar.png");
+
+		            Image imagen = iconoOriginal.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+		            ImageIcon imagenbien = new ImageIcon(imagen);
+
+		            label.setIcon(imagenbien);
+		            label.setHorizontalAlignment(SwingConstants.CENTER);
+		            label.setToolTipText("Eliminar pedido");
+		        } 
+		        else if (nombreColumna.equals("Proveedor")) {
+		            label.setText(value.toString());
+		            label.setHorizontalAlignment(SwingConstants.LEFT);
+		        } 
+		        else {
+		            label.setText(value.toString());
+		            label.setHorizontalAlignment(SwingConstants.CENTER);
+		        }
+
+		        return label;
+		    }
+		};
+
+
+		tablaPedidos.setDefaultRenderer(Object.class, rendererPersonalizado);
+
+		tablaPedidos.getColumn("Eliminar").setMaxWidth(60);
+		tablaPedidos.getColumn("Eliminar").setMinWidth(60);
+
+		
 
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
 
@@ -182,19 +236,36 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCentral.add(scroll, gbc);
 
 		tablaPedidos.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					int fila = tablaPedidos.rowAtPoint(e.getPoint());
-					Object id = modelo.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
-															// para porteriormente saber su información
-					JFrameSelPedido frameSel = new JFrameSelPedido();
-					frameSel.setVisible(true);
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int fila = tablaPedidos.rowAtPoint(e.getPoint());
+		        int columna = tablaPedidos.columnAtPoint(e.getPoint());
 
-				}
+		        if (fila >= 0 && columna >= 0) {
 
-			}
+		            if (tablaPedidos.getColumnName(columna).equals("Eliminar")) {
+		                int confirmado = JOptionPane.showConfirmDialog(
+		                    JFrameListaPedidos.this,
+		                    "¿Seguro que deseas eliminar este pedido?",
+		                    "Confirmar eliminación",
+		                    JOptionPane.YES_NO_OPTION
+		                );
+
+		                if (confirmado == JOptionPane.YES_OPTION) {
+		                    Object idPedido = modelo.getValueAt(fila, 0);		                    
+		                }
+		                return; 
+		            }
+
+		            if (e.getClickCount() == 2) {
+		                Object id = modelo.getValueAt(fila, 0);
+		                JFrameSelPedido frameSel = new JFrameSelPedido();
+		                frameSel.setVisible(true);
+		            }
+		        }
+		    }
 		});
+		
 
 		JPanel OpcionesInferior = crearOpcionesInferior();
 
@@ -277,40 +348,13 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				dialog.setVisible(true);			}
 		});
 
-		JButton eliminar = new JButton("Eliminar Pedido");
 
-		eliminar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int fila = tablaPedidos.getSelectedRow();
-
-				if (fila == -1) {
-					JOptionPane.showMessageDialog(JFrameListaPedidos.this,
-							"Por favor seleccione un pedido para eliminar", "Ningun pedido seleccionado",
-							JOptionPane.YES_NO_OPTION);
-				} else {
-					int seleccionado = JOptionPane.showConfirmDialog(JFrameListaPedidos.this,
-							"Estas seguro de que deseas eliminar el pedido seleccionado", "Confirmar eliminicacion",
-							JOptionPane.YES_NO_OPTION); // Esto devuelve 0 si es SI, 1 si si es no y -1 si se cierra
-					if (seleccionado == 0) {
-						Object idPedido = modelo.getValueAt(fila, 0);
-
-						// Aqui deberia ir el codigo necesario para eliminar el pedido de la base de
-						// datos y luego recargar la pagina
-
-					}
-				}
-			}
-		});
 
 		// Centrar botones horizontalmente
 		anadir.setAlignmentX(Component.CENTER_ALIGNMENT);
-		eliminar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		panelañadir.add(Box.createVerticalGlue());
 		panelañadir.add(anadir);
-		panelañadir.add(Box.createVerticalStrut(10));
-		panelañadir.add(eliminar);
 		panelañadir.add(Box.createVerticalGlue());
 
 		return panelañadir;
