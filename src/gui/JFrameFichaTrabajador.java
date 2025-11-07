@@ -113,6 +113,7 @@ public class JFrameFichaTrabajador extends JFrame {
         panel.add(lblFinContrato, gbc);
         gbc.gridx = 1;
         panel.add(txtFinContrato, gbc);
+
         
         gbc.gridx = 0; 
         gbc.gridy = 6;
