@@ -195,9 +195,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		        String nombreColumna = table.getColumnName(column);
 
 		        if (nombreColumna.equals("Eliminar")) {
-		            ImageIcon iconoOriginal = new ImageIcon("resources/images/Buscar.png");
+		            ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
 
-		            Image imagen = iconoOriginal.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+		            Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		            ImageIcon imagenbien = new ImageIcon(imagen);
 
 		            label.setIcon(imagenbien);
