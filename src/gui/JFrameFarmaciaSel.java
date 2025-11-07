@@ -27,8 +27,8 @@ import domain.CajasFarmaciaSel;
 
 public class JFrameFarmaciaSel extends  JFrameLobby{
 	private static final long serialVersionUID = 1L;
-	private JPanel menu; //IA
-	private boolean menuAbierto = false; //IA
+	private JPanel menu; //IAG
+	private boolean menuAbierto = false; //IAG
 	
 	
 	public JFrameFarmaciaSel() {
@@ -102,7 +102,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         panel.add(mainPanel);
 	}
 	
-	//Ayuda de IA generativa
+	//Ayuda de IAG
     private JPanel createMenuPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(9, 1, 0, 10)); // 9 filas, 1 columna, 10px de espacio

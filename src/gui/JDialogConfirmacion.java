@@ -53,7 +53,7 @@ public class JDialogConfirmacion extends JDialog {
 
 		this.add(panel);
 		
-		//Centrado hecho con la ayuda de IA
+		//Centrado hecho con la ayuda de IAG
 		this.pack();
 		if (padre != null) {
 		    int x = padre.getX() + (padre.getWidth() - getWidth()) / 2;
