@@ -109,7 +109,7 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
         panel.setBackground(Color.lightGray); // gris claro
         panel.setPreferredSize(new Dimension(200, getHeight())); // Ancho del menú
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        String[] opciones = {"Buscar", "Prescripciones", "Pedidos", "Almacen", "Ventas", "Clientes","Trabajadores","Configuracion","Salir"};
+        String[] opciones = {"Pedidos", "Almacen", "Ventas", "Clientes","Trabajadores","Salir"};
         for (String opcion : opciones) {
             JButton btn = new JButton(opcion);
             btn.setHorizontalAlignment(SwingConstants.LEFT); 
