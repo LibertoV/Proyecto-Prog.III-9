@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -78,6 +80,19 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
         
         tablaClientes = new JTable(model);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
+        tablaClientes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int fila = tablaClientes.rowAtPoint(e.getPoint());
+					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+															// para porteriormente saber su información
+					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador();
+					frameSel.setVisible(true);
+				}
+			}
+		});
+
 
         JScrollPane scrollPane = new JScrollPane(tablaClientes);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Trabajadores"));
