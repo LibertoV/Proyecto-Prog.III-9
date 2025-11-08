@@ -11,6 +11,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,12 +31,14 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -58,6 +63,17 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.setTitle("Lista de Pedidos");
 		this.setSize(new Dimension(1200, 850));
 		this.setLocationRelativeTo(null);
+
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				"volverAtras");
+
+		getRootPane().getActionMap().put("volverAtras", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				JFrameFarmaciaSel frame = new JFrameFarmaciaSel();
+				frame.setVisible(true);
+			}
+		});
 
 		// Añadir la cabecera
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
@@ -160,7 +176,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Valor");
 		columnas.add("Proveedor");
 		columnas.add("Eliminar");
-		
 
 		Vector<Vector<Object>> datos = DataPedidos.cargarPedidos();
 
@@ -175,55 +190,49 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
 		tablaPedidos.setRowHeight(20);
 
-		
 		TableCellRenderer rendererPersonalizado = new TableCellRenderer() {
-		    @Override
-		    public Component getTableCellRendererComponent(
-		            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
 
-		        JLabel label = new JLabel();
-		        label.setOpaque(true);
+				JLabel label = new JLabel();
+				label.setOpaque(true);
 
-		        if (isSelected) {
-		            label.setBackground(table.getSelectionBackground());
-		            label.setForeground(table.getSelectionForeground());
-		        } else {
-		            label.setBackground(Color.WHITE);
-		            label.setForeground(Color.BLACK);
-		        }
+				if (isSelected) {
+					label.setBackground(table.getSelectionBackground());
+					label.setForeground(table.getSelectionForeground());
+				} else {
+					label.setBackground(Color.WHITE);
+					label.setForeground(Color.BLACK);
+				}
 
-		        String nombreColumna = table.getColumnName(column);
+				String nombreColumna = table.getColumnName(column);
 
-		        if (nombreColumna.equals("Eliminar")) {
-		            ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
+				if (nombreColumna.equals("Eliminar")) {
+					ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
 
-		            Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-		            ImageIcon imagenbien = new ImageIcon(imagen);
+					Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+					ImageIcon imagenbien = new ImageIcon(imagen);
 
-		            label.setIcon(imagenbien);
-		            label.setHorizontalAlignment(SwingConstants.CENTER);
-		            label.setToolTipText("Eliminar pedido");
-		        } 
-		        else if (nombreColumna.equals("Proveedor")) {
-		            label.setText(value.toString());
-		            label.setHorizontalAlignment(SwingConstants.LEFT);
-		        } 
-		        else {
-		            label.setText(value.toString());
-		            label.setHorizontalAlignment(SwingConstants.CENTER);
-		        }
+					label.setIcon(imagenbien);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					label.setToolTipText("Eliminar pedido");
+				} else if (nombreColumna.equals("Proveedor")) {
+					label.setText(value.toString());
+					label.setHorizontalAlignment(SwingConstants.LEFT);
+				} else {
+					label.setText(value.toString());
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+				}
 
-		        return label;
-		    }
+				return label;
+			}
 		};
-
 
 		tablaPedidos.setDefaultRenderer(Object.class, rendererPersonalizado);
 
 		tablaPedidos.getColumn("Eliminar").setMaxWidth(60);
 		tablaPedidos.getColumn("Eliminar").setMinWidth(60);
-
-		
 
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
 
@@ -236,36 +245,80 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCentral.add(scroll, gbc);
 
 		tablaPedidos.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        int fila = tablaPedidos.rowAtPoint(e.getPoint());
-		        int columna = tablaPedidos.columnAtPoint(e.getPoint());
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaPedidos.rowAtPoint(e.getPoint());
+				int columna = tablaPedidos.columnAtPoint(e.getPoint());
 
-		        if (fila >= 0 && columna >= 0) {
+				if (fila >= 0 && columna >= 0) {
 
-		            if (tablaPedidos.getColumnName(columna).equals("Eliminar")) {
-		                int confirmado = JOptionPane.showConfirmDialog(
-		                    JFrameListaPedidos.this,
-		                    "¿Seguro que deseas eliminar este pedido?",
-		                    "Confirmar eliminación",
-		                    JOptionPane.YES_NO_OPTION
-		                );
+					if (tablaPedidos.getColumnName(columna).equals("Eliminar")) {
+						int confirmado = JOptionPane.showConfirmDialog(JFrameListaPedidos.this,
+								"¿Seguro que deseas eliminar este pedido?", "Confirmar eliminación",
+								JOptionPane.YES_NO_OPTION);
 
-		                if (confirmado == JOptionPane.YES_OPTION) {
-		                    Object idPedido = modelo.getValueAt(fila, 0);		                    
-		                }
-		                return; 
-		            }
+						if (confirmado == JOptionPane.YES_OPTION) {
+							Object idPedido = modelo.getValueAt(fila, 0);
+						}
+						return;
+					}
 
-		            if (e.getClickCount() == 2) {
-		                Object id = modelo.getValueAt(fila, 0);
-		                JFrameSelPedido frameSel = new JFrameSelPedido();
-		                frameSel.setVisible(true);
-		            }
-		        }
-		    }
+					if (e.getClickCount() == 2) {
+						Object id = modelo.getValueAt(fila, 0);
+						JFrameSelPedido frameSel = new JFrameSelPedido();
+						frameSel.setVisible(true);
+					}
+				}
+			}
 		});
-		
+
+		tablaPedidos.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int fila = tablaPedidos.getSelectedRow();
+
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (fila >= 0) {
+						Object id = modelo.getValueAt(fila, 0);
+						JFrameSelPedido frameSel = new JFrameSelPedido();
+						frameSel.setVisible(true);
+					}
+					e.consume();
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					if (fila >= 0) {
+						int confirmado = JOptionPane.showConfirmDialog(JFrameListaPedidos.this,
+								"¿Seguro que deseas eliminar este pedido?", "Confirmar eliminación",
+								JOptionPane.YES_NO_OPTION);
+
+						if (confirmado == JOptionPane.YES_OPTION) {
+							Object idPedido = modelo.getValueAt(fila, 0);
+							modelo.removeRow(fila);
+						}
+					}
+					e.consume();
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					if (fila > 0) {
+						tablaPedidos.setRowSelectionInterval(fila - 1, fila - 1);
+						tablaPedidos.scrollRectToVisible(tablaPedidos.getCellRect(fila - 1, 0, true));
+					}
+					e.consume();
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if (fila < modelo.getRowCount() - 1) {
+						tablaPedidos.setRowSelectionInterval(fila + 1, fila + 1);
+						tablaPedidos.scrollRectToVisible(tablaPedidos.getCellRect(fila + 1, 0, true));
+					}
+					e.consume();
+
+				}
+
+			}
+		});
 
 		JPanel OpcionesInferior = crearOpcionesInferior();
 
@@ -345,10 +398,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JDialogAñadirPedido dialog = new JDialogAñadirPedido(JFrameListaPedidos.this);
-				dialog.setVisible(true);			}
+				dialog.setVisible(true);
+			}
 		});
-
-
 
 		// Centrar botones horizontalmente
 		anadir.setAlignmentX(Component.CENTER_ALIGNMENT);
