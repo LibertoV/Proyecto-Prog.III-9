@@ -126,7 +126,7 @@ public class JFrameLogin extends JFramePrincipal {
         public void run() {
             long inicio = System.currentTimeMillis();
 
-            while (ejecutando && System.currentTimeMillis() - inicio < duracion) {
+            while (System.currentTimeMillis() - inicio < duracion) {
                 angulo = (angulo + 10) % 360;
                 repaint();
                 try {
@@ -138,9 +138,8 @@ public class JFrameLogin extends JFramePrincipal {
 
             ejecutando = false;
 
-            if (onFinish != null) {
-                SwingUtilities.invokeLater(onFinish);
-            }
+            SwingUtilities.invokeLater(onFinish);
+            
         }
         
         
