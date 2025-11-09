@@ -261,6 +261,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				filaHover[0] = -1;
 				tablaPedidos.repaint();
 			}
+			
+			
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -289,6 +291,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 		});
 
+		
 		tablaPedidos.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
