@@ -127,7 +127,7 @@ public class JFrameVentas extends JFramePrincipal{
     	
 //    	tablaClientes.addMouseMotionListener(motionListener);
 //    	tablaClientes.addMouseListener(miMouseListener);
-        	        
+//    	        
         JScrollPane scrollPane = new JScrollPane(tablaVentas);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Ventas"));
 		panelCentral.add(scrollPane);
