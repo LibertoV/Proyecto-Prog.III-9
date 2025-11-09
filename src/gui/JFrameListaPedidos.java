@@ -262,6 +262,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				tablaPedidos.repaint();
 			}
 			
+			
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
