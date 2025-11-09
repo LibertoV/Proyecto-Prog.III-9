@@ -261,6 +261,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				filaHover[0] = -1;
 				tablaPedidos.repaint();
 			}
+			
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
