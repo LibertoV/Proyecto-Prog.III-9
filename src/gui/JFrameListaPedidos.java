@@ -192,52 +192,61 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
 		tablaPedidos.setRowHeight(20);
 
-		TableCellRenderer rendererPersonalizado = new TableCellRenderer() {
+		final int[] filaHover = { -1 };
+
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
 
-				JLabel label = new JLabel();
-				label.setOpaque(true);
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if (isSelected) {
-					label.setBackground(table.getSelectionBackground());
-					label.setForeground(table.getSelectionForeground());
+					setBackground(new Color(173, 216, 230));
+					setForeground(table.getSelectionForeground());
+				} else if (row == filaHover[0]) {
+					setBackground(new Color(220, 240, 255));
+					setForeground(table.getForeground());
 				} else {
-					label.setBackground(Color.WHITE);
-					label.setForeground(Color.BLACK);
+					setBackground(Color.WHITE);
+					setForeground(table.getForeground());
 				}
+				setOpaque(true);
 
 				String nombreColumna = table.getColumnName(column);
 
 				if (nombreColumna.equals("Eliminar")) {
-					ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
 
+					ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
 					Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 					ImageIcon imagenbien = new ImageIcon(imagen);
+					setIcon(imagenbien);
+					setHorizontalAlignment(SwingConstants.CENTER);
+					setToolTipText("Eliminar pedido");
 
-					label.setIcon(imagenbien);
-					label.setHorizontalAlignment(SwingConstants.CENTER);
-					label.setToolTipText("Eliminar pedido");
 				} else if (nombreColumna.equals("Proveedor")) {
-					label.setText(value.toString());
-					label.setHorizontalAlignment(SwingConstants.LEFT);
+					setIcon(null);
+					setHorizontalAlignment(SwingConstants.LEFT);
+					setToolTipText(null);
 				} else {
-					label.setText(value.toString());
-					label.setHorizontalAlignment(SwingConstants.CENTER);
+					setIcon(null);
+					setHorizontalAlignment(SwingConstants.CENTER);
+					setToolTipText(null);
 				}
 
-				return label;
+				return this;
 			}
 		};
 
-		tablaPedidos.setDefaultRenderer(Object.class, rendererPersonalizado);
+		for (int i = 0; i < tablaPedidos.getColumnCount(); i++) {
+			tablaPedidos.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
 
 		tablaPedidos.getColumn("Eliminar").setMaxWidth(60);
 		tablaPedidos.getColumn("Eliminar").setMinWidth(60);
 
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
-
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.gridwidth = 2;
@@ -247,6 +256,12 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCentral.add(scroll, gbc);
 
 		tablaPedidos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				filaHover[0] = -1;
+				tablaPedidos.repaint();
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaPedidos.rowAtPoint(e.getPoint());
@@ -270,6 +285,17 @@ public class JFrameListaPedidos extends JFramePrincipal {
 						JFrameSelPedido frameSel = new JFrameSelPedido();
 						frameSel.setVisible(true);
 					}
+				}
+			}
+		});
+
+		tablaPedidos.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				int fila = tablaPedidos.rowAtPoint(e.getPoint());
+				if (fila != filaHover[0]) {
+					filaHover[0] = fila;
+					tablaPedidos.repaint();
 				}
 			}
 		});
@@ -461,73 +487,104 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelFiltro.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelFiltro.getPreferredSize().height));
 
 		DefaultTableModel model = new DefaultTableModel(historial, columnas) {
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		        return false;
-		    }
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 
 		JTable tablaHistorial = new JTable(model);
 		tablaHistorial.getTableHeader().setReorderingAllowed(false);
 
-		final int[] filaHover = {-1};
+		final int[] filaHover = { -1 };
 
-		
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
-		    @Override
-		    public Component getTableCellRendererComponent(JTable table, Object value,
-		                                                   boolean isSelected, boolean hasFocus,
-		                                                   int row, int column) {
-		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		        
-		        if (isSelected) {
-		            c.setBackground(new Color(173, 216, 230)); 
-		        } else if (row == filaHover[0]) {
-		            c.setBackground(new Color(220, 240, 255)); 
-		        } else {
-		            c.setBackground(Color.WHITE); 
-		        }
+				if (isSelected) {
+					c.setBackground(new Color(173, 216, 230));
+				} else if (row == filaHover[0]) {
+					c.setBackground(new Color(220, 240, 255));
+				} else {
+					c.setBackground(Color.WHITE);
+				}
 
-		        return c;
-		    }
+				return c;
+			}
 		};
 
 		for (int i = 0; i < tablaHistorial.getColumnCount(); i++) {
-		    tablaHistorial.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			tablaHistorial.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 
 		JScrollPane scroll = new JScrollPane(tablaHistorial);
 
+		tablaHistorial.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int fila = tablaHistorial.getSelectedRow();
+
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (fila >= 0) {
+						Object id = modelo.getValueAt(fila, 0);
+						JFrameSelPedido frameSel = new JFrameSelPedido();
+						frameSel.setVisible(true);
+					}
+					e.consume();
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_UP) {
+					if (fila > 0) {
+						tablaHistorial.setRowSelectionInterval(fila - 1, fila - 1);
+						tablaHistorial.scrollRectToVisible(tablaHistorial.getCellRect(fila - 1, 0, true));
+					}
+					e.consume();
+				}
+
+				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					if (fila < modelo.getRowCount() - 1) {
+						tablaHistorial.setRowSelectionInterval(fila + 1, fila + 1);
+						tablaHistorial.scrollRectToVisible(tablaHistorial.getCellRect(fila + 1, 0, true));
+					}
+					e.consume();
+
+				}
+
+			}
+		});
+
 		tablaHistorial.addMouseMotionListener(new MouseMotionAdapter() {
-		    @Override
-		    public void mouseMoved(MouseEvent e) {
-		        int fila = tablaHistorial.rowAtPoint(e.getPoint());
-		        if (fila != filaHover[0]) {
-		            filaHover[0] = fila;
-		            tablaHistorial.repaint();
-		        }
-		    }
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				int fila = tablaHistorial.rowAtPoint(e.getPoint());
+				if (fila != filaHover[0]) {
+					filaHover[0] = fila;
+					tablaHistorial.repaint();
+				}
+			}
 		});
 
 		tablaHistorial.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseExited(MouseEvent e) {
-		        filaHover[0] = -1;
-		        tablaHistorial.repaint();
-		    }
+			@Override
+			public void mouseExited(MouseEvent e) {
+				filaHover[0] = -1;
+				tablaHistorial.repaint();
+			}
 
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        if (e.getClickCount() == 2) {
-		            int fila = tablaHistorial.rowAtPoint(e.getPoint());
-		            if (fila != -1) {
-		                Object id = model.getValueAt(fila, 0); // ID del pedido
-		                JFrameSelPedido frameSel = new JFrameSelPedido();
-		                frameSel.setVisible(true);
-		            }
-		        }
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int fila = tablaHistorial.rowAtPoint(e.getPoint());
+					if (fila != -1) {
+						Object id = model.getValueAt(fila, 0); // ID del pedido
+						JFrameSelPedido frameSel = new JFrameSelPedido();
+						frameSel.setVisible(true);
+					}
+				}
+			}
 		});
 		Vector<Vector<Object>> historialOriginal = new Vector<>();
 		for (Vector<Object> fila : historial) {
