@@ -13,7 +13,7 @@
 .settings/
 *.iml
 .project
-.classpath
+# .classpath
 
 # Archivos temporales del sistema
 .DS_Store
