@@ -15,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -45,6 +46,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
@@ -459,30 +461,74 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelFiltro.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelFiltro.getPreferredSize().height));
 
 		DefaultTableModel model = new DefaultTableModel(historial, columnas) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
 		};
 
 		JTable tablaHistorial = new JTable(model);
 		tablaHistorial.getTableHeader().setReorderingAllowed(false);
 
+		final int[] filaHover = {-1};
+
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value,
+		                                                   boolean isSelected, boolean hasFocus,
+		                                                   int row, int column) {
+		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+		        
+		        if (isSelected) {
+		            c.setBackground(new Color(173, 216, 230)); 
+		        } else if (row == filaHover[0]) {
+		            c.setBackground(new Color(220, 240, 255)); 
+		        } else {
+		            c.setBackground(Color.WHITE); 
+		        }
+
+		        return c;
+		    }
+		};
+
+		for (int i = 0; i < tablaHistorial.getColumnCount(); i++) {
+		    tablaHistorial.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+
 		JScrollPane scroll = new JScrollPane(tablaHistorial);
 
-		tablaHistorial.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					int fila = tablaHistorial.rowAtPoint(e.getPoint());
-					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
-															// para porteriormente saber su información
-					JFrameSelPedido frameSel = new JFrameSelPedido();
-					frameSel.setVisible(true);
-				}
-			}
+		tablaHistorial.addMouseMotionListener(new MouseMotionAdapter() {
+		    @Override
+		    public void mouseMoved(MouseEvent e) {
+		        int fila = tablaHistorial.rowAtPoint(e.getPoint());
+		        if (fila != filaHover[0]) {
+		            filaHover[0] = fila;
+		            tablaHistorial.repaint();
+		        }
+		    }
 		});
 
+		tablaHistorial.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		        filaHover[0] = -1;
+		        tablaHistorial.repaint();
+		    }
+
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if (e.getClickCount() == 2) {
+		            int fila = tablaHistorial.rowAtPoint(e.getPoint());
+		            if (fila != -1) {
+		                Object id = model.getValueAt(fila, 0); // ID del pedido
+		                JFrameSelPedido frameSel = new JFrameSelPedido();
+		                frameSel.setVisible(true);
+		            }
+		        }
+		    }
+		});
 		Vector<Vector<Object>> historialOriginal = new Vector<>();
 		for (Vector<Object> fila : historial) {
 			historialOriginal.add(new Vector<>(fila));

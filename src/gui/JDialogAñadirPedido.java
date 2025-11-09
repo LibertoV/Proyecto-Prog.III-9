@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import com.toedter.calendar.JDateChooser;
+
 
 public class JDialogAñadirPedido extends JDialog {
 	
@@ -42,47 +44,53 @@ public class JDialogAñadirPedido extends JDialog {
 		
 	}
 	private Component crearPanelDetalles() {
-		JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Datos del Pedido"));
-        
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5); 
-        gbc.anchor = GridBagConstraints.WEST; 
+	    JPanel panel = new JPanel(new GridBagLayout());
+	    panel.setBorder(BorderFactory.createTitledBorder("Datos del Pedido"));
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(new JLabel("Proveedor:"), gbc);
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(5, 5, 5, 5);
+	    gbc.anchor = GridBagConstraints.WEST;
 
-        gbc.gridx = 1;
-        gbc.weightx = 1.0; 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        
-        JTextField txtProveedor = new JTextField(30);
-        panel.add(txtProveedor, gbc);
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.weightx = 0.0;
+	    gbc.fill = GridBagConstraints.NONE;
+	    panel.add(new JLabel("Proveedor:"), gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.0; 
+	    gbc.gridx = 1;
+	    gbc.weightx = 1.0;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JTextField txtProveedor = new JTextField(30);
+	    panel.add(txtProveedor, gbc);
 
-        panel.add(new JLabel("Fecha Pedido (aaaa-mm-dd):"), gbc);
+	    gbc.gridx = 0;
+	    gbc.gridy = 1;
+	    gbc.weightx = 0.0; 
+	    gbc.fill = GridBagConstraints.NONE;
+	    panel.add(new JLabel("Fecha Pedido:"), gbc); 
 
-        gbc.gridx = 1;
-        gbc.weightx = 0.0; 
+	    gbc.gridx = 1;
+	    gbc.weightx = 1.0;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JDateChooser dateChooserPedido = new JDateChooser();
+	    dateChooserPedido.setDateFormatString("yyyy-MM-dd");
+	    panel.add(dateChooserPedido, gbc);
 
-        JTextField txtFechaPedido = new JTextField(15);
-        panel.add(txtFechaPedido, gbc);
+	    gbc.gridx = 0;
+	    gbc.gridy = 2;
+	    gbc.weightx = 0.0;
+	    gbc.fill = GridBagConstraints.NONE;
+	    panel.add(new JLabel("Fecha Estimada:"), gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(new JLabel("Fecha Estimada (aaaa-mm-dd):"), gbc);
+	    gbc.gridx = 1;
+	    gbc.weightx = 1.0; 
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    JDateChooser dateChooserEstimada = new JDateChooser();
+	    dateChooserEstimada.setDateFormatString("yyyy-MM-dd");
+	    panel.add(dateChooserEstimada, gbc);
 
-        gbc.gridx = 1;
-        JTextField txtFechaEstimada = new JTextField(15);
-        panel.add(txtFechaEstimada, gbc);
-
-        return panel;
-	}
-	
+	    return panel;
+	}	
 	private Component crearPanelTabla() {
 		JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createTitledBorder("Productos del Pedido"));
