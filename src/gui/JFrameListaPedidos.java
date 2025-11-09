@@ -289,6 +289,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 		});
 
+		
 		tablaPedidos.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
