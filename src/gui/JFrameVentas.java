@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -37,7 +40,30 @@ public class JFrameVentas extends JFramePrincipal{
 		
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
-	
+		this.setFocusable(true); //IAG
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }
+			}
+		});
 	}
 
 

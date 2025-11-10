@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -38,7 +40,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	private Vector<Vector<Object>> datosOriginales; 
 	private JTextField txtFiltro;
 	private DefaultTableModel model;
-	private JTable tablaClientes;
+	private JTable tablaTrabajadores;
 	
 	
 	public JFrameListaTrabajadores() {
@@ -51,7 +53,33 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
 		this.add(crearPanelInferior(),BorderLayout.SOUTH);
+		this.setFocusable(true); //IAG
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }
+			}
+		});
 	}
+	
+
 
 	private JPanel crearPanelInferior() {
 		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -78,13 +106,13 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
             
         };
         
-        tablaClientes = new JTable(model);
-        tablaClientes.getTableHeader().setReorderingAllowed(false);
-        tablaClientes.addMouseListener(new MouseAdapter() {
+        tablaTrabajadores = new JTable(model);
+        tablaTrabajadores.getTableHeader().setReorderingAllowed(false);
+        tablaTrabajadores.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					int fila = tablaClientes.rowAtPoint(e.getPoint());
+					int fila = tablaTrabajadores.rowAtPoint(e.getPoint());
 					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
 															// para porteriormente saber su información
 					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador();
@@ -94,10 +122,37 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		});
 
 
-        JScrollPane scrollPane = new JScrollPane(tablaClientes);
+        JScrollPane scrollPane = new JScrollPane(tablaTrabajadores);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Trabajadores"));
 		panelCentral.add(scrollPane);
 		
+		tablaTrabajadores.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }else if(ctrlPresionado && e.getKeyCode() == KeyEvent.VK_ENTER) {
+					new JFrameFichaTrabajador();
+		    		
+                 }
+				
+			}
+		});
 		return panelCentral;
 	}
 
@@ -141,7 +196,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		eliminar.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	        	int fila = tablaClientes.getSelectedRow();
+	        	int fila = tablaTrabajadores.getSelectedRow();
 	        	
 	        	if (fila == -1) {
 	        		JOptionPane.showMessageDialog(JFrameListaTrabajadores.this, "Por favor seleccione un pedido para eliminar", "Ningun pedido seleccionado" ,JOptionPane.YES_NO_OPTION);

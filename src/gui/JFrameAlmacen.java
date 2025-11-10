@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -34,6 +36,30 @@ public class JFrameAlmacen extends JFramePrincipal {
         this.setSize(new Dimension(1200, 850));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
+        this.setFocusable(true); //IAG
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }
+			}
+		});
 
         // ✅ CAMBIO 1: Cargar datos y crear una copia profunda
         Vector<Vector<Object>> datosCargados = DataAlmacen.cargarAlmacen();

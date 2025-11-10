@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -35,7 +37,31 @@ public class JFrameFarmaciaSel extends  JFrameLobby{
 		super();
 		this.setTitle("Menu Principal Farmacia");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		this.setFocusable(true); //IAG
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameLobby().setVisible(true)); 
+		        }
+			}
+		});
 		
 		panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(63,180,190));

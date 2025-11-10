@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -50,7 +52,31 @@ public class JFrameListaClientes extends JFramePrincipal{
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
 		this.add(crearPanelInferior(),BorderLayout.SOUTH);
-		
+		this.requestFocusInWindow(); //IAG
+		this.setFocusable(true); //IAG
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }
+			}
+		});
 	}
 	
 
@@ -272,7 +298,33 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
 	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
 			panelCentral.add(scrollPane);
-			
+			tablaClientes.addKeyListener(new KeyListener() {
+				
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void keyPressed(KeyEvent e) {
+					boolean ctrlPresionado = e.isControlDown();
+					if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+			            dispose();
+			            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+			        }else if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        
+                        gestionarMenu("Ver ficha");
+                     }
+					
+				}
+			});
 			return panelCentral;
 		}
 	    
