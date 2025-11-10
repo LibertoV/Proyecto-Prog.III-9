@@ -253,8 +253,29 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 				} else if (nombreColumna.equals("Proveedor")) {
 					setIcon(null);
+					setText(null);
 					setHorizontalAlignment(SwingConstants.LEFT);
 					setToolTipText(null);
+					if (value instanceof String && !((String) value).isEmpty()) {
+		                
+		                try {
+		                    String rutaImagen = (String) value;
+		                    ImageIcon iconoOriginal = new ImageIcon(rutaImagen);
+		                    
+		                    Image imagen = iconoOriginal.getImage().getScaledInstance(40, 20, Image.SCALE_SMOOTH);
+		                    ImageIcon imagenbien = new ImageIcon(imagen);
+		                    setIcon(imagenbien);
+		                    setHorizontalAlignment(SwingConstants.CENTER);
+		                    
+		                } catch (Exception ex) {
+		                    setIcon(null);
+		                    setText("IMG ERROR");
+		                    setHorizontalAlignment(SwingConstants.CENTER);
+		                }
+		            } else {
+		                setText("N/A");
+		            }
+					
 				} else {
 					setIcon(null);
 					setHorizontalAlignment(SwingConstants.CENTER);
@@ -333,7 +354,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int fila = tablaPedidos.getSelectedRow();
-
+				boolean ctrlPresionado = e.isControlDown();
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (fila >= 0) {
 						Object id = modelo.getValueAt(fila, 0);
@@ -373,8 +394,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					e.consume();
 
 				}
+				
+				else if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
+		        }
 
 			}
+			
 		});
 
 		JPanel OpcionesInferior = crearOpcionesInferior();

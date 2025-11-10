@@ -1,9 +1,27 @@
 package db;
 
+import java.util.Random;
 import java.util.Vector;
 
 public class DataPedidos {
-
+	private static final String IMAGES_PATH = "resources/images/";
+	private static final String[] PROVEEDOR_IMGS = {
+	        "AbbVieLogo_AbbVie dark blue.png", 
+	        "JNJ_Logo_SingleLine_Red_RGB.png",
+	        "Lilly-Logo.svg.png",
+	        "Logo_Bayer.svg.png",
+	        "Logo_Sanofi_(2022).png",
+	        "Merck.png",
+	        "original.jpg",
+	        "roche-logo-blue.png"
+	        
+	    };
+	private static String getProveedorImagenAleatoria() {
+        Random random = new Random();
+        int index = random.nextInt(PROVEEDOR_IMGS.length);
+        return IMAGES_PATH + PROVEEDOR_IMGS[index];
+    }
+	
 	public static Vector<Vector<Object>> cargarPedidos() {
 		Vector<Vector<Object>> data = new Vector<>();
 
@@ -12,7 +30,7 @@ public class DataPedidos {
 		pedidoA.add("2025-10-01");
 		pedidoA.add("2025-10-05");
 		pedidoA.add("9003");
-		pedidoA.add("Distribuciones FarmaPlus");
+		pedidoA.add(getProveedorImagenAleatoria());
 		data.add(pedidoA);
 
 		Vector<Object> pedidoB = new Vector<>();
@@ -20,7 +38,7 @@ public class DataPedidos {
 		pedidoB.add("2025-10-02");
 		pedidoB.add("2025-10-06");
 		pedidoB.add("4023");
-		pedidoB.add("Laboratorios Sanitas");
+		pedidoB.add(getProveedorImagenAleatoria());
 		data.add(pedidoB);
 
 		Vector<Object> pedidoC = new Vector<>();
@@ -28,7 +46,7 @@ public class DataPedidos {
 		pedidoC.add("2025-10-03");
 		pedidoC.add("2025-10-07");
 		pedidoC.add("2322");
-		pedidoC.add("Farmacéutica Ibérica");
+		pedidoC.add(getProveedorImagenAleatoria());
 		data.add(pedidoC);
 
 		Vector<Object> pedidoD = new Vector<>();
@@ -36,7 +54,7 @@ public class DataPedidos {
 		pedidoD.add("2025-10-04");
 		pedidoD.add("2025-10-08");
 		pedidoD.add("5232");
-		pedidoD.add("Grupo Medifarma");
+		pedidoD.add(getProveedorImagenAleatoria());
 		data.add(pedidoD);
 
 		Vector<Object> pedidoE = new Vector<>();
@@ -44,7 +62,7 @@ public class DataPedidos {
 		pedidoE.add("2025-10-05");
 		pedidoE.add("2025-10-09");
 		pedidoE.add("6123");
-		pedidoE.add("Distribuciones Quimicor");
+		pedidoE.add(getProveedorImagenAleatoria());
 		data.add(pedidoE);
 
 		Vector<Object> pedidoF = new Vector<>();
@@ -52,7 +70,7 @@ public class DataPedidos {
 		pedidoF.add("2025-10-06");
 		pedidoF.add("2025-10-10");
 		pedidoF.add("0332");
-		pedidoF.add("BioSalud Global");
+		pedidoF.add(getProveedorImagenAleatoria());
 		data.add(pedidoF);
 
 		Vector<Object> pedidoG = new Vector<>();
@@ -60,7 +78,7 @@ public class DataPedidos {
 		pedidoG.add("2025-10-07");
 		pedidoG.add("2025-10-11");
 		pedidoG.add("4000");
-		pedidoG.add("Laboratorios VitaCorp");
+		pedidoG.add(getProveedorImagenAleatoria());
 		data.add(pedidoG);
 
 		Vector<Object> pedidoH = new Vector<>();
@@ -68,7 +86,7 @@ public class DataPedidos {
 		pedidoH.add("2025-10-08");
 		pedidoH.add("2025-10-12");
 		pedidoH.add("5020");
-		pedidoH.add("Distribuciones FarmaSur");
+		pedidoH.add(getProveedorImagenAleatoria());
 		data.add(pedidoH);
 
 		Vector<Object> pedidoI = new Vector<>();
@@ -76,7 +94,7 @@ public class DataPedidos {
 		pedidoI.add("2025-10-09");
 		pedidoI.add("2025-10-13");
 		pedidoI.add("2050");
-		pedidoI.add("Química Médica España");
+		pedidoI.add(getProveedorImagenAleatoria());
 		data.add(pedidoI);
 
 		Vector<Object> pedidoJ = new Vector<>();
@@ -84,7 +102,7 @@ public class DataPedidos {
 		pedidoJ.add("2025-10-10");
 		pedidoJ.add("2025-10-14");
 		pedidoJ.add("7004");
-		pedidoJ.add("Salud y Bienestar S.L.");
+		pedidoJ.add(getProveedorImagenAleatoria());
 		data.add(pedidoJ);
 
 		Vector<Object> pedidoK = new Vector<>();
@@ -92,7 +110,7 @@ public class DataPedidos {
 		pedidoK.add("2025-10-11");
 		pedidoK.add("2025-10-15");
 		pedidoK.add("3009");
-		pedidoK.add("Distribuciones MediPharm");
+		pedidoK.add(getProveedorImagenAleatoria());
 		data.add(pedidoK);
 
 		Vector<Object> pedidoL = new Vector<>();
@@ -100,7 +118,7 @@ public class DataPedidos {
 		pedidoL.add("2025-10-12");
 		pedidoL.add("2025-10-16");
 		pedidoL.add("4134");
-		pedidoL.add("Laboratorios Argenix");
+		pedidoL.add(getProveedorImagenAleatoria());
 		data.add(pedidoL);
 
 		Vector<Object> pedidoM = new Vector<>();
@@ -108,7 +126,7 @@ public class DataPedidos {
 		pedidoM.add("2025-10-13");
 		pedidoM.add("2025-10-17");
 		pedidoM.add("5233");
-		pedidoM.add("Farmadistribución Norte");
+		pedidoM.add(getProveedorImagenAleatoria());
 		data.add(pedidoM);
 
 		Vector<Object> pedidoN = new Vector<>();
@@ -116,7 +134,7 @@ public class DataPedidos {
 		pedidoN.add("2025-10-14");
 		pedidoN.add("2025-10-18");
 		pedidoN.add("6102");
-		pedidoN.add("Laboratorios Renova");
+		pedidoN.add(getProveedorImagenAleatoria());
 		data.add(pedidoN);
 
 		Vector<Object> pedidoO = new Vector<>();
@@ -124,7 +142,7 @@ public class DataPedidos {
 		pedidoO.add("2025-10-15");
 		pedidoO.add("2025-10-19");
 		pedidoO.add("3323");
-		pedidoO.add("Meditech Europa");
+		pedidoO.add(getProveedorImagenAleatoria());
 		data.add(pedidoO);
 
 		Vector<Object> pedidoP = new Vector<>();
@@ -132,7 +150,7 @@ public class DataPedidos {
 		pedidoP.add("2025-10-16");
 		pedidoP.add("2025-10-20");
 		pedidoP.add("4557");
-		pedidoP.add("Distribuciones Salud Total");
+		pedidoP.add(getProveedorImagenAleatoria());
 		data.add(pedidoP);
 
 		Vector<Object> pedidoQ = new Vector<>();
@@ -140,7 +158,7 @@ public class DataPedidos {
 		pedidoQ.add("2025-10-17");
 		pedidoQ.add("2025-10-21");
 		pedidoQ.add("2456");
-		pedidoQ.add("Laboratorios Farmanova");
+		pedidoQ.add(getProveedorImagenAleatoria());
 		data.add(pedidoQ);
 
 		Vector<Object> pedidoR = new Vector<>();
@@ -148,7 +166,7 @@ public class DataPedidos {
 		pedidoR.add("2025-10-18");
 		pedidoR.add("2025-10-22");
 		pedidoR.add("5765");
-		pedidoR.add("BioFarm Europa");
+		pedidoR.add(getProveedorImagenAleatoria());
 		data.add(pedidoR);
 
 		Vector<Object> pedidoS = new Vector<>();
@@ -156,7 +174,7 @@ public class DataPedidos {
 		pedidoS.add("2025-10-19");
 		pedidoS.add("2025-10-23");
 		pedidoS.add("4876");
-		pedidoS.add("Distribuciones Medicor");
+		pedidoS.add(getProveedorImagenAleatoria());
 		data.add(pedidoS);
 
 		Vector<Object> pedidoT = new Vector<>();
@@ -164,7 +182,7 @@ public class DataPedidos {
 		pedidoT.add("2025-10-20");
 		pedidoT.add("2025-10-24");
 		pedidoT.add("6367");
-		pedidoT.add("Laboratorios Vitalis");
+		pedidoT.add(getProveedorImagenAleatoria());
 		data.add(pedidoT);
 
 		return data;
