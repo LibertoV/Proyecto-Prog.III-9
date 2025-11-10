@@ -67,16 +67,16 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.setSize(new Dimension(1200, 850));
 		this.setLocationRelativeTo(null);
 
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				"volverAtras");
-
-		getRootPane().getActionMap().put("volverAtras", new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				JFrameFarmaciaSel frame = new JFrameFarmaciaSel();
-				frame.setVisible(true);
-			}
-		});
+//		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+//				"volverAtras");
+//
+//		getRootPane().getActionMap().put("volverAtras", new AbstractAction() {
+//			public void actionPerformed(ActionEvent e) {
+//				dispose();
+//				JFrameFarmaciaSel frame = new JFrameFarmaciaSel();
+//				frame.setVisible(true);
+//			}
+//		});
 
 		// Añadir la cabecera
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
