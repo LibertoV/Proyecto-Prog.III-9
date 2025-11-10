@@ -257,21 +257,11 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					setHorizontalAlignment(SwingConstants.LEFT);
 					setToolTipText(null);
 					if (value instanceof String && !((String) value).isEmpty()) {
-		                
-		                try {
-		                    String rutaImagen = (String) value;
-		                    ImageIcon iconoOriginal = new ImageIcon(rutaImagen);
-		                    
-		                    Image imagen = iconoOriginal.getImage().getScaledInstance(40, 20, Image.SCALE_SMOOTH);
-		                    ImageIcon imagenbien = new ImageIcon(imagen);
-		                    setIcon(imagenbien);
-		                    setHorizontalAlignment(SwingConstants.CENTER);
-		                    
-		                } catch (Exception ex) {
-		                    setIcon(null);
+		                ImageIcon icono = getCachedIcon((String) value);
+		                if (icono != null)
+		                    setIcon(icono);
+		                else
 		                    setText("IMG ERROR");
-		                    setHorizontalAlignment(SwingConstants.CENTER);
-		                }
 		            } else {
 		                setText("N/A");
 		            }

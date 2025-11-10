@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -33,6 +35,8 @@ public class JFrameAlmacen extends JFramePrincipal {
     Vector<Vector<Object>> datosOriginales;
     JComboBox<String> combo;
     Vector<String> columnNames;
+    
+    
 
     JFrameAlmacen() {
         this.setTitle("Almacen");
@@ -138,7 +142,6 @@ public class JFrameAlmacen extends JFramePrincipal {
         columnNames.add("Precio/u");
         columnNames.add("Proveedor");
 
-        // ✅ CAMBIO 2: Crear modelo con copia independiente
         Vector<Vector<Object>> copiaDatos = new Vector<>();
         for (Vector<Object> fila : datos) {
             copiaDatos.add(new Vector<>(fila));
@@ -191,6 +194,7 @@ public class JFrameAlmacen extends JFramePrincipal {
         }
         modelo.fireTableDataChanged();
     }
+    
     //IAG
     class CustomImageRenderer extends DefaultTableCellRenderer {
         private static final long serialVersionUID = 1L;
@@ -205,7 +209,7 @@ public class JFrameAlmacen extends JFramePrincipal {
         public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected, boolean hasFocus,int row, int column) {
             
             // Lógica de color (mantener el color por defecto de la celda, o el de selección)
-            if (isSelected) {
+        	if (isSelected) {
                 setBackground(table.getSelectionBackground());
                 setForeground(table.getSelectionForeground());
             } else {
@@ -218,18 +222,11 @@ public class JFrameAlmacen extends JFramePrincipal {
             
         
             if (value instanceof String && !((String) value).isEmpty()) {
-                
-                try {
-                    String rutaImagen = (String) value;
-                    ImageIcon iconoOriginal = new ImageIcon(rutaImagen);
-                    Image imagen = iconoOriginal.getImage().getScaledInstance(40, 20, Image.SCALE_SMOOTH);
-                    ImageIcon imagenbien = new ImageIcon(imagen);
-                    setIcon(imagenbien);
-                    
-                } catch (Exception ex) {
-                    // Si falla al cargar la imagen
+                ImageIcon icono = getCachedIcon((String) value);
+                if (icono != null)
+                    setIcon(icono);
+                else
                     setText("IMG ERROR");
-                }
             } else {
                 setText("N/A");
             }
@@ -237,6 +234,7 @@ public class JFrameAlmacen extends JFramePrincipal {
             return this;
         }
     }
+    
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JFrameAlmacen());
