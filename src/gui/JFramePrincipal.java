@@ -2,7 +2,11 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -11,7 +15,8 @@ public abstract class JFramePrincipal extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JPanel panel;
 	public static JFrame panelActual;	
-
+	private Map<String, ImageIcon> cache = new HashMap<>();
+	
 	public JFramePrincipal() {
 		if (!(this instanceof JFrameSelPedido) && !(this instanceof JFrameFichaCliente) && panelActual != null) {
 			System.out.println(panelActual);
@@ -33,4 +38,17 @@ public abstract class JFramePrincipal extends JFrame{
 		this.setMinimumSize(new Dimension(800, 600));
 		this.setMaximumSize(new Dimension(1280, 720)); 
 	}
+	
+	public ImageIcon getCachedIcon(String path) {
+        if (cache.containsKey(path)) return cache.get(path);
+        try {
+            ImageIcon iconoOriginal = new ImageIcon(path);
+            Image img = iconoOriginal.getImage().getScaledInstance(40, 20, Image.SCALE_SMOOTH);
+            ImageIcon iconoEscalado = new ImageIcon(img);
+            cache.put(path, iconoEscalado);
+            return iconoEscalado;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }
