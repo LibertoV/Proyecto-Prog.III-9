@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -17,9 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import db.DataAlmacen;
@@ -150,6 +153,13 @@ public class JFrameAlmacen extends JFramePrincipal {
         JTable tablaAlmacen = new JTable(modelo);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         JScrollPane miScrollPane = new JScrollPane(tablaAlmacen);
+        
+        int columnIndex = columnNames.indexOf("Proveedor");
+        if (columnIndex != -1) {
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setCellRenderer(new CustomImageRenderer());
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMaxWidth(120);
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMinWidth(120);
+        }
         return miScrollPane;
     }
 
@@ -181,7 +191,53 @@ public class JFrameAlmacen extends JFramePrincipal {
         }
         modelo.fireTableDataChanged();
     }
+    //IAG
+    class CustomImageRenderer extends DefaultTableCellRenderer {
+        private static final long serialVersionUID = 1L;
 
+        public CustomImageRenderer() {
+            // Asegurarse de que el renderizador puede pintar el fondo/imagen
+            setHorizontalAlignment(SwingConstants.CENTER);
+            setOpaque(true); 
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected, boolean hasFocus,int row, int column) {
+            
+            // Lógica de color (mantener el color por defecto de la celda, o el de selección)
+            if (isSelected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            } else {
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+            }
+
+            setIcon(null); 
+            setText(null);
+            
+        
+            if (value instanceof String && !((String) value).isEmpty()) {
+                
+                try {
+                    String rutaImagen = (String) value;
+                    ImageIcon iconoOriginal = new ImageIcon(rutaImagen);
+                    Image imagen = iconoOriginal.getImage().getScaledInstance(40, 20, Image.SCALE_SMOOTH);
+                    ImageIcon imagenbien = new ImageIcon(imagen);
+                    setIcon(imagenbien);
+                    
+                } catch (Exception ex) {
+                    // Si falla al cargar la imagen
+                    setText("IMG ERROR");
+                }
+            } else {
+                setText("N/A");
+            }
+            
+            return this;
+        }
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JFrameAlmacen());
     }
