@@ -328,7 +328,6 @@ public class JFrameLobby extends JFramePrincipal {
         }
     }
     
-    //Realizado con IA generativa
     private class CustomRowRenderer extends JLabel implements TableCellRenderer {
         private static final long serialVersionUID = 1L;
 
@@ -338,28 +337,34 @@ public class JFrameLobby extends JFramePrincipal {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus, // <-- Ignoraremos 'isSelected'
+                                                       boolean isSelected, boolean hasFocus, 
                                                        int row, int column) {
             
             setText(value != null ? value.toString() : "");
-            
-            // 💡 Lógica para pintar SOLO si el ratón está encima
-            if (row == filaTablaFarmacia) {
-                // Fila actual sobre la que está el ratón (pintar de azul claro)
-                setBackground(new Color(173, 216, 230)); 
-                setForeground(table.getSelectionForeground()); // Color de texto claro/blanco
+
+            if (row % 2 == 0) {
+                setBackground(new Color(230, 240, 255)); 
             } else {
-                // Resto de filas (color por defecto)
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
+                setBackground(Color.WHITE); 
+            }
+            if (isSelected) {
+                setBackground(new Color(173, 216, 230)); 
             }
             
-            // Aunque la tabla no resalte la selección, el foco puede ser útil
+            if (((String) value).contains("Bajo")) {
+            	setForeground(new Color(180, 0, 0));
+            }else if (((String) value).contains("Medio")) {
+            	setForeground(new Color(180, 180, 0));
+            }else if (((String) value).contains("Óptimo")) {
+            	setForeground(new Color(0, 128, 0));
+            }else {
+            	setForeground(Color.BLACK);
+            }
+            
+            
             if (hasFocus) {
-                 // Opcional: puedes poner un borde para indicar el foco
                  setBorder(UIManager.getBorder("Table.focusCellHighlightBorder")); 
             } else {
-                 // Borde estándar de celda
                  setBorder(UIManager.getBorder("TableHeader.cellBorder")); 
             }
             
