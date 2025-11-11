@@ -46,29 +46,7 @@ public class JFrameLobby extends JFramePrincipal {
         
         panel.setLayout(new BorderLayout()); 
         this.setFocusable(true); //IAG
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameLogin().setVisible(true)); 
-		        }
-			}
-		});
+        this.addKeyListener(listenerVolver(JFrameLogin.class));
         ImageIcon logo = new ImageIcon("resources/images/logoEmpresa1.png");
         ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(90, 60, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
