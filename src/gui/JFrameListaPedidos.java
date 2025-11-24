@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -146,6 +148,30 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			new JFrameFarmaciaSel();
 
 		});
+		
+	    JLabel lblReloj = new JLabel("Hora...");
+	    lblReloj.setFont(new Font("Arial", Font.BOLD, 14));
+	    lblReloj.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+	    
+	    panelCabecera.add(lblReloj, BorderLayout.CENTER);
+	    Thread hiloReloj = new Thread(() -> {
+	        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	        
+	        while (true) {
+	            try {
+	                String horaActual = formato.format(new Date());
+
+	                SwingUtilities.invokeLater(() -> lblReloj.setText(horaActual));
+
+	                Thread.sleep(1000);
+	            } catch (InterruptedException e) {
+	                break;
+	            }
+	        }
+	    });
+	    
+	    hiloReloj.setDaemon(true); 
+	    hiloReloj.start();
 
 		return panelCabecera;
 
@@ -254,7 +280,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				} else if (nombreColumna.equals("Proveedor")) {
 					setIcon(null);
 					setText(null);
-					setHorizontalAlignment(SwingConstants.LEFT);
 					setToolTipText(null);
 					if (value instanceof String && !((String) value).isEmpty()) {
 		                ImageIcon icono = getCachedIcon((String) value);
