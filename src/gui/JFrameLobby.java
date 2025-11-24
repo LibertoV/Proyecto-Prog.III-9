@@ -46,42 +46,31 @@ public class JFrameLobby extends JFramePrincipal {
         
         panel.setLayout(new BorderLayout()); 
         this.setFocusable(true); //IAG
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameLogin().setVisible(true)); 
-		        }
-			}
-		});
+        this.addKeyListener(listenerVolver(JFrameLogin.class));
         ImageIcon logo = new ImageIcon("resources/images/logoEmpresa1.png");
-        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(90, 60, Image.SCALE_SMOOTH));
+       
+        ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(75, 50, Image.SCALE_SMOOTH));
         JLabel imagen = new JLabel(logoAjustado);
-        
         JButton loginButton = new JButton("Cerrar sesión");
-        JPanel SelectionPanel = new JPanel(new FlowLayout());
+        JPanel logoPanel = new JPanel(new FlowLayout());
+        logoPanel.add(imagen);
+        logoPanel.add(new JLabel("Farmacias"));
+        logoPanel.setOpaque(false);
         
+        
+        JPanel login = new JPanel(new FlowLayout());
+        login.add(loginButton);
+        login.setOpaque(false);
+        
+        
+        JPanel SelectionPanel = new JPanel(new BorderLayout());
         SelectionPanel.setOpaque(false);
         SelectionPanel.setPreferredSize(new Dimension(SelectionPanel.getPreferredSize().width, 50));
    
-        SelectionPanel.add(imagen);
-        SelectionPanel.add(new JLabel("Farmacias"));
-        SelectionPanel.add(loginButton,FlowLayout.RIGHT);
+        
+        
+        SelectionPanel.add(logoPanel,BorderLayout.WEST);
+        SelectionPanel.add(login,BorderLayout.EAST);
         
         
         Vector<String> columnNames = new Vector<>();

@@ -41,34 +41,10 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		this.add(crearPanelPrincipal(), BorderLayout.CENTER);
 		JButton cerrar = new JButton("Cerrar");
 		cerrar.addActionListener((e)->{
-			new JFrameListaClientes();
 			dispose();
 		});
 		this.add(cerrar,BorderLayout.SOUTH);
 		this.setFocusable(true); //IAG
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
-		        }
-			}
-		});
 	}
 	
 

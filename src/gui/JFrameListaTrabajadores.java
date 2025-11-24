@@ -54,29 +54,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
 		this.add(crearPanelInferior(),BorderLayout.SOUTH);
 		this.setFocusable(true); //IAG
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
-		        }
-			}
-		});
+		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
 	}
 	
 

@@ -3,12 +3,16 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 public abstract class JFramePrincipal extends JFrame{
@@ -50,5 +54,40 @@ public abstract class JFramePrincipal extends JFrame{
         } catch (Exception ex) {
             return null;
         }
-    }
+        
+    };
+	public KeyListener listenerVolver(Class<? extends JFramePrincipal> frameClase) {
+		KeyListener listener = new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				boolean ctrlPresionado = e.isControlDown();
+				
+				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
+		            dispose();
+		            try {
+						Object instancia = frameClase.getDeclaredConstructor().newInstance();
+						((JFrame) instancia).setVisible(true);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+			
+		};
+		
+		return listener;		
+	}
 }
