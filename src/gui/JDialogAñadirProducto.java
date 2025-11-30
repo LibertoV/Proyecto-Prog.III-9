@@ -16,15 +16,18 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 public class JDialogAñadirProducto extends JDialog {
 	private static final long serialVersionUID = 1L;
-	JTextField txtNombre;
-	JTextField txtCantidad;
-	JTextField txtPrecio;
+	private JTextField txtNombre;
+	private JTextField txtPrecio;
+	private JSpinner spinnerCantidad; 
 	Object[] producto = null;
+	
 	public JDialogAñadirProducto(JDialogAñadirPedido parent) {
 		super(parent, "Añadir producto", true);
 		setLayout(new BorderLayout(10,10));
@@ -89,8 +92,9 @@ public class JDialogAñadirProducto extends JDialog {
         gbc.gridx = 1;
         gbc.weightx = 0.0; 
 
-        txtCantidad = new JTextField(15);
-        panel.add(txtCantidad, gbc);
+        SpinnerNumberModel modeloCantidad = new SpinnerNumberModel(1, 1, 10000, 1);
+        spinnerCantidad = new JSpinner(modeloCantidad);
+        panel.add(spinnerCantidad, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -109,17 +113,18 @@ public class JDialogAñadirProducto extends JDialog {
 		JButton cancelar = new JButton("Cancelar");
 		
 		confirmar.addActionListener(e -> {
+			
+			int cantidad = (Integer) spinnerCantidad.getValue();
             
 			if (txtNombre.getText().length() == 0 ||
-            	txtCantidad.getText().length() == 0 ||
-            	txtPrecio.getText().length() == 0
+              	txtPrecio.getText().length() == 0
             	) {
                  JOptionPane.showMessageDialog(this, "Producto Erroneo, no puede quedar campos en blanco", "Error", JOptionPane.WARNING_MESSAGE);
+                 return;
             } else {
-            	producto = new Object[] {txtNombre.getText(),txtCantidad.getText(),txtPrecio.getText()};
+            	producto = new Object[] {txtNombre.getText(), cantidad,txtPrecio.getText()};
             	parent.modelo.addRow(producto);
-                
-                JOptionPane.showMessageDialog(this, "Pedido guardado con exito");
+               
             }
 
             

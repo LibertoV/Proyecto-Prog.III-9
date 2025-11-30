@@ -5,12 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -20,7 +18,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -142,6 +139,12 @@ public class JFrameSelPedido extends JFramePrincipal {
 					boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
+				if (column == 1 || column == 2) { // Cantidad y Precio
+		            setHorizontalAlignment(SwingConstants.RIGHT);
+		        } else {
+		            setHorizontalAlignment(SwingConstants.LEFT);
+		        }
+				
 				if (isSelected) {
 					c.setBackground(new Color(173, 216, 230));
 				} else if (row == filaHover[0]) {

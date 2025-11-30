@@ -10,49 +10,36 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Vector;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
 
 import db.DataHistorial;
 import db.DataPedidos;
@@ -64,21 +51,22 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private DefaultTableModel modelo;
 	private JTable tablaPedidos;
 
+	private JLabel lblNumPedidos;
+	private JLabel lblValorTotal;
+
+	private final ImageIcon ICONO_ELIMINAR;
+
 	public JFrameListaPedidos() {
+
+		
+		//sirve para cargar solo una vez la imagen de la papelera eliminar
+		ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
+		Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+		this.ICONO_ELIMINAR = new ImageIcon(imagen);
+
 		this.setTitle("Lista de Pedidos");
 		this.setSize(new Dimension(1200, 850));
 		this.setLocationRelativeTo(null);
-
-//		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-//				"volverAtras");
-//
-//		getRootPane().getActionMap().put("volverAtras", new AbstractAction() {
-//			public void actionPerformed(ActionEvent e) {
-//				dispose();
-//				JFrameFarmaciaSel frame = new JFrameFarmaciaSel();
-//				frame.setVisible(true);
-//			}
-//		});
 
 		// Añadir la cabecera
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
@@ -86,9 +74,17 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		// Añadir el panel central
 		this.add(crearPanelCentral(), BorderLayout.CENTER);
 
+		actualizarTotales();
+
 		this.setVisible(true);
-		this.setFocusable(true); //IAG
+		this.setFocusable(true); // IAG
 		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
+	}
+
+	public void agregarNuevoPedido(Object[] datosPedido) {
+		modelo.addRow(datosPedido);
+
+		actualizarTotales();
 	}
 
 	private JPanel crearPanelCabecera() {
@@ -96,22 +92,23 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JLabel txtfiltro = new JLabel("10", SwingConstants.RIGHT);
-		txtfiltro.setPreferredSize(new Dimension(100, 20));
-		txtfiltro.setBackground(Color.WHITE);
-		txtfiltro.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		txtfiltro.setOpaque(true);
-		panelFiltro.add(new JLabel("Numero de pedidos: "));
-		panelFiltro.add(txtfiltro);
 
-		JLabel precioTotal = new JLabel("0.00", SwingConstants.RIGHT);
-		precioTotal.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		precioTotal.setOpaque(true);
-		precioTotal.setBackground(Color.WHITE);
-		precioTotal.setPreferredSize(new Dimension(100, 20));
+		lblNumPedidos = new JLabel("0", SwingConstants.RIGHT);
+		lblNumPedidos.setPreferredSize(new Dimension(100, 20));
+		lblNumPedidos.setBackground(Color.WHITE);
+		lblNumPedidos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		lblNumPedidos.setOpaque(true);
+		panelFiltro.add(new JLabel("Numero de pedidos: "));
+		panelFiltro.add(lblNumPedidos);
+
+		lblValorTotal = new JLabel("0.00", SwingConstants.RIGHT);
+		lblValorTotal.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		lblValorTotal.setOpaque(true);
+		lblValorTotal.setBackground(Color.WHITE);
+		lblValorTotal.setPreferredSize(new Dimension(100, 20));
 
 		panelFiltro.add(new JLabel("Valor total: "));
-		panelFiltro.add(precioTotal);
+		panelFiltro.add(lblValorTotal);
 		panelCabecera.add(panelFiltro, BorderLayout.EAST);
 
 		ImageIcon logo1 = new ImageIcon("resources/images/Casa.png");
@@ -125,30 +122,30 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			new JFrameFarmaciaSel();
 
 		});
-		
-	    JLabel lblReloj = new JLabel("Hora...");
-	    lblReloj.setFont(new Font("Arial", Font.BOLD, 14));
-	    lblReloj.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-	    
-	    panelCabecera.add(lblReloj, BorderLayout.CENTER);
-	    Thread hiloReloj = new Thread(() -> {
-	        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	        
-	        while (true) {
-	            try {
-	                String horaActual = formato.format(new Date());
 
-	                SwingUtilities.invokeLater(() -> lblReloj.setText(horaActual));
+		JLabel lblReloj = new JLabel("Hora...");
+		lblReloj.setFont(new Font("Arial", Font.BOLD, 14));
+		lblReloj.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-	                Thread.sleep(1000);
-	            } catch (InterruptedException e) {
-	                break;
-	            }
-	        }
-	    });
-	    
-	    hiloReloj.setDaemon(true); 
-	    hiloReloj.start();
+		panelCabecera.add(lblReloj, BorderLayout.CENTER);
+		Thread hiloReloj = new Thread(() -> {
+			java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+			while (true) {
+				try {
+					String horaActual = formato.format(new Date());
+
+					SwingUtilities.invokeLater(() -> lblReloj.setText(horaActual));
+
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					break;
+				}
+			}
+		});
+
+		hiloReloj.setDaemon(true);
+		hiloReloj.start();
 
 		return panelCabecera;
 
@@ -161,7 +158,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 		JPanel Proveedores = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JTextField txtfiltro = new JTextField(10);
-		Proveedores.add(new JLabel("Filtrado por proveedor: "));
+		Proveedores.add(new JLabel("Filtrado: "));
 		Proveedores.add(txtfiltro);
 
 		DocumentListener filtro = new DocumentListener() {
@@ -247,27 +244,25 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 				if (nombreColumna.equals("Eliminar")) {
 
-					ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
-					Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-					ImageIcon imagenbien = new ImageIcon(imagen);
-					setIcon(imagenbien);
+					setIcon(ICONO_ELIMINAR);
 					setHorizontalAlignment(SwingConstants.CENTER);
 					setToolTipText("Eliminar pedido");
+					setText(null);
 
 				} else if (nombreColumna.equals("Proveedor")) {
 					setIcon(null);
 					setText(null);
 					setToolTipText(null);
 					if (value instanceof String && !((String) value).isEmpty()) {
-		                ImageIcon icono = getCachedIcon((String) value);
-		                if (icono != null)
-		                    setIcon(icono);
-		                else
-		                    setText("IMG ERROR");
-		            } else {
-		                setText("N/A");
-		            }
-					
+						ImageIcon icono = getCachedIcon((String) value);
+						if (icono != null)
+							setIcon(icono);
+						else
+							setText("IMG ERROR");
+					} else {
+						setText("N/A");
+					}
+
 				} else {
 					setIcon(null);
 					setHorizontalAlignment(SwingConstants.CENTER);
@@ -300,8 +295,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				filaHover[0] = -1;
 				tablaPedidos.repaint();
 			}
-			
-			
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -316,7 +309,11 @@ public class JFrameListaPedidos extends JFramePrincipal {
 								JOptionPane.YES_NO_OPTION);
 
 						if (confirmado == JOptionPane.YES_OPTION) {
-							Object idPedido = modelo.getValueAt(fila, 0);
+							modelo.removeRow(fila);
+
+							actualizarTotales();
+
+							JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Pedido eliminado.");
 						}
 						return;
 					}
@@ -330,7 +327,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 		});
 
-		
 		tablaPedidos.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -365,6 +361,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 						if (confirmado == JOptionPane.YES_OPTION) {
 							Object idPedido = modelo.getValueAt(fila, 0);
 							modelo.removeRow(fila);
+							actualizarTotales();
 						}
 					}
 					e.consume();
@@ -386,14 +383,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					e.consume();
 
 				}
-				
+
 				else if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
-		        }
+					dispose();
+					SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true));
+				}
 
 			}
-			
+
 		});
 
 		JPanel OpcionesInferior = crearOpcionesInferior();
@@ -410,6 +407,28 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 		return panelCentral;
 
+	}
+
+	private void actualizarTotales() {
+		if (modelo == null || lblNumPedidos == null || lblValorTotal == null)
+			return;
+
+		int filas = modelo.getRowCount();
+		double total = 0.0;
+
+		for (int i = 0; i < filas; i++) {
+			Object val = modelo.getValueAt(i, 3);
+			if (val != null) {
+				try {
+					String valStr = val.toString().replace("€", "").replace(",", ".").trim();
+					total += Double.parseDouble(valStr);
+				} catch (NumberFormatException e) {
+				}
+			}
+		}
+
+		lblNumPedidos.setText(String.valueOf(filas));
+		lblValorTotal.setText(String.format("%.2f €", total));
 	}
 
 	private void filtroPedido(String filtro) {
@@ -436,6 +455,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			modelo.addRow(vector);
 		}
 		modelo.fireTableDataChanged();
+		actualizarTotales();
 
 	}
 
