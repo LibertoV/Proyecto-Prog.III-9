@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,6 +14,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -29,8 +34,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
-import db.DataCliente;
+import db.Cliente;
+import jdbc.GestorBDInitializerCliente;
 
 
 
@@ -42,9 +47,17 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private DefaultTableModel model;
 	protected int filaTablaClientes= -1;;
 	private static final long serialVersionUID = 1L;
-
+	private List<Cliente> clientes;
+	
+	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
+	
+	
 	public JFrameListaClientes(){
-		
+		this.gestorBD.crearBBDD();
+		List<Cliente> clientes = initClientes();
+		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
+		this.clientes = gestorBD.obtenerDatos();
+		this.datosOriginales = convertirClientesAVector(this.clientes);
 		this.setTitle("Lista de Clientes");
 		this.setSize(new Dimension(1000,750));
 		this.setLocationRelativeTo(null);
@@ -57,8 +70,58 @@ public class JFrameListaClientes extends JFramePrincipal{
 		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
 	}
 	
+	public static List<Cliente> initClientes() {
+		List<Cliente> clientes = new ArrayList<>();		
+		
+		
+		try {
+			// Abrir el fichero
+			File fichero = new File("resources/db/clientes.csv");
+			Scanner sc = new Scanner(fichero);
+			
+			// Leer el fichero
+			while (sc.hasNextLine()) {
+			
+				String linea = sc.nextLine();
+				
+				String[] campos = linea.split(",");
+				if (campos[0].equalsIgnoreCase("id")) {
+				    continue;
+				}
+				int id = Integer.parseInt(campos[0]);
+				String nombre = campos[1];
+				String dni = campos[2];
+				String tlf = campos[3];
+				String fecha = campos[4];
+				int recetas = Integer.parseInt(campos[5]);
+				
+				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas);
+				clientes.add(cliente);
+			}
+			
+			// Cerrar el fichero
+			sc.close();
+		} catch (Exception e) {
+			System.err.println("Error al cargar datos desde clientes.csv");
+		}
+		return clientes;
+	}
+	
 
-
+	private Vector<Vector<Object>> convertirClientesAVector(List<Cliente> clientes) {
+	    Vector<Vector<Object>> datosTabla = new Vector<>();
+	    for (Cliente cliente : clientes) {
+	        Vector<Object> fila = new Vector<>();
+	        fila.add(cliente.getId());
+	        fila.add(cliente.getNombre());
+	        fila.add(cliente.getDni());
+	        fila.add(cliente.getTlf());
+	        fila.add(cliente.getFechaUltimaCompra());
+	        fila.add(cliente.getRecetasPendientes());
+	        datosTabla.add(fila);
+	    }
+	    return datosTabla;
+	}
 
 		private JPanel crearPanelCabecera() {
 		JPanel panelCabecera = new JPanel(new BorderLayout());
@@ -72,13 +135,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 		JButton añadir = new JButton("+ Añadir cliente");
 		panelFiltro.add(añadir, BorderLayout.EAST);
 		
-		
-		Vector<Vector<Object>> data = DataCliente.cargaCliente("src/db/clientes.csv");
-		
-		datosOriginales = new Vector<>();
-        for (Vector<Object> fila : data) {
-            datosOriginales.add(new Vector<>(fila));
-        }
+
 		
 		txtFiltro = new JTextField(20);
 		
@@ -134,13 +191,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	
 	 private void filtroCliente(String filtro) {
 		 
-		 Vector<Vector<Object>> data = DataCliente.cargaCliente("src/db/clientes.csv");
-			
-			datosOriginales = new Vector<>();
-	        for (Vector<Object> fila : data) {
-	            datosOriginales.add(new Vector<>(fila));
-	        }
-	        
+			        
 	        
 	    	Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
 	    	String filtroLower = filtro.toLowerCase();
