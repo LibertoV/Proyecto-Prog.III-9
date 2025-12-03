@@ -11,8 +11,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -56,7 +54,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 	private JLabel lblNumPedidos;
 	private JLabel lblValorTotal;
-	
+
 	private Cursor cursorDedo = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	private Cursor cursorNormal = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
@@ -64,8 +62,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 	public JFrameListaPedidos() {
 
-		
-		//sirve para cargar solo una vez la imagen de la papelera eliminar
+		// sirve para cargar solo una vez la imagen de la papelera eliminar
 		ImageIcon iconoOriginal = new ImageIcon("resources/images/eliminar.png");
 		Image imagen = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		this.ICONO_ELIMINAR = new ImageIcon(imagen);
@@ -421,22 +418,29 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		if (modelo == null || lblNumPedidos == null || lblValorTotal == null)
 			return;
 
+		double total = calcularRecursivo(0); // aqui va el metodo
 		int filas = modelo.getRowCount();
-		double total = 0.0;
-
-		for (int i = 0; i < filas; i++) {
-			Object val = modelo.getValueAt(i, 3);
-			if (val != null) {
-				try {
-					String valStr = val.toString().replace("€", "").replace(",", ".").trim();
-					total += Double.parseDouble(valStr);
-				} catch (NumberFormatException e) {
-				}
-			}
-		}
 
 		lblNumPedidos.setText(String.valueOf(filas));
 		lblValorTotal.setText(String.format("%.2f €", total));
+
+	}
+
+	public double calcularRecursivo(int fila) {
+		if (fila == modelo.getRowCount()) {
+			return 0.0;
+		}
+
+		double valorPedido = 0.0;
+		Object val = modelo.getValueAt(fila, 3);
+
+		try {
+			String valStr = val.toString().replace("€", "").replace(",", ".").trim();
+			valorPedido = Double.parseDouble(valStr);
+		} catch (NumberFormatException e) {
+		}
+
+		return valorPedido + calcularRecursivo(fila + 1);
 	}
 
 	private void filtroPedido(String filtro) {
