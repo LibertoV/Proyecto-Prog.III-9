@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -53,6 +56,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 	private JLabel lblNumPedidos;
 	private JLabel lblValorTotal;
+	
+	private Cursor cursorDedo = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+	private Cursor cursorNormal = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private final ImageIcon ICONO_ELIMINAR;
 
@@ -293,6 +299,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				filaHover[0] = -1;
+				setCursor(cursorNormal);
 				tablaPedidos.repaint();
 			}
 
@@ -331,6 +338,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				int fila = tablaPedidos.rowAtPoint(e.getPoint());
+				setCursor(cursorDedo);
 				if (fila != filaHover[0]) {
 					filaHover[0] = fila;
 					tablaPedidos.repaint();
@@ -628,6 +636,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				int fila = tablaHistorial.rowAtPoint(e.getPoint());
+				setCursor(cursorDedo);
 				if (fila != filaHover[0]) {
 					filaHover[0] = fila;
 					tablaHistorial.repaint();
@@ -638,6 +647,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		tablaHistorial.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
+				setCursor(cursorNormal);
 				filaHover[0] = -1;
 				tablaHistorial.repaint();
 			}
