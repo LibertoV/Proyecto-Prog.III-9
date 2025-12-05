@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -26,10 +27,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -37,6 +41,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import db.Cliente;
+import domain.Laboratorio;
+import domain.Receta;
 import jdbc.GestorBDInitializerCliente;
 
 
@@ -49,6 +55,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private DefaultTableModel model;
 	protected int filaTablaClientes= -1;;
 	private static final long serialVersionUID = 1L;
+	private List<Receta> recetas;
 	private List<Cliente> clientes;
 	
 	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
@@ -204,10 +211,12 @@ public class JFrameListaClientes extends JFramePrincipal{
 	
 	 private void nuevoCliente() {
 			JDialog dialog = new JDialog(this, "Nuevo Cliente", true);
-			dialog.setSize(400,600);
+			dialog.setSize(300,400);
 			dialog.setLayout(new BorderLayout(10,10));
 			
 			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,10));
+			panelCampos.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+			
 			panelCampos.add(new JLabel("Nombre:"));
 			JTextField textoNombre = new JTextField();
 			panelCampos.add(textoNombre);
@@ -229,8 +238,78 @@ public class JFrameListaClientes extends JFramePrincipal{
 			panelCampos.add(textoDireccion);
 			
 			panelCampos.add(new JLabel("Recetas Pendientes:"));
-			JTextField textoRecetas = new JTextField();
-			panelCampos.add(textoRecetas);
+			SpinnerNumberModel modeloSpinner = new SpinnerNumberModel(0, 0, 500, 1);
+			JSpinner spinnerRecetas = new JSpinner(modeloSpinner);
+			panelCampos.add(spinnerRecetas);
+			JComboBox<Laboratorio> recetasCombo = new JComboBox<Laboratorio>(Laboratorio.values());
+			recetasCombo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+				JLabel result = new JLabel();
+				
+				Laboratorio laboratorio = (Laboratorio) value;
+				
+				switch (laboratorio) { 
+					case ABBVIE:
+						ImageIcon logo1 = new ImageIcon("resources/images/AbbVieLogo_AbbVie dark blue.png");
+						 ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado1);
+						break;
+					case BAYER:
+						ImageIcon logo2 = (new ImageIcon("resources/images/Logo_Bayer.svg.png"));
+						ImageIcon logoAjustado2 = new ImageIcon(logo2.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado2);
+						break;
+					case ASTRAZENECA:
+						ImageIcon logo3 = (new ImageIcon("resources/images/original.jpg"));
+						ImageIcon logoAjustado3 = new ImageIcon(logo3.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado3);
+						break;
+					case BRISTOL_MYERS:
+						ImageIcon logo4 = (new ImageIcon("resources/images/Bristol-Myers_Squibb_logo_(2020).svg"));
+						ImageIcon logoAjustado4 = new ImageIcon(logo4.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						result.setIcon(logoAjustado4);
+						break;
+					case JOHNSON_AND_JOHNSON:
+						ImageIcon logo5 = (new ImageIcon("resources/images/JNJ_Logo_SingleLine_Red_RGB.png"));
+						ImageIcon logoAjustado5 = new ImageIcon(logo5.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado5);
+						break;
+					case LILLY:
+						ImageIcon logo6 = (new ImageIcon("resources/images/Lilly-Logo.svg.png"));
+						ImageIcon logoAjustado6 = new ImageIcon(logo6.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado6);
+						break;
+					case MERCK:
+						ImageIcon logo7 = (new ImageIcon("resources/images/Merck.png"));
+						ImageIcon logoAjustado7 = new ImageIcon(logo7.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado7);
+						break;
+					case NOVARTISNOVO_NORDISK:
+						ImageIcon logo8 = (new ImageIcon("resources/images/novo-nordisk-1-logo-svg-vector.svg"));
+						ImageIcon logoAjustado8 = new ImageIcon(logo8.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						 result.setIcon(logoAjustado8);
+						break;
+					case ROCHE:
+						ImageIcon logo9 = (new ImageIcon("resources/images/roche-logo-blue.png"));
+						ImageIcon logoAjustado9 = new ImageIcon(logo9.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						result.setIcon(logoAjustado9);
+						break;
+					case SANOFI:
+						ImageIcon logo10 = (new ImageIcon("resources/images/Logo_Sanofi_(2022).png"));
+						ImageIcon logoAjustado10 = new ImageIcon(logo10.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
+						result.setIcon(logoAjustado10);
+						break;
+					default:
+				}
+				
+				if (isSelected) {
+					result.setBackground(list.getSelectionBackground());
+					result.setForeground(list.getSelectionForeground());
+				}
+				
+				return result;
+			});
+			panelCampos.add(new JLabel(""));
+			panelCampos.add(recetasCombo);
 			
 			dialog.add(panelCampos);
 			
@@ -240,10 +319,100 @@ public class JFrameListaClientes extends JFramePrincipal{
 			JButton cancelar = new JButton("Cancelar");
 			
 			guardar.addActionListener(e->{
-				
+				//IAG
+				if(validarCampos(textoNombre, textoDNI, textoTelefono)) {
+		            try {
+		                // Obtener nuevo ID (el máximo + 1)
+		                int nuevoId = clientes.stream()
+		                    .mapToInt(Cliente::getId)
+		                    .max()
+		                    .orElse(0) + 1;
+		                
+		                // Crear cliente
+		                Cliente nuevoCliente = new Cliente(
+		                    nuevoId,
+		                    textoNombre.getText().trim(),
+		                    textoDNI.getText().trim(),
+		                    textoTelefono.getText().trim(),
+		                    java.time.LocalDate.now().toString(), // Fecha actual
+		                    (Integer) spinnerRecetas.getValue(),
+		                    textoEmail.getText().trim(),
+		                    textoDireccion.getText().trim()
+		                );
+		                
+		                // Insertar en BD
+		                gestorBD.insertarDatos(nuevoCliente);
+		                
+		                // Actualizar la lista local
+		                clientes.add(nuevoCliente);
+		                
+		                // Actualizar la tabla
+		                actualizarTabla();
+		                
+		                JOptionPane.showMessageDialog(dialog, 
+		                    "Cliente añadido correctamente", 
+		                    "Éxito", 
+		                    JOptionPane.INFORMATION_MESSAGE);
+		                
+		                dialog.dispose();
+		                
+		            } catch (NumberFormatException ex) {
+		                JOptionPane.showMessageDialog(dialog, 
+		                    "El campo 'Recetas Pendientes' debe ser un número", 
+		                    "Error", 
+		                    JOptionPane.ERROR_MESSAGE);
+		            }
+		        }
+			});
+			cancelar.addActionListener(e ->{
+				dialog.dispose();
 			});
 			
+			botones.add(cancelar);
+			botones.add(guardar);
+			dialog.add(botones,BorderLayout.SOUTH);
+			dialog.setVisible(true);
 		}
+	 
+	 //IAG
+	 private boolean validarCampos(JTextField nombre, JTextField dni, JTextField telefono) {
+		    if(nombre.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El nombre es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    if(dni.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El DNI es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    if(telefono.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El teléfono es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    return true;
+		}
+
+	 private void actualizarTabla() {
+		this.clientes = gestorBD.obtenerDatos();
+		this.datosOriginales = convertirClientesAVector(this.clientes);
+		
+		model.setRowCount(0);
+    	for (Vector<Object> vector : datosOriginales) {
+			model.addRow(vector);
+		}
+    	model.fireTableDataChanged();
+	}
 
 	 private void filtroCliente(String filtro) {
 		 
