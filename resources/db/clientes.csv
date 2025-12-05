@@ -1,51 +1,51 @@
-id,nombre,dni,num_tlf,fecha_ultima_compra,recetas_pendientes
-1,Sara López,13799098H,+34754053834,2025-08-02,4
-2,Paula Pérez,41984997S,+34617448468,2025-03-20,2
-3,Natalia García,18647716Y,+34703750982,2025-07-26,5
-4,Elena Díaz,83712234P,+34610437848,2025-01-22,4
-5,Ruben Ramírez,62083619H,+34655417635,2025-02-28,0
-6,Claudia Gutiérrez,64725707G,+34712204168,2025-08-27,2
-7,Andrés Gutiérrez,36697261W,+34704084942,2025-10-20,2
-8,Jorge Molina,18394593K,+34698166154,2025-09-27,3
-9,Raúl Torres,98177240S,+34756445430,2024-12-27,5
-10,Iván Gómez,32417797X,+34645861664,2025-11-25,0
-11,Andrea Álvarez,81432031W,+34727552399,2025-05-27,4
-12,Diego Moreno,56711181N,+34745753535,2025-06-08,4
-13,Sofía Álvarez,18143873R,+34726730093,2025-10-12,2
-14,Paula Ramírez,76341739R,+34648017544,2025-02-26,1
-15,Irene Gómez,31077232T,+34781676360,2025-08-10,5
-16,Mateo Domínguez,70946934F,+34638320003,2025-08-30,0
-17,María Molina,49492245V,+34679768440,2025-11-06,1
-18,Claudia Moreno,66654016Q,+34699316185,2025-09-03,0
-19,Diego Muñoz,99673860W,+34722735646,2025-05-10,4
-20,Natalia García,71651383N,+34603539611,2025-07-26,4
-21,Pablo Sánchez,88958141Y,+34623885441,2025-06-19,3
-22,Marta Gómez,99764391M,+34695458993,2025-09-22,2
-23,Lola Martínez,85043612P,+34665706866,2025-06-14,5
-24,Ruben López,21786147H,+34626015470,2025-11-14,1
-25,Manuel Rojas,10361006N,+34629647685,2025-04-06,3
-26,Sergio Romero,30535255H,+34750995812,2025-05-07,1
-27,Mateo Domínguez,56105876K,+34682185500,2025-01-26,2
-28,Carmen Rojas,49290000B,+34786944581,2025-03-03,5
-29,Enrique Vázquez,25016945Y,+34737351841,2025-10-06,3
-30,Enrique Álvarez,11224677X,+34620689307,2025-07-12,5
-31,Eva López,21256414K,+34651739492,2025-04-27,0
-32,Enrique Sánchez,31633413H,+34662786170,2025-05-06,1
-33,María Rojas,95144033W,+34668424855,2025-08-12,5
-34,Laura Molina,77127919H,+34689014188,2025-03-25,1
-35,Paula Fernández,26819128R,+34643493177,2025-10-04,2
-36,Natalia Ruiz,63598085A,+34731183316,2025-03-17,4
-37,Laura Pérez,46149262S,+34781687550,2025-01-03,3
-38,Jorge Gutiérrez,84588118Y,+34723256021,2025-05-06,0
-39,María Vázquez,90435134P,+34616821713,2025-11-05,2
-40,Nuria Gómez,70405336J,+34681442397,2025-07-31,1
-41,Pablo Pérez,21974923X,+34626155681,2025-09-02,1
-42,Irene García,96160560K,+34632203207,2025-06-09,1
-43,Ana Pérez,92819228Z,+34609458209,2025-02-16,5
-44,Tomás Fernández,56563013X,+34625405641,2025-07-09,4
-45,Claudia Rojas,50501664N,+34623994047,2025-10-10,1
-46,Diego López,15201723B,+34713494138,2025-05-12,5
-47,Alicia Martínez,60855401T,+34795783287,2025-02-14,2
-48,Tomás García,33617888F,+34760965387,2025-10-04,5
-49,Paula Muñoz,89794786A,+34692885597,2025-08-10,0
-50,Alberto Rojas,59212071C,+34684961029,2025-09-28,3
+id,nombre,dni,tlf,fecha_ultima_compra,recetas_pendientes,email,direccion
+1,Juan Pérez,12345678A,+34600000000,2024-01-15,2,juan.perez@mail.com,C/ Falsa 123
+2,María López,98765432B,+34611111111,2024-02-20,0,maria.lopez@mail.com,Av. Paz 45
+3,Carlos Sanz,54321098C,+34622222222,2024-03-05,1,carlos.sanz@mail.com,Pl. Mayor 1
+4,Laura Gómez,87654321D,+34633333333,2024-04-10,3,laura.gomez@mail.com,Rda. Sol 50
+5,Pedro Ruiz,32109876E,+34644444444,2024-05-01,0,pedro.ruiz@mail.com,Pso. Flores 8
+6,Ana Torres,65432109F,+34655555555,2024-05-25,1,ana.torres@mail.com,Gran Vía 10
+7,David Rico,10293847G,+34666666666,2024-06-12,2,david.rico@mail.com,C/ San Miguel 22
+8,Sofía Moya,49586710H,+34677777777,2025-07-01,0,sofia.moya@mail.com,Tr. Pequeña 3
+9,Javier Castro,71829364I,+34688888888,2024-08-18,1,javier.castro@mail.com,Blv. Central 77
+10,Elena Vidal,28374659J,+34699999999,2024-09-03,4,elena.vidal@mail.com,C/ Ancha 15
+11,Miguel Ángel,92837465K,+34601000000,2024-09-19,1,miguel.angel@mail.com,Av. del Mar 5
+12,Paula Flores,37465819L,+34602000000,2024-10-05,0,paula.flores@mail.com,C/ Luna 11
+13,Antonio Díaz,18273645M,+34603000000,2024-10-22,2,antonio.diaz@mail.com,Pso. Libertad 20
+14,Irene Ramos,73645819N,+34604000000,2024-11-08,1,irene.ramos@mail.com,Rda. Estación 4
+15,Jorge Navarro,46581927P,+34605000000,2024-11-28,3,jorge.navarro@mail.com,Blv. Europa 9
+16,Carmen Gil,29384756Q,+34606000000,2024-12-15,0,carmen.gil@mail.com,C/ Solitaria 17
+17,Rubén Martín,85746321R,+34607000000,2025-01-01,1,ruben.martin@mail.com,Av. Central 65
+18,Mónica Blasco,19283746S,+34608000000,2025-01-18,2,monica.blasco@mail.com,C/ Alegría 3
+19,Félix Herrero,64758291T,+34609000000,2025-02-04,0,felix.herrero@mail.com,Pso. Arcos 25
+20,Natalia Soto,30495817V,+34610000000,2025-02-21,1,natalia.soto@mail.com,Rda. Sierra 14
+21,Roberto Vidal,28374950W,+34611000000,2025-03-10,3,roberto.vidal@mail.com,C/ Laurel 5
+22,Vanesa Peña,76543210X,+34612000000,2025-03-27,0,vanesa.pena@mail.com,Av. Atlántico 30
+23,Héctor Cano,51627384Y,+34613000000,2025-04-13,1,hector.cano@mail.com,Pl. Olivos 7
+24,Isabel Gil,94837261Z,+34614000000,2025-05-01,2,isabel.gil@mail.com,Pso. Rio 18
+25,Ricardo Montes,35467812A,+34615000000,2025-05-18,0,ricardo.montes@mail.com,C/ Estrecha 2
+26,Sara Prieto,17283940B,+34616000000,2025-06-04,1,sara.prieto@mail.com,Rda. Valles 10
+27,Andrés Rey,69584732C,+34617000000,2025-06-21,3,andres.rey@mail.com,Av. Estrellas 44
+28,Eva Jiménez,40596871D,+34618000000,2025-07-08,0,eva.jimenez@mail.com,C/ Naranjo 9
+29,Mario Vega,83746592E,+34619000000,2025-07-25,2,mario.vega@mail.com,Pso. Marítimo 1
+30,Lucía Vidal,26153487F,+34620000000,2025-08-11,1,lucia.vidal@mail.com,Rda. Fuente 33
+31,Alejandro Díez,70819234G,+34621000000,2025-08-28,0,alejandro.diez@mail.com,Av. Delicias 16
+32,Beatriz Mora,53421678H,+34622000000,2025-09-14,3,beatriz.mora@mail.com,C/ Huesca 28
+33,Vicente Roca,91028374I,+34623000000,2025-10-01,1,vicente.roca@mail.com,Pl. Sol 6
+34,Rosa Pardo,14526378J,+34624000000,2025-10-18,0,rosa.pardo@mail.com,Pso. Central 5
+35,Sergio León,62738495K,+34625000000,2025-11-04,2,sergio.leon@mail.com,Rda. Norte 22
+36,Natalia Cruz,38495061L,+34626000000,2025-11-21,1,natalia.cruz@mail.com,C/ Nueva 1
+37,Iván Blanco,75641829M,+34627000000,2025-12-08,0,ivan.blanco@mail.com,Av. Puerta 19
+38,Clara Muñoz,41253670N,+34628000000,2025-12-25,3,clara.munoz@mail.com,Blv. Sur 3
+39,Daniel Soto,80917263P,+34629000000,2026-01-11,1,daniel.soto@mail.com,Pso. Río Ebro 7
+40,Susana Mora,15263784Q,+34630000000,2026-01-28,2,susana.mora@mail.com,C/ Alemana 11
+41,Jaime Ramos,64532107R,+34631000000,2026-02-14,0,jaime.ramos@mail.com,Rda. Oeste 15
+42,Noelia Vega,30192847S,+34632000000,2026-03-03,1,noelia.vega@mail.com,Av. Canta 35
+43,Gonzalo Rico,79805432T,+34633000000,2026-03-20,2,gonzalo.rico@mail.com,Pl. Árboles 4
+44,Marta Cano,24354678V,+34634000000,2026-04-06,0,marta.cano@mail.com,C/ Larga 26
+45,Felipe Herrero,90876543W,+34635000000,2026-04-23,3,felipe.herrero@mail.com,Pso. Acueducto 12
+46,Alicia Prieto,57689012X,+34636000000,2026-05-10,1,alicia.prieto@mail.com,Rda. Puerta del Sol 1
+47,Óscar Martín,13425678Y,+34637000000,2026-05-27,0,oscar.martin@mail.com,Av. Los Pinos 23
+48,Berta Díaz,68759021Z,+34638000000,2026-06-13,2,berta.diaz@mail.com,C/ Río Seco 40
+49,Vicente Gil,39405162A,+34639000000,2026-06-30,1,vicente.gil@mail.com,Pl. La Vega 10
+50,Rosa Montero,74859601B,+34640000000,2026-07-17,3,rosa.montero@mail.com,Pso. Ronda 5

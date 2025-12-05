@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,16 +23,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import db.Cliente;
 import domain.CajasClientePedido;
 import domain.FrameManager;
+import jdbc.GestorBDInitializerCliente;
 
 
 public class JFrameFichaCliente extends JFramePrincipal{
 
-	
+	private Cliente cliente;
+	private JTextField panelNombre,panelDni, panelTelefono, panelEmail, panelDireccion;
+	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
 	private static final long serialVersionUID = 1L;
 	
-	public JFrameFichaCliente(){
+	public JFrameFichaCliente(Cliente cliente){
+		this.cliente = cliente;
 		this.setTitle("Ficha Clientes");
 		this.setSize(new Dimension(600,800));
 		this.setLocationRelativeTo(null);
@@ -45,6 +51,8 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		});
 		this.add(cerrar,BorderLayout.SOUTH);
 		this.setFocusable(true); //IAG
+		this.setVisible(true);
+		this.addKeyListener(listenerVolver(JFrameListaClientes.class));
 	}
 	
 
@@ -88,29 +96,29 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		JPanel botones = new JPanel(new FlowLayout());
 		
 		panelPrincipal.add(new JLabel("Nombre Usuario:"));
-		JTextField panelNombre = new JTextField(10);
-		panelPrincipal.add(panelNombre,BorderLayout.WEST);
+		panelNombre = new JTextField(cliente.getNombre(),10);
+		panelPrincipal.add(panelNombre);
 		panelNombre.setEnabled(false);
 		
 		panelPrincipal.add(new JLabel("DNI:"));
-		JTextField panelDni = new JTextField(10);
-		panelPrincipal.add(panelDni,BorderLayout.WEST);
+		panelDni = new JTextField(cliente.getDni(),10);
+		panelPrincipal.add(panelDni);
 		panelDni.setEnabled(false);
 		
 		panelPrincipal.add(new JLabel("Teléfono:"));
-		JTextField panelTelefono = new JTextField(10);
+		panelTelefono = new JTextField(cliente.getTlf(),10);
 		panelPrincipal.add(panelTelefono);
 		panelTelefono.setEnabled(false);
 		
 		panelPrincipal.add(new JLabel("Email:"));
-		JTextField panelEmail = new JTextField(10);
+		panelEmail = new JTextField(cliente.getEmail(),10);
 		panelPrincipal.add(panelEmail);
 		panelEmail.setEnabled(false);
 		
 		
 		panelPrincipal.add(new JLabel("Dirección"));
-		JTextField panelDireccion = new JTextField(10);
-		panelPrincipal.add(panelDireccion,BorderLayout.WEST);
+		panelDireccion = new JTextField(cliente.getDireccion(),10);
+		panelPrincipal.add(panelDireccion);
 		panelDireccion.setEnabled(false);
 		
 		
@@ -125,6 +133,7 @@ public class JFrameFichaCliente extends JFramePrincipal{
 			panelTelefono.setEnabled(true);
 			panelEmail.setEnabled(true);
 			panelDireccion.setEnabled(true);
+			this.gestorBD.actualizarTelefono(cliente, panelTelefono.getText());
 			guardar.setEnabled(true);
 			editar.setEnabled(false);
 		});
@@ -134,6 +143,7 @@ public class JFrameFichaCliente extends JFramePrincipal{
 			panelTelefono.setEnabled(false);
 			panelEmail.setEnabled(false);
 			panelDireccion.setEnabled(false);
+			this.gestorBD.actualizarTelefono(cliente, panelTelefono.getText());
 			guardar.setEnabled(false);
 			editar.setEnabled(true);
 			JOptionPane.showMessageDialog(this,
@@ -149,11 +159,6 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		return panelPrincipal;
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		SwingUtilities.invokeLater(() -> new JFrameFichaCliente());
-		
-	}
+	
 
 }

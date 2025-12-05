@@ -48,7 +48,9 @@ public class GestorBDInitializerCliente {
 	                   + " DNI TEXT NOT NULL,\n"
 	                   + " TLF TEXT NOT NULL,\n"
 	                   + " FECHA_ULTIMA_COMPRA TEXT NOT NULL,\n"
-	                   + " RECETAS_PENDIENTES INT NOT NULL\n"
+	                   + " RECETAS_PENDIENTES INT NOT NULL,\n"
+	                   + " EMAIL TEXT NOT NULL,\n"
+	                   + " DIRECCION TEXT NOT NULL\n"
 	                   + ");";
 	        
 	        PreparedStatement pstmt = con.prepareStatement(sql);
@@ -99,7 +101,7 @@ public class GestorBDInitializerCliente {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se define la plantilla de la sentencia SQL
-			String sql = "INSERT INTO CLIENTE (NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES ) VALUES ( ?, ?,?,?,?);";
+			String sql = "INSERT INTO CLIENTE (NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?);";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			
@@ -113,6 +115,8 @@ public class GestorBDInitializerCliente {
 				pstmt.setString(3, c.getTlf());
 				pstmt.setString(4, c.getFechaUltimaCompra());
 				pstmt.setInt(5, c.getRecetasPendientes());
+				pstmt.setString(6, c.getEmail());
+				pstmt.setString(7, c.getDireccion());
 				
 				if (1 == pstmt.executeUpdate()) {					
 					System.out.format("\n - Cliente insertado: %s", c.toString());
@@ -142,7 +146,7 @@ public class GestorBDInitializerCliente {
 			
 			//Se recorre el ResultSet y se crean objetos Cliente
 			while (rs.next()) {
-				cliente = new Cliente(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("FECHA_ULTIMA_COMPRA"),rs.getInt("RECETAS_PENDIENTES"));
+				cliente = new Cliente(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("FECHA_ULTIMA_COMPRA"),rs.getInt("RECETAS_PENDIENTES"), rs.getString("EMAIL"), rs.getString("DIRECCION"));
 				cliente.setId(rs.getInt("ID"));
 				
 				//Se inserta cada nuevo cliente en la lista de clientes
@@ -171,6 +175,49 @@ public class GestorBDInitializerCliente {
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);	
 			pstmt.setString(1, newtlf);
+			pstmt.setInt(2, cliente.getId());
+			
+			int result = pstmt.executeUpdate();
+			
+			System.out.format("\n- Se ha actulizado %d clientes", result);
+			
+	        //Es necesario cerrar el PreparedStatement
+	        pstmt.close();		
+		} catch (Exception ex) {
+			System.err.format("\n* Error actualizando datos de la BBDD: %s", ex.getMessage());
+			ex.printStackTrace();						
+		}		
+	}
+	public void actualizarDireccion(Cliente cliente, String newDireccion) {
+		//Se abre la conexión y se obtiene el Statement
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+			//Se ejecuta la sentencia de borrado de datos
+			String sql = "UPDATE CLIENTE SET TLF = ? WHERE ID = ?;";
+			
+			PreparedStatement pstmt = con.prepareStatement(sql);	
+			pstmt.setString(1, newDireccion);
+			pstmt.setInt(2, cliente.getId());
+			
+			int result = pstmt.executeUpdate();
+			
+			System.out.format("\n- Se ha actulizado %d clientes", result);
+			
+	        //Es necesario cerrar el PreparedStatement
+	        pstmt.close();		
+		} catch (Exception ex) {
+			System.err.format("\n* Error actualizando datos de la BBDD: %s", ex.getMessage());
+			ex.printStackTrace();						
+		}		
+	}
+	
+	public void actualizarEmail(Cliente cliente, String newEmail) {
+		//Se abre la conexión y se obtiene el Statement
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+			//Se ejecuta la sentencia de borrado de datos
+			String sql = "UPDATE CLIENTE SET EMAIL = ? WHERE ID = ?;";
+			
+			PreparedStatement pstmt = con.prepareStatement(sql);	
+			pstmt.setString(1, newEmail);
 			pstmt.setInt(2, cliente.getId());
 			
 			int result = pstmt.executeUpdate();

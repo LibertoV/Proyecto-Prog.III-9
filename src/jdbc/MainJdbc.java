@@ -26,7 +26,7 @@ public class MainJdbc {
 		printClientes(clientes);
 		
 		//UPDATE: Se actualiza la password de un cliente
-		String newtlf = "+346666666666";
+		String newtlf = "+34 6666666666";
 		gestorBD.actualizarTelefono(clientes.get(0), newtlf);
 
 		//SELECT: Se obtienen datos de la BBDD
@@ -70,8 +70,10 @@ public class MainJdbc {
 				String tlf = campos[3];
 				String fecha = campos[4];
 				int recetas = Integer.parseInt(campos[5]);
+				String email = campos[6];
+				String direccion = campos[7];
 				
-				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas);
+				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas,email,direccion);
 				clientes.add(cliente);
 			}
 			

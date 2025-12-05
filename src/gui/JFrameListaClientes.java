@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -50,12 +52,16 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private List<Cliente> clientes;
 	
 	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
+	private JTable tablaClientes;
 	
 	
 	public JFrameListaClientes(){
 		this.gestorBD.crearBBDD();
-		List<Cliente> clientes = initClientes();
-		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
+		List<Cliente> clientesExistentes = gestorBD.obtenerDatos();
+		if(clientesExistentes.isEmpty()) {
+			List<Cliente> clientes = initClientes();
+			gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
+		}
 		this.clientes = gestorBD.obtenerDatos();
 		this.datosOriginales = convertirClientesAVector(this.clientes);
 		this.setTitle("Lista de Clientes");
@@ -94,8 +100,10 @@ public class JFrameListaClientes extends JFramePrincipal{
 				String tlf = campos[3];
 				String fecha = campos[4];
 				int recetas = Integer.parseInt(campos[5]);
+				String email = campos[6];
+				String direccion = campos[7];
 				
-				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas);
+				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas,email,direccion);
 				clientes.add(cliente);
 			}
 			
@@ -133,6 +141,11 @@ public class JFrameListaClientes extends JFramePrincipal{
 		panelFiltro.add(filtroCombo);
 		
 		JButton añadir = new JButton("+ Añadir cliente");
+		añadir.addActionListener((e)->{
+			nuevoCliente();
+			
+			
+		});
 		panelFiltro.add(añadir, BorderLayout.EAST);
 		
 
@@ -189,6 +202,49 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 	}
 	
+	 private void nuevoCliente() {
+			JDialog dialog = new JDialog(this, "Nuevo Cliente", true);
+			dialog.setSize(400,600);
+			dialog.setLayout(new BorderLayout(10,10));
+			
+			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,10));
+			panelCampos.add(new JLabel("Nombre:"));
+			JTextField textoNombre = new JTextField();
+			panelCampos.add(textoNombre);
+			
+			panelCampos.add(new JLabel("DNI:"));
+			JTextField textoDNI = new JTextField();
+			panelCampos.add(textoDNI);
+			
+			panelCampos.add(new JLabel("Telefono:"));
+			JTextField textoTelefono = new JTextField();
+			panelCampos.add(textoTelefono);
+			
+			panelCampos.add(new JLabel("Email:"));
+			JTextField textoEmail = new JTextField();
+			panelCampos.add(textoEmail);
+			
+			panelCampos.add(new JLabel("Direccion:"));
+			JTextField textoDireccion = new JTextField();
+			panelCampos.add(textoDireccion);
+			
+			panelCampos.add(new JLabel("Recetas Pendientes:"));
+			JTextField textoRecetas = new JTextField();
+			panelCampos.add(textoRecetas);
+			
+			dialog.add(panelCampos);
+			
+			JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			
+			JButton guardar = new JButton("Guardar");
+			JButton cancelar = new JButton("Cancelar");
+			
+			guardar.addActionListener(e->{
+				
+			});
+			
+		}
+
 	 private void filtroCliente(String filtro) {
 		 
 			        
@@ -241,7 +297,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	            
 	        };
 	        
-	        JTable tablaClientes = new JTable(model);
+	        tablaClientes = new JTable(model);
 	        tablaClientes.getTableHeader().setReorderingAllowed(false);
 	        
 	        tablaClientes.addMouseListener(new MouseAdapter() {
@@ -249,80 +305,25 @@ public class JFrameListaClientes extends JFramePrincipal{
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
 						int fila = tablaClientes.rowAtPoint(e.getPoint());
-						Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+						int id = (int)model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
 																// para porteriormente saber su información
-						JFrameFichaCliente clientesel = new JFrameFichaCliente();
-						clientesel.setVisible(true);
+						
+						Cliente clienteSel = null;
+						for(Cliente cliente : clientes) {
+							if(cliente.getId()==id) {
+								clienteSel = cliente;
+								break;
+							}
+						}
+						
+						JFrameFichaCliente fichaCliente = new JFrameFichaCliente(clienteSel);
+						fichaCliente.setVisible(true);
+						dispose();
 					}
 				}
 			});
-
 	        
 	        
-//	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
-//	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
-//	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-//	        }
-	        
-//	        MouseMotionListener motionListener = new MouseMotionListener() {
-//
-//
-//	    		
-//
-//				@Override
-//	    		public void mouseDragged(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseMoved(MouseEvent e) {
-//	    			
-//	    			Point puntosRaton = new Point(e.getX(),e.getY());
-//	    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
-//	    			tablaClientes.repaint();
-//	    			
-//	    		}
-//	    		
-//	    	};
-//	        
-//	    	MouseListener miMouseListener = new MouseListener() {
-//
-//	    		@Override
-//	    		public void mouseClicked(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mousePressed(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseReleased(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseEntered(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseExited(MouseEvent e) {
-//	    			filaTablaClientes=-1;
-//	    			tablaClientes.repaint();
-//	    			
-//	    		}
-//	    		
-//	    	};
-	    	
-//	    	tablaClientes.addMouseMotionListener(motionListener);
-//	    	tablaClientes.addMouseListener(miMouseListener);
 	        	        
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
 	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
@@ -375,8 +376,19 @@ public class JFrameListaClientes extends JFramePrincipal{
 		private void gestionarMenu(String ficha) {
 	    	switch(ficha) {
 	    	case "Ver ficha":
-	    		new JFrameFichaCliente();
-	    		dispose();
+	    		int filaSel = tablaClientes.getSelectedRow(); 
+	    		if(filaSel != -1) {
+	    			int id = (int) model.getValueAt(filaSel, 0);
+	    			Cliente clienteSel = null;
+	    			for (Cliente cliente : clientes) {
+						if(cliente.getId() == id) {
+							clienteSel = cliente;
+							break;
+						}
+					}
+	    			new JFrameFichaCliente(clienteSel).setVisible(true);;
+		    		dispose();
+	    		}
 	    		break;
 	    	}
 	    }
