@@ -1,12 +1,14 @@
 package jdbc;
 
 import java.io.FileReader;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +103,7 @@ public class GestorBDInitializerCliente {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se define la plantilla de la sentencia SQL
-			String sql = "INSERT INTO CLIENTE (NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?);";
+			String sql = "INSERT OR IGNORE INTO CLIENTE (NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?);";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			
@@ -252,6 +254,28 @@ public class GestorBDInitializerCliente {
 			System.err.format("\n* Error actualizando datos de la BBDD: %s", ex.getMessage());
 			ex.printStackTrace();						
 		}		
+	}
+	
+	public void borrarCliente(Integer id) {
+		
+		 String sql = "DELETE FROM CLIENTE WHERE id = ?";
+		    
+		    try (Connection conn = DriverManager.getConnection(CONNECTION_STRING);
+		         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		        
+		        pstmt.setInt(1, id);
+		        int filasAfectadas = pstmt.executeUpdate();
+		        
+		        if (filasAfectadas > 0) {
+		            System.out.println("✓ Cliente con ID " + id + " eliminado de la BD");
+		        } else {
+		            System.out.println("✗ No se encontró cliente con ID " + id);
+		        }
+		        
+		    } catch (SQLException e) {
+		        System.err.println("Error al eliminar cliente: " + e.getMessage());
+		        e.printStackTrace();
+		    }
 	}
 	
 	public void borrarDatos() {

@@ -15,8 +15,7 @@ public class MainJdbc {
 		GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();		
 		
 		//CREATE DATABASE: Se crea la BBDD
-		gestorBD.crearBBDD();
-		
+		gestorBD.crearBBDD();    
 		//INSERT: Insertar datos en la BBDD		
 		List<Cliente> clientes = initClientes();
 		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
@@ -32,7 +31,8 @@ public class MainJdbc {
 		//SELECT: Se obtienen datos de la BBDD
 		clientes = gestorBD.obtenerDatos();
 		printClientes(clientes);
-
+		
+		gestorBD.borrarCliente(1);
 		//DELETE: Se borran datos de la BBDD
 		gestorBD.borrarDatos();
 		

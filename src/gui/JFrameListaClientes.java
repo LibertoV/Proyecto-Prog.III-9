@@ -27,8 +27,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -55,7 +57,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private DefaultTableModel model;
 	protected int filaTablaClientes= -1;;
 	private static final long serialVersionUID = 1L;
-	private List<Receta> recetas;
+	
 	private List<Cliente> clientes;
 	
 	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
@@ -64,12 +66,17 @@ public class JFrameListaClientes extends JFramePrincipal{
 	
 	public JFrameListaClientes(){
 		this.gestorBD.crearBBDD();
-		List<Cliente> clientesExistentes = gestorBD.obtenerDatos();
-		if(clientesExistentes.isEmpty()) {
-			List<Cliente> clientes = initClientes();
-			gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
-		}
+		
 		this.clientes = gestorBD.obtenerDatos();
+		if(this.clientes == null || this.clientes.isEmpty()) {
+	        System.out.println("Cargando desde CSV...");
+	        List<Cliente> clientesCSV = initClientes();
+	        System.out.println("Clientes del CSV: " + clientesCSV.size());
+	        gestorBD.insertarDatos(clientesCSV.toArray(new Cliente[clientesCSV.size()]));
+	        this.clientes = gestorBD.obtenerDatos();
+	        System.out.println("Después de insertar: " + this.clientes.size());
+	    }
+		
 		this.datosOriginales = convertirClientesAVector(this.clientes);
 		this.setTitle("Lista de Clientes");
 		this.setSize(new Dimension(1000,750));
@@ -237,79 +244,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 			JTextField textoDireccion = new JTextField();
 			panelCampos.add(textoDireccion);
 			
-			panelCampos.add(new JLabel("Recetas Pendientes:"));
-			SpinnerNumberModel modeloSpinner = new SpinnerNumberModel(0, 0, 500, 1);
-			JSpinner spinnerRecetas = new JSpinner(modeloSpinner);
-			panelCampos.add(spinnerRecetas);
-			JComboBox<Laboratorio> recetasCombo = new JComboBox<Laboratorio>(Laboratorio.values());
-			recetasCombo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-				JLabel result = new JLabel();
-				
-				Laboratorio laboratorio = (Laboratorio) value;
-				
-				switch (laboratorio) { 
-					case ABBVIE:
-						ImageIcon logo1 = new ImageIcon("resources/images/AbbVieLogo_AbbVie dark blue.png");
-						 ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado1);
-						break;
-					case BAYER:
-						ImageIcon logo2 = (new ImageIcon("resources/images/Logo_Bayer.svg.png"));
-						ImageIcon logoAjustado2 = new ImageIcon(logo2.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado2);
-						break;
-					case ASTRAZENECA:
-						ImageIcon logo3 = (new ImageIcon("resources/images/original.jpg"));
-						ImageIcon logoAjustado3 = new ImageIcon(logo3.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado3);
-						break;
-					case BRISTOL_MYERS:
-						ImageIcon logo4 = (new ImageIcon("resources/images/Bristol-Myers_Squibb_logo_(2020).svg"));
-						ImageIcon logoAjustado4 = new ImageIcon(logo4.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						result.setIcon(logoAjustado4);
-						break;
-					case JOHNSON_AND_JOHNSON:
-						ImageIcon logo5 = (new ImageIcon("resources/images/JNJ_Logo_SingleLine_Red_RGB.png"));
-						ImageIcon logoAjustado5 = new ImageIcon(logo5.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado5);
-						break;
-					case LILLY:
-						ImageIcon logo6 = (new ImageIcon("resources/images/Lilly-Logo.svg.png"));
-						ImageIcon logoAjustado6 = new ImageIcon(logo6.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado6);
-						break;
-					case MERCK:
-						ImageIcon logo7 = (new ImageIcon("resources/images/Merck.png"));
-						ImageIcon logoAjustado7 = new ImageIcon(logo7.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado7);
-						break;
-					case NOVARTISNOVO_NORDISK:
-						ImageIcon logo8 = (new ImageIcon("resources/images/novo-nordisk-1-logo-svg-vector.svg"));
-						ImageIcon logoAjustado8 = new ImageIcon(logo8.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						 result.setIcon(logoAjustado8);
-						break;
-					case ROCHE:
-						ImageIcon logo9 = (new ImageIcon("resources/images/roche-logo-blue.png"));
-						ImageIcon logoAjustado9 = new ImageIcon(logo9.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						result.setIcon(logoAjustado9);
-						break;
-					case SANOFI:
-						ImageIcon logo10 = (new ImageIcon("resources/images/Logo_Sanofi_(2022).png"));
-						ImageIcon logoAjustado10 = new ImageIcon(logo10.getImage().getScaledInstance(60, 55, Image.SCALE_SMOOTH));
-						result.setIcon(logoAjustado10);
-						break;
-					default:
-				}
-				
-				if (isSelected) {
-					result.setBackground(list.getSelectionBackground());
-					result.setForeground(list.getSelectionForeground());
-				}
-				
-				return result;
-			});
-			panelCampos.add(new JLabel(""));
-			panelCampos.add(recetasCombo);
+			
 			
 			dialog.add(panelCampos);
 			
@@ -335,7 +270,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 		                    textoDNI.getText().trim(),
 		                    textoTelefono.getText().trim(),
 		                    java.time.LocalDate.now().toString(), // Fecha actual
-		                    (Integer) spinnerRecetas.getValue(),
+		                    0,
 		                    textoEmail.getText().trim(),
 		                    textoDireccion.getText().trim()
 		                );
@@ -469,6 +404,8 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        tablaClientes = new JTable(model);
 	        tablaClientes.getTableHeader().setReorderingAllowed(false);
 	        
+	        agregarMenuContextualTabla();
+	        
 	        tablaClientes.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -487,7 +424,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 						
 						JFrameFichaCliente fichaCliente = new JFrameFichaCliente(clienteSel);
 						fichaCliente.setVisible(true);
-						dispose();
+						
 					}
 				}
 			});
@@ -526,7 +463,114 @@ public class JFrameListaClientes extends JFramePrincipal{
 			});
 			return panelCentral;
 		}
-	    
+	    //IAG
+		private void agregarMenuContextualTabla() {
+			JPopupMenu menuContextual = new JPopupMenu();
+		    
+		    JMenuItem itemVerFicha = new JMenuItem("Ver Ficha");
+		    JMenuItem itemEliminar = new JMenuItem("Eliminar Cliente");
+		    
+		    // Ver ficha
+		    itemVerFicha.addActionListener(e -> {
+		        int fila = tablaClientes.getSelectedRow();
+		        if (fila != -1) {
+		            gestionarMenu("Ver ficha");
+		        }
+		    });
+		    
+		    // Eliminar cliente
+		    itemEliminar.addActionListener(e -> {
+		        int fila = tablaClientes.getSelectedRow();
+		        if (fila != -1) {
+		            int id = (int) model.getValueAt(fila, 0);
+		            String nombre = (String) model.getValueAt(fila, 1);
+		            String dni = (String) model.getValueAt(fila, 2);
+		            
+		            int confirmacion = JOptionPane.showConfirmDialog(
+		                this,
+		                "¿Está seguro que desea eliminar al cliente:\n" + 
+		                nombre + " (" + dni + ")?",
+		                "Confirmar Eliminación",
+		                JOptionPane.YES_NO_OPTION,
+		                JOptionPane.WARNING_MESSAGE
+		            );
+		            
+		            if (confirmacion == JOptionPane.YES_OPTION) {
+		                eliminarClienteDeTabla(id, fila);
+		            }
+		        }
+		    });
+		   
+		  
+		    
+		    menuContextual.add(itemVerFicha);
+		    menuContextual.addSeparator();
+		    menuContextual.add(itemEliminar);
+		    
+		    // Añadir listener a la tabla
+		    tablaClientes.addMouseListener(new MouseAdapter() {
+		        @Override
+		        public void mousePressed(MouseEvent e) {
+		            mostrarMenu(e);
+		        }
+		        
+		        @Override
+		        public void mouseReleased(MouseEvent e) {
+		            mostrarMenu(e);
+		        }
+		        
+		        private void mostrarMenu(MouseEvent e) {
+		            if (e.isPopupTrigger()) {
+		                // Seleccionar la fila donde se hizo clic
+		                int fila = tablaClientes.rowAtPoint(e.getPoint());
+		                if (fila >= 0 && fila < tablaClientes.getRowCount()) {
+		                    tablaClientes.setRowSelectionInterval(fila, fila);
+		                    menuContextual.show(e.getComponent(), e.getX(), e.getY());
+		                }
+		            }
+		        }
+		    });
+			
+		}
+		//IAG
+		private void eliminarClienteDeTabla(int id, int fila) {
+			  try {
+			        System.out.println("Intentando eliminar cliente con ID: " + id);
+			        
+			        // PRIMERO eliminar de la base de datos
+			        gestorBD.borrarCliente(id);
+			        
+			        // LUEGO eliminar de la lista local
+			        clientes.removeIf(c -> c.getId() == id);
+			        
+			        // DESPUÉS eliminar de la tabla visual
+			        model.removeRow(fila);
+			        
+			        // FINALMENTE actualizar datosOriginales
+			        datosOriginales.remove(fila);
+			        
+			        System.out.println("Cliente eliminado. Total ahora: " + clientes.size());
+			        
+			        JOptionPane.showMessageDialog(
+			            this,
+			            "Cliente eliminado correctamente",
+			            "Éxito",
+			            JOptionPane.INFORMATION_MESSAGE
+			        );
+			        
+			    } catch (Exception ex) {
+			        System.err.println("Error completo: " + ex.getMessage());
+			        ex.printStackTrace();
+			        JOptionPane.showMessageDialog(
+			            this,
+			            "Error al eliminar el cliente: " + ex.getMessage(),
+			            "Error",
+			            JOptionPane.ERROR_MESSAGE
+			        );
+			    }
+			
+		}
+
 		private JPanel crearPanelInferior() {
 			JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
 			
@@ -556,7 +600,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 						}
 					}
 	    			new JFrameFichaCliente(clienteSel).setVisible(true);;
-		    		dispose();
+		    		
 	    		}
 	    		break;
 	    	}
