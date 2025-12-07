@@ -2,6 +2,7 @@ package db;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 //IAG
 import java.util.Vector;
@@ -31,8 +32,15 @@ public class DataFarmacias {
 			Vector<Object> farmaciaTemp = new Vector<>();
 			farmaciaTemp.add(farmacia.getNombre());
 			farmaciaTemp.add(farmacia.getProvincia());
-			farmaciaTemp.add("Stock Bajo");
-			farmaciaTemp.add("10 pendientes");
+			int stock = getPedidos();
+			if (stock<5) {
+				farmaciaTemp.add("Stock Óptimo");
+			}else if(stock<10) {
+				farmaciaTemp.add("Stock Medio");
+			}else {
+				farmaciaTemp.add("Stock Bajo");
+			}
+			farmaciaTemp.add(stock + " pendientes");
 			farmaciaTemp.add("Seleccionar");
 			data.add(farmaciaTemp);
 		}
@@ -40,7 +48,10 @@ public class DataFarmacias {
 	}
 	
 	
-	
+	public static int getPedidos() {
+		Random random = new Random();
+		return random.nextInt(15);
+	}
 	
 	public static List<Farmacia> initFarmacias() {
 		List<Farmacia> farmacias = new ArrayList<>();		
