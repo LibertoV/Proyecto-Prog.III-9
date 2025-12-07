@@ -31,7 +31,6 @@ public class Pedido {
 		return total;
 	}
 
-	// se usa esto para combertir el pedido en un objeto y asi poderlo añadir a la tabla de pedidos
 	public Object[] añadirloTabla() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String totalFormateado = String.format("%.2f €", calcularTotal()).replace(",", ".");
@@ -45,5 +44,17 @@ public class Pedido {
 
 	public String getProveedor() {
 		return proveedor;
+	}
+
+	public Date getFechaOrden() {
+		return fechaOrden;
+	}
+
+	public Date getFechaLlegada() {
+		return fechaLlegada;
+	}
+
+	public ArrayList<Producto> getProductos() {
+		return productos;
 	}
 }
