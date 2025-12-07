@@ -9,7 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -25,54 +25,52 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
+import domain.Pedido;
+import domain.Producto;
+
 public class JDialogAñadirPedido extends JDialog {
 
 	private JTable tablaProductos;
-	public DefaultTableModel modelo;
+	private DefaultTableModel modelo;
 	private JDateChooser dateChooserPedido;
 	private JDateChooser dateChooserEstimada;
 	private JTextField txtProveedor;
 	private JFrameListaPedidos padre;
+	private ArrayList<Producto> listaProductos;
 
 	public JDialogAñadirPedido(JFrameListaPedidos parent) {
 		super(parent, "Añadir nuevo pedido", true);
+		this.padre = parent;
+		this.listaProductos = new ArrayList<>();
+		
 		setLayout(new BorderLayout(10, 10));
 		setSize(new Dimension(500, 600));
 		setLocationRelativeTo(parent);
 		setResizable(false);
-		this.padre = parent;
 
 		add(crearPanelDetalles(), BorderLayout.NORTH);
-
 		add(crearPanelTabla(), BorderLayout.CENTER);
-
 		add(crearParteAbajo(), BorderLayout.SOUTH);
 
-		this.setFocusable(true); // IAG
+		this.setFocusable(true);
 		this.addKeyListener(new KeyListener() {
-
 			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+			public void keyTyped(KeyEvent e) {}
 			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+			public void keyReleased(KeyEvent e) {}
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean ctrlPresionado = e.isControlDown();
 				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
 					dispose();
-					SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true));
 				}
 			}
 		});
+	}
 
+	public void recibirProducto(Producto p) {
+		listaProductos.add(p);
+		modelo.addRow(p.vectorPed());
 	}
 
 	private Component crearPanelDetalles() {
@@ -129,11 +127,12 @@ public class JDialogAñadirPedido extends JDialog {
 		panel.setBorder(BorderFactory.createTitledBorder("Productos del Pedido"));
 
 		String[] columnas = { "Producto", "Cantidad", "Precio Unitario (€)" };
-		Object[][] datos = {
-
+		modelo = new DefaultTableModel(null, columnas) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
-
-		modelo = new DefaultTableModel(datos, columnas);
 		tablaProductos = new JTable(modelo);
 
 		JScrollPane scroll = new JScrollPane(tablaProductos);
@@ -145,6 +144,7 @@ public class JDialogAñadirPedido extends JDialog {
 
 		panelBotonesTabla.add(btnAnadirFila);
 		panelBotonesTabla.add(btnEliminarFila);
+		
 		btnAnadirFila.addActionListener(e -> {
 			JDialogAñadirProducto dialog = new JDialogAñadirProducto(this);
 			dialog.setVisible(true);
@@ -153,10 +153,10 @@ public class JDialogAñadirPedido extends JDialog {
 		btnEliminarFila.addActionListener(e -> {
 			int filaSel = tablaProductos.getSelectedRow();
 			if (filaSel != -1) {
+				listaProductos.remove(filaSel);
 				modelo.removeRow(filaSel);
 			} else {
-				JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar.", "Error",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar.", "Error", JOptionPane.WARNING_MESSAGE);
 			}
 		});
 
@@ -175,54 +175,37 @@ public class JDialogAñadirPedido extends JDialog {
 
 		btnGuardar.addActionListener(e -> {
 
-			int filas = modelo.getRowCount();
 			if (txtProveedor.getText().trim().isEmpty()) {
-				JOptionPane.showMessageDialog(this, "El campo Proveedor no puede estar vacío.", "Error",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "El campo Proveedor no puede estar vacío.", "Error", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
 			if (dateChooserPedido.getDate() == null || dateChooserEstimada.getDate() == null) {
-				JOptionPane.showMessageDialog(this, "Debe seleccionar ambas fechas.", "Error",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(this, "Debe seleccionar ambas fechas.", "Error", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
 			if (dateChooserEstimada.getDate().before(dateChooserPedido.getDate())) {
-				JOptionPane.showMessageDialog(this, "La fecha estimada no puede ser anterior a la fecha del pedido.",
-						"Error de Fechas", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "La fecha estimada no puede ser anterior a la fecha del pedido.", "Error de Fechas", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
-			if (modelo.getRowCount() == 0) {
-				JOptionPane.showMessageDialog(this, "Debe añadir al menos un producto al pedido.", "Error",
-						JOptionPane.WARNING_MESSAGE);
+			if (listaProductos.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Debe añadir al menos un producto al pedido.", "Error", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 
-			double totalDinero = 0.0;
-			for (int i = 0; i < modelo.getRowCount(); i++) {
-				try {
-					int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
-					double precio = Double.parseDouble(modelo.getValueAt(i, 2).toString());
-					totalDinero += (cantidad * precio);
-				} catch (Exception ex) {
-				}
+			String ID = String.valueOf(new Random().nextInt(1000) + 1000);
+			java.sql.Date fechaSqlPedido = new java.sql.Date(dateChooserPedido.getDate().getTime());
+			java.sql.Date fechaSqlLlegada = new java.sql.Date(dateChooserEstimada.getDate().getTime());
+
+			Pedido nuevoPedido = new Pedido(ID, txtProveedor.getText(), fechaSqlPedido, fechaSqlLlegada);
+
+			for (Producto p : listaProductos) {
+				nuevoPedido.agregarProducto(p);
 			}
 
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String fechaOrd = sdf.format(dateChooserPedido.getDate());
-			String fechaLleg = sdf.format(dateChooserEstimada.getDate());
-
-			// valorStr IAG --> % dice el formato que viene, 2. sirve para decir que va a
-			// haber dos decimales y el f dice que va a ser float o double
-			String valorStr = String.format("%.2f €", totalDinero).replace(",", ".");
-
-			String ID = String.valueOf(new Random().nextInt(1000));
-
-			Object[] filaParaPrincipal = new Object[] { ID, fechaOrd, fechaLleg, valorStr, txtProveedor.getText(), "" };
-
-			padre.agregarNuevoPedido(filaParaPrincipal);
+			padre.agregarNuevoPedido(nuevoPedido);
 
 			JOptionPane.showMessageDialog(this, "Pedido guardado con exito");
 			dispose();
@@ -232,9 +215,5 @@ public class JDialogAñadirPedido extends JDialog {
 			dispose();
 		});
 		return panel;
-	}
-
-	public static void main(JFrameListaPedidos parent) {
-		SwingUtilities.invokeLater(() -> new JDialogAñadirPedido(parent));
 	}
 }

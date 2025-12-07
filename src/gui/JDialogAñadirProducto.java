@@ -19,49 +19,39 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
+
+import domain.Producto;
 
 public class JDialogAñadirProducto extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNombre;
 	private JTextField txtPrecio;
-	private JSpinner spinnerCantidad; 
-	Object[] producto = null;
+	private JSpinner spinnerCantidad;
 	
 	public JDialogAñadirProducto(JDialogAñadirPedido parent) {
 		super(parent, "Añadir producto", true);
 		setLayout(new BorderLayout(10,10));
-		setSize(new Dimension(200,200));
+		setSize(new Dimension(250,200));
 		setResizable(false);
 		setLocationRelativeTo(parent);
 		
 		add(crearPanel(),BorderLayout.CENTER);
 		add(botonesConfirmacion(parent),BorderLayout.SOUTH);
-		this.setFocusable(true); //IAG
+		this.setFocusable(true);
+		
 		this.addKeyListener(new KeyListener() {
-			
 			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+			public void keyTyped(KeyEvent e) {}
 			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+			public void keyReleased(KeyEvent e) {}
 			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean ctrlPresionado = e.isControlDown();
 				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
 		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
 		        }
 			}
 		});
-		
 	}
 	
 	private Component crearPanel() {
@@ -80,18 +70,15 @@ public class JDialogAñadirProducto extends JDialog {
         gbc.weightx = 1.0; 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        txtNombre = new JTextField(30);
+        txtNombre = new JTextField(15);
         panel.add(txtNombre, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0.0; 
-
         panel.add(new JLabel("Cantidad:"), gbc);
 
         gbc.gridx = 1;
-        gbc.weightx = 0.0; 
-
         SpinnerNumberModel modeloCantidad = new SpinnerNumberModel(1, 1, 10000, 1);
         spinnerCantidad = new JSpinner(modeloCantidad);
         panel.add(spinnerCantidad, gbc);
@@ -116,27 +103,28 @@ public class JDialogAñadirProducto extends JDialog {
 			
 			int cantidad = (Integer) spinnerCantidad.getValue();
             
-			if (txtNombre.getText().length() == 0 ||
-              	txtPrecio.getText().length() == 0
-            	) {
+			if (txtNombre.getText().trim().isEmpty() || txtPrecio.getText().trim().isEmpty()) {
                  JOptionPane.showMessageDialog(this, "Producto Erroneo, no puede quedar campos en blanco", "Error", JOptionPane.WARNING_MESSAGE);
                  return;
-            } else {
-            	producto = new Object[] {txtNombre.getText(), cantidad,txtPrecio.getText()};
-            	parent.modelo.addRow(producto);
-               
-            }
-
-            
-
-            dispose();
+            } 
+			
+			try {
+				double precio = Double.parseDouble(txtPrecio.getText().replace(",", "."));
+				Producto nuevoProducto = new Producto(txtNombre.getText(), cantidad, precio);
+				parent.recibirProducto(nuevoProducto);
+				dispose();
+				
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(this, "El precio debe ser numérico", "Error", JOptionPane.ERROR_MESSAGE);
+			}
         });
+		
 		cancelar.addActionListener(e -> {
 			dispose();
 		});
+		
 		botones.add(confirmar);
 		botones.add(cancelar);
 		return botones;
-		
 	}
 }

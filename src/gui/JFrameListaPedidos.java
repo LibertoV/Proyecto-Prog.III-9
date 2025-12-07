@@ -44,6 +44,7 @@ import javax.swing.table.DefaultTableModel;
 
 import db.DataHistorial;
 import db.DataPedidos;
+import domain.Pedido;
 
 //LISTADO DE PEDIDOS
 
@@ -84,9 +85,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
 	}
 
-	public void agregarNuevoPedido(Object[] datosPedido) {
-		modelo.addRow(datosPedido);
-
+	public void agregarNuevoPedido(Pedido pedido) {
+		modelo.addRow(pedido.añadirloTabla());
 		actualizarTotales();
 	}
 
