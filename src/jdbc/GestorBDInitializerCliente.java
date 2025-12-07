@@ -33,7 +33,7 @@ public class GestorBDInitializerCliente {
 			DATABASE_FILE = connectionProperties.getProperty("DATABASE_FILE");
 			CONNECTION_STRING = connectionProperties.getProperty("CONNECTION_STRING") + DATABASE_FILE;
 			
-			//Cargar el diver SQLite
+			//Cargar el driver SQLite
 			Class.forName(DRIVER_NAME);
 		} catch (Exception ex) {
 			System.err.format("\n* Error al cargar el driver de BBDD: %s", ex.getMessage());
