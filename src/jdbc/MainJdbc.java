@@ -15,8 +15,7 @@ public class MainJdbc {
 		GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();		
 		
 		//CREATE DATABASE: Se crea la BBDD
-		gestorBD.crearBBDD();
-		
+		gestorBD.crearBBDD();    
 		//INSERT: Insertar datos en la BBDD		
 		List<Cliente> clientes = initClientes();
 		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
@@ -26,13 +25,14 @@ public class MainJdbc {
 		printClientes(clientes);
 		
 		//UPDATE: Se actualiza la password de un cliente
-		String newtlf = "+346666666666";
+		String newtlf = "+34 6666666666";
 		gestorBD.actualizarTelefono(clientes.get(0), newtlf);
 
 		//SELECT: Se obtienen datos de la BBDD
 		clientes = gestorBD.obtenerDatos();
 		printClientes(clientes);
-
+		
+		gestorBD.borrarCliente(1);
 		//DELETE: Se borran datos de la BBDD
 		gestorBD.borrarDatos();
 		
@@ -70,8 +70,10 @@ public class MainJdbc {
 				String tlf = campos[3];
 				String fecha = campos[4];
 				int recetas = Integer.parseInt(campos[5]);
+				String email = campos[6];
+				String direccion = campos[7];
 				
-				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas);
+				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas,email,direccion);
 				clientes.add(cliente);
 			}
 			

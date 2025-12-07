@@ -2,10 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -23,11 +25,17 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -35,6 +43,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import db.Cliente;
+import domain.Laboratorio;
+import domain.Receta;
 import jdbc.GestorBDInitializerCliente;
 
 
@@ -47,16 +57,26 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private DefaultTableModel model;
 	protected int filaTablaClientes= -1;;
 	private static final long serialVersionUID = 1L;
+	
 	private List<Cliente> clientes;
 	
 	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
+	private JTable tablaClientes;
 	
 	
 	public JFrameListaClientes(){
 		this.gestorBD.crearBBDD();
-		List<Cliente> clientes = initClientes();
-		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
+		
 		this.clientes = gestorBD.obtenerDatos();
+		if(this.clientes == null || this.clientes.isEmpty()) {
+	        System.out.println("Cargando desde CSV...");
+	        List<Cliente> clientesCSV = initClientes();
+	        System.out.println("Clientes del CSV: " + clientesCSV.size());
+	        gestorBD.insertarDatos(clientesCSV.toArray(new Cliente[clientesCSV.size()]));
+	        this.clientes = gestorBD.obtenerDatos();
+	        System.out.println("Después de insertar: " + this.clientes.size());
+	    }
+		
 		this.datosOriginales = convertirClientesAVector(this.clientes);
 		this.setTitle("Lista de Clientes");
 		this.setSize(new Dimension(1000,750));
@@ -94,8 +114,10 @@ public class JFrameListaClientes extends JFramePrincipal{
 				String tlf = campos[3];
 				String fecha = campos[4];
 				int recetas = Integer.parseInt(campos[5]);
+				String email = campos[6];
+				String direccion = campos[7];
 				
-				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas);
+				Cliente cliente = new Cliente(id,nombre,dni,tlf,fecha,recetas,email,direccion);
 				clientes.add(cliente);
 			}
 			
@@ -133,6 +155,11 @@ public class JFrameListaClientes extends JFramePrincipal{
 		panelFiltro.add(filtroCombo);
 		
 		JButton añadir = new JButton("+ Añadir cliente");
+		añadir.addActionListener((e)->{
+			nuevoCliente();
+			
+			
+		});
 		panelFiltro.add(añadir, BorderLayout.EAST);
 		
 
@@ -189,6 +216,139 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 	}
 	
+	 private void nuevoCliente() {
+			JDialog dialog = new JDialog(this, "Nuevo Cliente", true);
+			dialog.setSize(300,400);
+			dialog.setLayout(new BorderLayout(10,10));
+			
+			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,10));
+			panelCampos.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+			
+			panelCampos.add(new JLabel("Nombre:"));
+			JTextField textoNombre = new JTextField();
+			panelCampos.add(textoNombre);
+			
+			panelCampos.add(new JLabel("DNI:"));
+			JTextField textoDNI = new JTextField();
+			panelCampos.add(textoDNI);
+			
+			panelCampos.add(new JLabel("Telefono:"));
+			JTextField textoTelefono = new JTextField();
+			panelCampos.add(textoTelefono);
+			
+			panelCampos.add(new JLabel("Email:"));
+			JTextField textoEmail = new JTextField();
+			panelCampos.add(textoEmail);
+			
+			panelCampos.add(new JLabel("Direccion:"));
+			JTextField textoDireccion = new JTextField();
+			panelCampos.add(textoDireccion);
+			
+			
+			
+			dialog.add(panelCampos);
+			
+			JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			
+			JButton guardar = new JButton("Guardar");
+			JButton cancelar = new JButton("Cancelar");
+			
+			guardar.addActionListener(e->{
+				//IAG
+				if(validarCampos(textoNombre, textoDNI, textoTelefono)) {
+		            try {
+		                // Obtener nuevo ID (el máximo + 1)
+		                int nuevoId = clientes.stream()
+		                    .mapToInt(Cliente::getId)
+		                    .max()
+		                    .orElse(0) + 1;
+		                
+		                // Crear cliente
+		                Cliente nuevoCliente = new Cliente(
+		                    nuevoId,
+		                    textoNombre.getText().trim(),
+		                    textoDNI.getText().trim(),
+		                    textoTelefono.getText().trim(),
+		                    java.time.LocalDate.now().toString(), // Fecha actual
+		                    0,
+		                    textoEmail.getText().trim(),
+		                    textoDireccion.getText().trim()
+		                );
+		                
+		                // Insertar en BD
+		                gestorBD.insertarDatos(nuevoCliente);
+		                
+		                // Actualizar la lista local
+		                clientes.add(nuevoCliente);
+		                
+		                // Actualizar la tabla
+		                actualizarTabla();
+		                
+		                JOptionPane.showMessageDialog(dialog, 
+		                    "Cliente añadido correctamente", 
+		                    "Éxito", 
+		                    JOptionPane.INFORMATION_MESSAGE);
+		                
+		                dialog.dispose();
+		                
+		            } catch (NumberFormatException ex) {
+		                JOptionPane.showMessageDialog(dialog, 
+		                    "El campo 'Recetas Pendientes' debe ser un número", 
+		                    "Error", 
+		                    JOptionPane.ERROR_MESSAGE);
+		            }
+		        }
+			});
+			cancelar.addActionListener(e ->{
+				dialog.dispose();
+			});
+			
+			botones.add(cancelar);
+			botones.add(guardar);
+			dialog.add(botones,BorderLayout.SOUTH);
+			dialog.setVisible(true);
+		}
+	 
+	 //IAG
+	 private boolean validarCampos(JTextField nombre, JTextField dni, JTextField telefono) {
+		    if(nombre.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El nombre es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    if(dni.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El DNI es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    if(telefono.getText().trim().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, 
+		            "El teléfono es obligatorio", 
+		            "Error", 
+		            JOptionPane.ERROR_MESSAGE);
+		        return false;
+		    }
+		    
+		    return true;
+		}
+
+	 private void actualizarTabla() {
+		this.clientes = gestorBD.obtenerDatos();
+		this.datosOriginales = convertirClientesAVector(this.clientes);
+		
+		model.setRowCount(0);
+    	for (Vector<Object> vector : datosOriginales) {
+			model.addRow(vector);
+		}
+    	model.fireTableDataChanged();
+	}
+
 	 private void filtroCliente(String filtro) {
 		 
 			        
@@ -241,88 +401,35 @@ public class JFrameListaClientes extends JFramePrincipal{
 	            
 	        };
 	        
-	        JTable tablaClientes = new JTable(model);
+	        tablaClientes = new JTable(model);
 	        tablaClientes.getTableHeader().setReorderingAllowed(false);
+	        
+	        agregarMenuContextualTabla();
 	        
 	        tablaClientes.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
 						int fila = tablaClientes.rowAtPoint(e.getPoint());
-						Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+						int id = (int)model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
 																// para porteriormente saber su información
-						JFrameFichaCliente clientesel = new JFrameFichaCliente();
-						clientesel.setVisible(true);
+						
+						Cliente clienteSel = null;
+						for(Cliente cliente : clientes) {
+							if(cliente.getId()==id) {
+								clienteSel = cliente;
+								break;
+							}
+						}
+						
+						JFrameFichaCliente fichaCliente = new JFrameFichaCliente(clienteSel);
+						fichaCliente.setVisible(true);
+						
 					}
 				}
 			});
-
 	        
 	        
-//	        CustomRowRenderer rowRenderer = new CustomRowRenderer();
-//	        for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
-//	            tablaClientes.getColumnModel().getColumn(i).setCellRenderer(rowRenderer);
-//	        }
-	        
-//	        MouseMotionListener motionListener = new MouseMotionListener() {
-//
-//
-//	    		
-//
-//				@Override
-//	    		public void mouseDragged(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseMoved(MouseEvent e) {
-//	    			
-//	    			Point puntosRaton = new Point(e.getX(),e.getY());
-//	    			filaTablaClientes = tablaClientes.rowAtPoint(puntosRaton);
-//	    			tablaClientes.repaint();
-//	    			
-//	    		}
-//	    		
-//	    	};
-//	        
-//	    	MouseListener miMouseListener = new MouseListener() {
-//
-//	    		@Override
-//	    		public void mouseClicked(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mousePressed(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseReleased(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseEntered(MouseEvent e) {
-//	    			// TODO Auto-generated method stub
-//	    			
-//	    		}
-//
-//	    		@Override
-//	    		public void mouseExited(MouseEvent e) {
-//	    			filaTablaClientes=-1;
-//	    			tablaClientes.repaint();
-//	    			
-//	    		}
-//	    		
-//	    	};
-	    	
-//	    	tablaClientes.addMouseMotionListener(motionListener);
-//	    	tablaClientes.addMouseListener(miMouseListener);
 	        	        
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
 	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
@@ -356,7 +463,114 @@ public class JFrameListaClientes extends JFramePrincipal{
 			});
 			return panelCentral;
 		}
-	    
+	    //IAG
+		private void agregarMenuContextualTabla() {
+			JPopupMenu menuContextual = new JPopupMenu();
+		    
+		    JMenuItem itemVerFicha = new JMenuItem("Ver Ficha");
+		    JMenuItem itemEliminar = new JMenuItem("Eliminar Cliente");
+		    
+		    // Ver ficha
+		    itemVerFicha.addActionListener(e -> {
+		        int fila = tablaClientes.getSelectedRow();
+		        if (fila != -1) {
+		            gestionarMenu("Ver ficha");
+		        }
+		    });
+		    
+		    // Eliminar cliente
+		    itemEliminar.addActionListener(e -> {
+		        int fila = tablaClientes.getSelectedRow();
+		        if (fila != -1) {
+		            int id = (int) model.getValueAt(fila, 0);
+		            String nombre = (String) model.getValueAt(fila, 1);
+		            String dni = (String) model.getValueAt(fila, 2);
+		            
+		            int confirmacion = JOptionPane.showConfirmDialog(
+		                this,
+		                "¿Está seguro que desea eliminar al cliente:\n" + 
+		                nombre + " (" + dni + ")?",
+		                "Confirmar Eliminación",
+		                JOptionPane.YES_NO_OPTION,
+		                JOptionPane.WARNING_MESSAGE
+		            );
+		            
+		            if (confirmacion == JOptionPane.YES_OPTION) {
+		                eliminarClienteDeTabla(id, fila);
+		            }
+		        }
+		    });
+		   
+		  
+		    
+		    menuContextual.add(itemVerFicha);
+		    menuContextual.addSeparator();
+		    menuContextual.add(itemEliminar);
+		    
+		    // Añadir listener a la tabla
+		    tablaClientes.addMouseListener(new MouseAdapter() {
+		        @Override
+		        public void mousePressed(MouseEvent e) {
+		            mostrarMenu(e);
+		        }
+		        
+		        @Override
+		        public void mouseReleased(MouseEvent e) {
+		            mostrarMenu(e);
+		        }
+		        
+		        private void mostrarMenu(MouseEvent e) {
+		            if (e.isPopupTrigger()) {
+		                // Seleccionar la fila donde se hizo clic
+		                int fila = tablaClientes.rowAtPoint(e.getPoint());
+		                if (fila >= 0 && fila < tablaClientes.getRowCount()) {
+		                    tablaClientes.setRowSelectionInterval(fila, fila);
+		                    menuContextual.show(e.getComponent(), e.getX(), e.getY());
+		                }
+		            }
+		        }
+		    });
+			
+		}
+		//IAG
+		private void eliminarClienteDeTabla(int id, int fila) {
+			  try {
+			        System.out.println("Intentando eliminar cliente con ID: " + id);
+			        
+			        // PRIMERO eliminar de la base de datos
+			        gestorBD.borrarCliente(id);
+			        
+			        // LUEGO eliminar de la lista local
+			        clientes.removeIf(c -> c.getId() == id);
+			        
+			        // DESPUÉS eliminar de la tabla visual
+			        model.removeRow(fila);
+			        
+			        // FINALMENTE actualizar datosOriginales
+			        datosOriginales.remove(fila);
+			        
+			        System.out.println("Cliente eliminado. Total ahora: " + clientes.size());
+			        
+			        JOptionPane.showMessageDialog(
+			            this,
+			            "Cliente eliminado correctamente",
+			            "Éxito",
+			            JOptionPane.INFORMATION_MESSAGE
+			        );
+			        
+			    } catch (Exception ex) {
+			        System.err.println("Error completo: " + ex.getMessage());
+			        ex.printStackTrace();
+			        JOptionPane.showMessageDialog(
+			            this,
+			            "Error al eliminar el cliente: " + ex.getMessage(),
+			            "Error",
+			            JOptionPane.ERROR_MESSAGE
+			        );
+			    }
+			
+		}
+
 		private JPanel crearPanelInferior() {
 			JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
 			
@@ -375,8 +589,19 @@ public class JFrameListaClientes extends JFramePrincipal{
 		private void gestionarMenu(String ficha) {
 	    	switch(ficha) {
 	    	case "Ver ficha":
-	    		new JFrameFichaCliente();
-	    		dispose();
+	    		int filaSel = tablaClientes.getSelectedRow(); 
+	    		if(filaSel != -1) {
+	    			int id = (int) model.getValueAt(filaSel, 0);
+	    			Cliente clienteSel = null;
+	    			for (Cliente cliente : clientes) {
+						if(cliente.getId() == id) {
+							clienteSel = cliente;
+							break;
+						}
+					}
+	    			new JFrameFichaCliente(clienteSel).setVisible(true);;
+		    		
+	    		}
 	    		break;
 	    	}
 	    }
