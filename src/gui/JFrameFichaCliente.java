@@ -48,6 +48,7 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		JButton cerrar = new JButton("Cerrar");
 		cerrar.addActionListener((e)->{
 			dispose();
+			new JFrameListaClientes().setVisible(true);
 		});
 		this.add(cerrar,BorderLayout.SOUTH);
 		this.setFocusable(true); //IAG
@@ -133,9 +134,9 @@ public class JFrameFichaCliente extends JFramePrincipal{
 			panelTelefono.setEnabled(true);
 			panelEmail.setEnabled(true);
 			panelDireccion.setEnabled(true);
-			this.gestorBD.actualizarTelefono(cliente, panelTelefono.getText());
 			guardar.setEnabled(true);
 			editar.setEnabled(false);
+			
 		});
 		guardar.addActionListener((e)->{
 			panelNombre.setEnabled(false);
@@ -143,6 +144,10 @@ public class JFrameFichaCliente extends JFramePrincipal{
 			panelTelefono.setEnabled(false);
 			panelEmail.setEnabled(false);
 			panelDireccion.setEnabled(false);
+			this.gestorBD.actualizarNombre(cliente, panelNombre.getText());
+			this.gestorBD.actualizarDNI(cliente, panelDni.getText());
+			this.gestorBD.actualizarEmail(cliente, panelEmail.getText());
+			this.gestorBD.actualizarDireccion(cliente, panelDireccion.getText());
 			this.gestorBD.actualizarTelefono(cliente, panelTelefono.getText());
 			guardar.setEnabled(false);
 			editar.setEnabled(true);
@@ -158,6 +163,7 @@ public class JFrameFichaCliente extends JFramePrincipal{
 		panelPrincipal.add(botones);
 		return panelPrincipal;
 	}
+	
 	
 	
 

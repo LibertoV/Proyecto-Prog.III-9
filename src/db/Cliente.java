@@ -12,6 +12,7 @@ public class Cliente {
 
      public Cliente(int i, String nombre, String dni, String tlf, String fechaUltimaCompra, int recetasPendientes, String email,
 			String direccion) {
+    	this.id = i;
     	this.nombre = nombre;
         this.dni = dni;
         this.tlf = tlf;

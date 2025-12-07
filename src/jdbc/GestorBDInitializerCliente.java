@@ -45,7 +45,7 @@ public class GestorBDInitializerCliente {
 		
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {			
 	        String sql = "CREATE TABLE IF NOT EXISTS CLIENTE (\n"
-	                   + " ID INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                   + " ID INTEGER PRIMARY KEY ,\n"
 	                   + " NOMBRE TEXT NOT NULL,\n"
 	                   + " DNI TEXT NOT NULL,\n"
 	                   + " TLF TEXT NOT NULL,\n"
@@ -103,7 +103,7 @@ public class GestorBDInitializerCliente {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se define la plantilla de la sentencia SQL
-			String sql = "INSERT OR IGNORE INTO CLIENTE (NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?);";
+			String sql = "INSERT OR IGNORE INTO CLIENTE (ID, NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?,?);";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			
@@ -111,14 +111,14 @@ public class GestorBDInitializerCliente {
 			
 			//Se recorren los clientes y se insertan uno a uno
 			for (Cliente c : clientes) {				
-				
-				pstmt.setString(1, c.getNombre());
-				pstmt.setString(2, c.getDni());
-				pstmt.setString(3, c.getTlf());
-				pstmt.setString(4, c.getFechaUltimaCompra());
-				pstmt.setInt(5, c.getRecetasPendientes());
-				pstmt.setString(6, c.getEmail());
-				pstmt.setString(7, c.getDireccion());
+				pstmt.setInt(1, c.getId()); 
+	            pstmt.setString(2, c.getNombre());
+	            pstmt.setString(3, c.getDni());
+	            pstmt.setString(4, c.getTlf());
+	            pstmt.setString(5, c.getFechaUltimaCompra());
+	            pstmt.setInt(6, c.getRecetasPendientes());
+	            pstmt.setString(7, c.getEmail());
+	            pstmt.setString(8, c.getDireccion());
 				
 				if (1 == pstmt.executeUpdate()) {					
 					System.out.format("\n - Cliente insertado: %s", c.toString());
@@ -168,6 +168,49 @@ public class GestorBDInitializerCliente {
 		
 		return clientes;
 	}
+	public void actualizarNombre(Cliente cliente, String newNombre) {
+		//Se abre la conexión y se obtiene el Statement
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+			//Se ejecuta la sentencia de borrado de datos
+			String sql = "UPDATE CLIENTE SET NOMBRE = ? WHERE ID = ?;";
+			
+			PreparedStatement pstmt = con.prepareStatement(sql);	
+			pstmt.setString(1, newNombre);
+			pstmt.setInt(2, cliente.getId());
+			
+			int result = pstmt.executeUpdate();
+			
+			System.out.format("\n- Se ha actulizado nombre %d clientes", result);
+			
+	        //Es necesario cerrar el PreparedStatement
+	        pstmt.close();		
+		} catch (Exception ex) {
+			System.err.format("\n* Error actualizando datos de la BBDD: %s", ex.getMessage());
+			ex.printStackTrace();						
+		}		
+	}
+	
+	public void actualizarDNI(Cliente cliente, String newDNI) {
+		//Se abre la conexión y se obtiene el Statement
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
+			//Se ejecuta la sentencia de borrado de datos
+			String sql = "UPDATE CLIENTE SET DNI = ? WHERE ID = ?;";
+			
+			PreparedStatement pstmt = con.prepareStatement(sql);	
+			pstmt.setString(1, newDNI);
+			pstmt.setInt(2, cliente.getId());
+			
+			int result = pstmt.executeUpdate();
+			
+			System.out.format("\n- Se ha actulizado DNI %d clientes", result);
+			
+	        //Es necesario cerrar el PreparedStatement
+	        pstmt.close();		
+		} catch (Exception ex) {
+			System.err.format("\n* Error actualizando datos de la BBDD: %s", ex.getMessage());
+			ex.printStackTrace();						
+		}		
+	}
 
 	public void actualizarTelefono(Cliente cliente, String newtlf) {
 		//Se abre la conexión y se obtiene el Statement
@@ -194,7 +237,7 @@ public class GestorBDInitializerCliente {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se ejecuta la sentencia de borrado de datos
-			String sql = "UPDATE CLIENTE SET TLF = ? WHERE ID = ?;";
+			String sql = "UPDATE CLIENTE SET DIRECCION = ? WHERE ID = ?;";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);	
 			pstmt.setString(1, newDireccion);
@@ -276,6 +319,56 @@ public class GestorBDInitializerCliente {
 		        System.err.println("Error al eliminar cliente: " + e.getMessage());
 		        e.printStackTrace();
 		    }
+	}
+	
+	//IAG
+	public int obtenerPrimerIdDisponible() {
+	    String sql = "SELECT id FROM CLIENTE ORDER BY id";
+	    int idDisponible = 1;
+	    
+	    try (Connection conn = DriverManager.getConnection(CONNECTION_STRING);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        while (rs.next()) {
+	            int idActual = rs.getInt("id");
+	            
+	            // Si encontramos un hueco, ese es el ID disponible
+	            if (idActual != idDisponible) {
+	                break;
+	            }
+	            idDisponible++;
+	        }
+	        
+	        System.out.println("Primer ID disponible: " + idDisponible);
+	        return idDisponible;
+	        
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener ID disponible: " + e.getMessage());
+	        // Si hay error, devolver el máximo + 1
+	        return obtenerMaximoId() + 1;
+	    }
+	}
+	
+	// IAG 
+	//SIN CAMBIOS
+	// Método auxiliar para obtener el ID máximo 
+	public int obtenerMaximoId() {
+	    String sql = "SELECT MAX(id) as max_id FROM CLIENTE";
+	    
+	    try (Connection conn = DriverManager.getConnection(CONNECTION_STRING);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery(sql)) {
+	        
+	        if (rs.next()) {
+	            return rs.getInt("max_id");
+	        }
+	        return 0;
+	        
+	    } catch (SQLException e) {
+	        System.err.println("Error al obtener máximo ID: " + e.getMessage());
+	        return 0;
+	    }
 	}
 	
 	public void borrarDatos() {

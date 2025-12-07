@@ -17,10 +17,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -59,9 +67,10 @@ public class JFrameListaClientes extends JFramePrincipal{
 	private static final long serialVersionUID = 1L;
 	
 	private List<Cliente> clientes;
-	
+	private Vector<String> columnNames = new Vector<>();
 	private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
 	private JTable tablaClientes;
+	private JComboBox combo;
 	
 	
 	public JFrameListaClientes(){
@@ -151,8 +160,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		JComboBox<String> filtroCombo = new JComboBox<>(new String[]{"Todos", "Recetas pendientes", "Últimos 7 días"});
-		panelFiltro.add(filtroCombo);
+		
 		
 		JButton añadir = new JButton("+ Añadir cliente");
 		añadir.addActionListener((e)->{
@@ -160,10 +168,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 			
 			
 		});
-		panelFiltro.add(añadir, BorderLayout.EAST);
-		
-
-		
+			
 		txtFiltro = new JTextField(20);
 		
 		DocumentListener doclistener = new DocumentListener() {
@@ -191,6 +196,14 @@ public class JFrameListaClientes extends JFramePrincipal{
 		};
         
 		txtFiltro.getDocument().addDocumentListener(doclistener);
+		String[]tipoFiltro ={"Nombre", "ID", "DNI"};
+		combo = new JComboBox<>(tipoFiltro);
+		combo.addActionListener(e -> {
+            txtFiltro.setText("");           // Limpia el campo de texto
+            filtroCliente("");
+        });
+		panelFiltro.add(combo);
+		panelFiltro.add(añadir, BorderLayout.EAST);
 		JPanel panelBusqueda = new JPanel();
 		panelBusqueda.add(new JLabel("Buscar Cliente"));
 		panelBusqueda.add(txtFiltro);
@@ -216,6 +229,8 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 	}
 	
+	 
+
 	 private void nuevoCliente() {
 			JDialog dialog = new JDialog(this, "Nuevo Cliente", true);
 			dialog.setSize(300,400);
@@ -257,12 +272,9 @@ public class JFrameListaClientes extends JFramePrincipal{
 				//IAG
 				if(validarCampos(textoNombre, textoDNI, textoTelefono)) {
 		            try {
-		                // Obtener nuevo ID (el máximo + 1)
-		                int nuevoId = clientes.stream()
-		                    .mapToInt(Cliente::getId)
-		                    .max()
-		                    .orElse(0) + 1;
-		                
+		            	int nuevoId = gestorBD.obtenerPrimerIdDisponible();
+		            	
+		            	System.out.println("Asignando ID: " + nuevoId);
 		                // Crear cliente
 		                Cliente nuevoCliente = new Cliente(
 		                    nuevoId,
@@ -355,15 +367,14 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        
 	    	Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
 	    	String filtroLower = filtro.toLowerCase();
-	    	
+	    	int columnaFiltrada = columnNames.indexOf(combo.getSelectedItem());
+	    	if (columnaFiltrada < 0) columnaFiltrada = 0;
 	    	if(filtro.isEmpty()) {
-	    		cargaFiltrada.addAll(datosOriginales);
+	    		cargaFiltrada.addAll(convertirClientesAVector(this.clientes));
 	    	}else {
-	    		for(Vector<Object> fila : datosOriginales) {
-	        		String nombreCliente = fila.get(1).toString().toLowerCase();
-	        		String dniCliente = fila.get(2).toString().toLowerCase();
-	        		
-	        		if(nombreCliente.contains(filtroLower)|| dniCliente.contains(filtroLower)) {
+	    		for(Vector<Object> fila : convertirClientesAVector(this.clientes)) {
+	        		String idCliente = fila.get(columnaFiltrada).toString().toLowerCase();
+	        		if(idCliente.contains(filtroLower)) {
 	        			cargaFiltrada.add(fila);
 	        			
 	        		}
@@ -385,7 +396,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 			
 			
 			JPanel panelCentral = new JPanel(new BorderLayout());
-			Vector<String> columnNames = new Vector<>();
+			
 	        columnNames.add("ID");
 	        columnNames.add("Nombre");
 	        columnNames.add("DNI");
@@ -534,41 +545,34 @@ public class JFrameListaClientes extends JFramePrincipal{
 		}
 		//IAG
 		private void eliminarClienteDeTabla(int id, int fila) {
-			  try {
-			        System.out.println("Intentando eliminar cliente con ID: " + id);
-			        
-			        // PRIMERO eliminar de la base de datos
-			        gestorBD.borrarCliente(id);
-			        
-			        // LUEGO eliminar de la lista local
-			        clientes.removeIf(c -> c.getId() == id);
-			        
-			        // DESPUÉS eliminar de la tabla visual
-			        model.removeRow(fila);
-			        
-			        // FINALMENTE actualizar datosOriginales
-			        datosOriginales.remove(fila);
-			        
-			        System.out.println("Cliente eliminado. Total ahora: " + clientes.size());
-			        
-			        JOptionPane.showMessageDialog(
-			            this,
-			            "Cliente eliminado correctamente",
-			            "Éxito",
-			            JOptionPane.INFORMATION_MESSAGE
-			        );
-			        
-			    } catch (Exception ex) {
-			        System.err.println("Error completo: " + ex.getMessage());
-			        ex.printStackTrace();
-			        JOptionPane.showMessageDialog(
-			            this,
-			            "Error al eliminar el cliente: " + ex.getMessage(),
-			            "Error",
-			            JOptionPane.ERROR_MESSAGE
-			        );
-			    }
-			
+		    try {
+		        System.out.println("Intentando eliminar cliente con ID: " + id);
+		        
+		        // PRIMERO eliminar de la base de datos
+		        gestorBD.borrarCliente(id);
+		        
+		        // ACTUALIZAR DESDE LA BD (esto es lo importante)
+		        actualizarTabla();
+		        
+		        System.out.println("Cliente eliminado. Total ahora: " + clientes.size());
+		        
+		        JOptionPane.showMessageDialog(
+		            this,
+		            "Cliente eliminado correctamente",
+		            "Éxito",
+		            JOptionPane.INFORMATION_MESSAGE
+		        );
+		        
+		    } catch (Exception ex) {
+		        System.err.println("Error completo: " + ex.getMessage());
+		        ex.printStackTrace();
+		        JOptionPane.showMessageDialog(
+		            this,
+		            "Error al eliminar el cliente: " + ex.getMessage(),
+		            "Error",
+		            JOptionPane.ERROR_MESSAGE
+		        );
+		    }
 		}
 
 		private JPanel crearPanelInferior() {
@@ -579,9 +583,30 @@ public class JFrameListaClientes extends JFramePrincipal{
 			verFichaCliente.addActionListener(e ->{
             	gestionarMenu(ficha);
             });
-			JButton exportarCSV = new JButton("Exportar CSV");
+			JButton eliminar = new JButton("Eliminar");
+			eliminar.addActionListener(e->{
+				int fila = tablaClientes.getSelectedRow();
+		        if (fila != -1) {
+		            int id = (int) model.getValueAt(fila, 0);
+		            String nombre = (String) model.getValueAt(fila, 1);
+		            String dni = (String) model.getValueAt(fila, 2);
+		            
+		            int confirmacion = JOptionPane.showConfirmDialog(
+		                this,
+		                "¿Está seguro que desea eliminar al cliente:\n" + 
+		                nombre + " (" + dni + ")?",
+		                "Confirmar Eliminación",
+		                JOptionPane.YES_NO_OPTION,
+		                JOptionPane.WARNING_MESSAGE
+		            );
+		            
+		            if (confirmacion == JOptionPane.YES_OPTION) {
+		                eliminarClienteDeTabla(id, fila);
+		            }
+		        }
+			});
 			panelInferior.add(verFichaCliente);
-			panelInferior.add(exportarCSV);
+			panelInferior.add(eliminar);
 			
 			return panelInferior;
 		}

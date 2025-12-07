@@ -25,12 +25,18 @@ public class MainJdbc {
 		printClientes(clientes);
 		
 		//UPDATE: Se actualiza la password de un cliente
-		String newtlf = "+34 6666666666";
-		gestorBD.actualizarTelefono(clientes.get(0), newtlf);
-
+//		String newtlf = "+34 6666666666";
+//		gestorBD.actualizarTelefono(clientes.get(0), newtlf);
+//		
+//		String newNombre = "Maria";
+//		gestorBD.actualizarNombre(clientes.get(0), newNombre);
+//		
+//		String DNI = "5554454a";
+//		gestorBD.actualizarDNI(clientes.get(0), DNI);
 		//SELECT: Se obtienen datos de la BBDD
 		clientes = gestorBD.obtenerDatos();
 		printClientes(clientes);
+		
 		
 		gestorBD.borrarCliente(1);
 		//DELETE: Se borran datos de la BBDD
