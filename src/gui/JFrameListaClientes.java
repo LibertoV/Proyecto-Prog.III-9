@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
@@ -162,7 +163,13 @@ public class JFrameListaClientes extends JFramePrincipal{
 		
 		
 		
-		JButton añadir = new JButton("+ Añadir cliente");
+		JButton añadir = new JButton();
+		añadir.setBackground(Color.white);
+		añadir.setText("+ Añadir cliente");
+		ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
+		ImageIcon logoAjustado2 = new ImageIcon(logoAñadir.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+		añadir.setIcon(logoAjustado2);
+		
 		añadir.addActionListener((e)->{
 			nuevoCliente();
 			
@@ -215,6 +222,7 @@ public class JFrameListaClientes extends JFramePrincipal{
         ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JButton MenuPrincipal = new JButton(logoAjustado1);
 		MenuPrincipal.setBorder(null);
+		MenuPrincipal.setBackground(Color.white);
 		panelCabecera.add(MenuPrincipal, BorderLayout.WEST);
 		
 		MenuPrincipal.addActionListener(e->{
@@ -233,13 +241,22 @@ public class JFrameListaClientes extends JFramePrincipal{
 
 	 private void nuevoCliente() {
 			JDialog dialog = new JDialog(this, "Nuevo Cliente", true);
-			dialog.setSize(300,400);
-			dialog.setLayout(new BorderLayout(10,10));
+			dialog.setSize(380,400);
+			dialog.setLayout(new BorderLayout());
 			
-			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,10));
-			panelCampos.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 			
-			panelCampos.add(new JLabel("Nombre:"));
+			JPanel panelCabecera = new JPanel();
+			panelCabecera.setBackground(new Color(194, 192, 148));
+			JLabel newCl = new JLabel("AÑADIR NUEVO CLIENTE");
+			newCl.setFont(new Font("Arial", Font.PLAIN,16));
+			newCl.setForeground(Color.black);
+			panelCabecera.add(newCl);
+			
+			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,12));
+			panelCampos.setBorder(BorderFactory.createEmptyBorder(15,20,15,20));
+			panelCampos.setBackground(new Color(194, 192, 148));
+			
+			panelCampos.add(new JLabel("NOMBRE:"));
 			JTextField textoNombre = new JTextField();
 			panelCampos.add(textoNombre);
 			
@@ -247,26 +264,46 @@ public class JFrameListaClientes extends JFramePrincipal{
 			JTextField textoDNI = new JTextField();
 			panelCampos.add(textoDNI);
 			
-			panelCampos.add(new JLabel("Telefono:"));
+			panelCampos.add(new JLabel("TELEFONO:"));
 			JTextField textoTelefono = new JTextField();
 			panelCampos.add(textoTelefono);
 			
-			panelCampos.add(new JLabel("Email:"));
+			panelCampos.add(new JLabel("EMAIL:"));
 			JTextField textoEmail = new JTextField();
 			panelCampos.add(textoEmail);
 			
-			panelCampos.add(new JLabel("Direccion:"));
+			panelCampos.add(new JLabel("DIRECCIÓN:"));
 			JTextField textoDireccion = new JTextField();
 			panelCampos.add(textoDireccion);
 			
-			
-			
+			dialog.add(panelCabecera, BorderLayout.NORTH);
 			dialog.add(panelCampos);
 			
-			JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			JPanel botones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+			botones.setBackground(new Color(194, 192, 148));
+			JButton guardar = new JButton("GUARDAR");
+			JButton cancelar = new JButton("CANCELAR");
 			
-			JButton guardar = new JButton("Guardar");
-			JButton cancelar = new JButton("Cancelar");
+			for (Component comp : panelCampos.getComponents()) {
+				if(comp instanceof JLabel) {
+					comp.setFont(new Font("Arial", Font.BOLD, 14));
+					
+				}else if(comp instanceof JTextField){
+					comp.setFont(new Font("Arial", Font.PLAIN,14)); //IAG
+				}
+			}
+			
+			guardar.setBackground(new Color(42, 114, 33));
+			guardar.setForeground(Color.white);
+			guardar.setFont(new Font("Arial",Font.BOLD,14));
+			guardar.setPreferredSize(new Dimension(120,40));
+			
+			cancelar.setForeground(Color.white);
+			cancelar.setBackground(new Color(167, 38, 8));
+			cancelar.setFont(new Font("Arial",Font.BOLD,14));
+			cancelar.setPreferredSize(new Dimension(120,40));
+			
+			
 			
 			guardar.addActionListener(e->{
 				//IAG
@@ -314,6 +351,9 @@ public class JFrameListaClientes extends JFramePrincipal{
 			cancelar.addActionListener(e ->{
 				dialog.dispose();
 			});
+					
+			guardar.setBorderPainted(false);
+			cancelar.setBorderPainted(false);
 			
 			botones.add(cancelar);
 			botones.add(guardar);
