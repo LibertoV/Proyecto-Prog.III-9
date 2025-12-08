@@ -31,10 +31,27 @@ public class JFrameLogin extends JFramePrincipal {
 		ImageIcon logoAjustado = new ImageIcon(logo.getImage().getScaledInstance(280, 200, Image.SCALE_SMOOTH));
 		JLabel imagen = new JLabel(logoAjustado);
 
-		JTextField userField = new JTextField(15);
-		JPasswordField passwordField = new JPasswordField(15);
-		JButton loginButton = new JButton("Entrar");
-
+		ModernTextField userField = new ModernTextField(15);
+		userField.setFont(new Font("Century Gothic",Font.PLAIN,16));
+		userField.setForeground(new Color(92, 111, 104));
+		ModernPasswordField passwordField = new ModernPasswordField(15);
+		
+		JButton loginButton = new JButton();
+		loginButton.setText("Entrar");
+		loginButton.setFont(new Font("Century Gothic",Font.PLAIN,16));
+		loginButton.setBackground(new Color(138, 163, 155));
+		loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+			// Al entrar el ratón se poner el color más oscuro y se muestra el nombre de la zona
+			public void mouseEntered(java.awt.event.MouseEvent evt) {
+				loginButton.setBackground(new Color(138, 163, 155).darker());
+				
+			}
+			
+			// Al salir el ratón se vuelve al color original y se oculta el nombre de la zona
+			public void mouseExited(java.awt.event.MouseEvent evt) {
+				loginButton.setBackground(new Color(138, 163, 155));
+			}
+		});
 		JPanel loginPanel = new JPanel(new GridBagLayout());
 		loginPanel.setOpaque(false);
 
@@ -47,7 +64,12 @@ public class JFrameLogin extends JFramePrincipal {
 		gbc.gridy = 0;
 
 		gbc.gridx = 0;
-		loginPanel.add(new JLabel("Usuario:"), gbc);
+		gbc.anchor = GridBagConstraints.WEST;
+		JLabel panelUsuario = new JLabel();
+		panelUsuario.setText("Usuario: ");
+		panelUsuario.setFont(new Font("Century Gothic",Font.PLAIN,16));
+		panelUsuario.setForeground(new Color(92, 111, 104));
+		loginPanel.add(panelUsuario, gbc);
 		gbc.gridx = 1;
 		loginPanel.add(userField, gbc);
 
@@ -55,13 +77,19 @@ public class JFrameLogin extends JFramePrincipal {
 		gbc.gridy = 1;
 
 		gbc.gridx = 0;
-		loginPanel.add(new JLabel("Contraseña:"), gbc);
+		gbc.anchor = GridBagConstraints.WEST;
+		JLabel panelContraseña = new JLabel();
+		panelContraseña.setText("Contraseña: ");
+		panelContraseña.setFont(new Font("Century Gothic",Font.PLAIN,16));
+		panelContraseña.setForeground(new Color(92, 111, 104));
+		loginPanel.add(panelContraseña, gbc);
 		gbc.gridx = 1;
 		loginPanel.add(passwordField, gbc);
 
 		// Fila 3: login
 		gbc.gridy = 2;
-		gbc.gridx = 1;
+		gbc.gridx = 0;
+		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.NONE;
 		loginPanel.add(loginButton, gbc);

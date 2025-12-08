@@ -7,20 +7,26 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 
 import db.Cliente;
+import domain.Trabajador;
 import gui.JFrameListaClientes;
 
 public class MainJdbc {
 
 	public static void main(String[] args) {
 		GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();		
-		
+		GestorBDInitializerTrabajadores gestor2 = new GestorBDInitializerTrabajadores();
 		//CREATE DATABASE: Se crea la BBDD
 		gestorBD.crearBBDD();    
+		gestor2.crearBBDD();
+		List<Trabajador> trabajadores = initTrabajador();
+		gestor2.insertarDatos(trabajadores.toArray(new Trabajador[trabajadores.size()]));
 		//INSERT: Insertar datos en la BBDD		
 		List<Cliente> clientes = initClientes();
 		gestorBD.insertarDatos(clientes.toArray(new Cliente[clientes.size()]));
 		
 		//SELECT: Se obtienen datos de la BBDD
+		trabajadores = gestor2.obtenerDatos();
+		printTrabajadores(trabajadores);
 		clientes = gestorBD.obtenerDatos();
 		printClientes(clientes);
 		
@@ -46,6 +52,12 @@ public class MainJdbc {
 		gestorBD.borrarBBDD();
 	}
 	
+	private static void printTrabajadores(List<Trabajador> trabajadores) {
+		if (!trabajadores.isEmpty()) {
+			trabajadores.forEach(cliente ->	System.out.format("\n - %s", cliente.toString()));
+		}	
+	}
+
 	private static void printClientes(List<Cliente> clientes) {
 		if (!clientes.isEmpty()) {
 			clientes.forEach(cliente ->	System.out.format("\n - %s", cliente.toString()));
@@ -91,5 +103,45 @@ public class MainJdbc {
 		return clientes;
 	}
 	
- 
+	private static List<Trabajador> initTrabajador() {
+		List<Trabajador> trabajadores = new ArrayList<>();		
+		
+		
+		try {
+			// Abrir el fichero
+			File fichero = new File("resources/db/trabajadores.csv");
+			Scanner sc = new Scanner(fichero);
+			
+			// Leer el fichero
+			while (sc.hasNextLine()) {
+			
+				String linea = sc.nextLine();
+				
+				String[] campos = linea.split(",");
+				if (campos[0].equalsIgnoreCase("id")) {
+				    continue;
+				}
+				int id = Integer.parseInt(campos[0]);
+				String nombre = campos[1];
+				String dni = campos[2];
+				String tlf = campos[3];
+				String email = campos[4];
+				String direccion = campos[5];
+				String puesto = campos[6];
+				String nss = campos[7];
+				String turno = campos[8];
+				Float salario = Float.parseFloat(campos[9]);
+				
+				Trabajador trabajador = new Trabajador(id,nombre,dni,tlf,email,direccion,puesto,nss,turno,salario);
+				trabajadores.add(trabajador);
+			}
+			
+			// Cerrar el fichero
+			sc.close();
+		} catch (Exception e) {
+			System.err.println("Error al cargar datos desde trabajadores.csv");
+		}
+		return trabajadores;
+	}
+
 }

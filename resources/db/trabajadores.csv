@@ -1,0 +1,151 @@
+id,nombre,dni,telefono,email,direccion,puesto,nss,turno,salario
+1,Marta Ruiz,18295657S,676361212,marta.ruiz@hotmail.com,Paseo del Prado Nº 43,Auxiliar,710773945649,Mañana,1431
+2,Pedro Martínez,35215174D,637159742,pedro.martínez@hotmail.com,Paseo del Prado Nº 135,Farmacéutico,885217052584,Mañana,2399
+3,Laura Martínez,95313662M,685601106,laura.martínez@hotmail.com,Paseo del Prado Nº 30,Auxiliar,703135075834,Tarde,1434
+4,Elena Díaz,82662194Y,691030099,elena.díaz@gmail.com,Ronda Norte Nº 161,Técnico de Farmacia,817642755102,Tarde,1665
+5,Sofía Torres,55434131J,628260952,sofía.torres@hotmail.com,Ronda Norte Nº 200,Farmacéutico,867576389527,Noche,2042
+6,Sofía García,15372263R,685629904,sofía.garcía@farmacia.es,Ronda Norte Nº 152,Auxiliar,068776794040,Noche,1242
+7,Carlos Ruiz,91056279U,688102168,carlos.ruiz@hotmail.com,Paseo del Prado Nº 135,Auxiliar,031014982904,Tarde,1470
+8,María Martínez,26498969U,670300000,maría.martínez@farmacia.es,Ronda Norte Nº 119,Técnico de Farmacia,655736578835,Tarde,1932
+9,Luis Morales,64400335S,682182580,luis.morales@farmacia.es,Calle Mayor Nº 190,Encargado,799398264533,Mañana,2244
+10,Elena Santos,52812406M,622794702,elena.santos@farmacia.es,Calle Real Nº 140,Encargado,177482361384,Mañana,2208
+11,Manuel García,54305744J,631713232,manuel.garcía@farmacia.es,Calle Mayor Nº 196,Reponedor,350867291578,Tarde,1202
+12,Javier Díaz,24785593L,690198029,javier.díaz@gmail.com,Avenida del Sol Nº 101,Encargado,406961904923,Mañana,1921
+13,Carmen Martínez,30605055R,682632994,carmen.martínez@gmail.com,Calle Real Nº 96,Encargado,545478188490,Noche,2149
+14,Javier Díaz,72872367L,659807154,javier.díaz@farmacia.es,Ronda Norte Nº 144,Técnico de Farmacia,685107994795,Tarde,1588
+15,Sofía Díaz,01199859T,660096175,sofía.díaz@farmacia.es,Calle Mayor Nº 170,Encargado,057903169325,Noche,1916
+16,Laura Ruiz,87147213D,686614039,laura.ruiz@gmail.com,Calle Luna Nº 102,Técnico de Farmacia,374378114119,Tarde,1875
+17,Irene Hernández,64625351O,645599910,irene.hernández@gmail.com,Avenida del Sol Nº 167,Auxiliar,385311119332,Tarde,1358
+18,Pablo Díaz,02763881T,673470870,pablo.díaz@gmail.com,Paseo del Prado Nº 62,Farmacéutico,725399159875,Noche,2763
+19,Raúl Morales,80576338G,632593341,raúl.morales@farmacia.es,Calle Mayor Nº 157,Técnico de Farmacia,951014951900,Mañana,1936
+20,Elena López,92512864F,600959494,elena.lópez@gmail.com,Paseo del Prado Nº 102,Farmacéutico,712884008871,Noche,2513
+21,Raúl Santos,26431976Z,670998332,raúl.santos@farmacia.es,Ronda Norte Nº 176,Encargado,781476160905,Tarde,2071
+22,Ana Torres,99394038D,620314309,ana.torres@hotmail.com,Avenida del Sol Nº 147,Farmacéutico,149615811921,Mañana,2252
+23,Pablo López,34479270F,686249438,pablo.lópez@hotmail.com,Calle Luna Nº 101,Farmacéutico,210332556437,Tarde,2289
+24,Diego López,60140909G,661604862,diego.lópez@hotmail.com,Ronda Norte Nº 183,Auxiliar,243366406531,Mañana,1436
+25,Marta Castro,06957789V,600415663,marta.castro@farmacia.es,Calle Luna Nº 199,Encargado,372811270745,Tarde,2308
+26,Carlos Ruiz,89049699J,679742521,carlos.ruiz@farmacia.es,Avenida del Sol Nº 22,Reponedor,402179385748,Mañana,1239
+27,Andrés García,49944600I,601322352,andrés.garcía@hotmail.com,Ronda Norte Nº 135,Farmacéutico,782648813982,Noche,2731
+28,Laura García,49946735M,659416305,laura.garcía@hotmail.com,Ronda Norte Nº 186,Farmacéutico,698918378967,Tarde,2048
+29,Pablo Santos,46148508T,638751295,pablo.santos@gmail.com,Calle Mayor Nº 88,Farmacéutico,356325280782,Noche,2751
+30,Irene Torres,00928022S,681608571,irene.torres@hotmail.com,Calle Luna Nº 101,Farmacéutico,119269442190,Mañana,2674
+31,Sofía Torres,45741937O,678050690,sofía.torres@gmail.com,Calle Luna Nº 129,Reponedor,780566083791,Mañana,1173
+32,Javier Castro,34737800Y,612744028,javier.castro@gmail.com,Ronda Norte Nº 154,Auxiliar,824786800080,Tarde,1203
+33,Sara López,89743825M,671245859,sara.lópez@gmail.com,Calle Mayor Nº 128,Reponedor,080959883539,Mañana,1262
+34,Laura Santos,36316139K,609124411,laura.santos@gmail.com,Avenida del Sol Nº 174,Técnico de Farmacia,931413562947,Noche,1776
+35,Laura Martínez,51088394F,666901930,laura.martínez@farmacia.es,Avenida del Sol Nº 193,Auxiliar,189883375367,Mañana,1246
+36,Luis Morales,21262590C,655783361,luis.morales@farmacia.es,Calle Mayor Nº 66,Reponedor,885976030246,Tarde,1251
+37,Sofía García,09203008J,672482335,sofía.garcía@gmail.com,Calle Real Nº 199,Técnico de Farmacia,626579809785,Tarde,1901
+38,Javier Santos,09192220G,683281439,javier.santos@hotmail.com,Calle Luna Nº 41,Auxiliar,894981250905,Tarde,1433
+39,Luis Ruiz,36635551K,679387110,luis.ruiz@gmail.com,Avenida del Sol Nº 145,Encargado,418749894159,Mañana,2247
+40,Pedro Morales,74285610Q,623698141,pedro.morales@hotmail.com,Paseo del Prado Nº 62,Farmacéutico,115840705028,Mañana,2510
+41,Carlos Hernández,58253419H,633635379,carlos.hernández@hotmail.com,Ronda Norte Nº 96,Farmacéutico,787914904165,Noche,2390
+42,Marta López,84618026Y,618355833,marta.lópez@hotmail.com,Avenida del Sol Nº 130,Farmacéutico,903430391062,Tarde,2713
+43,Elena Ruiz,08858549F,616219445,elena.ruiz@hotmail.com,Calle Real Nº 180,Farmacéutico,166031124539,Tarde,2302
+44,Laura Martínez,20700303I,657787434,laura.martínez@hotmail.com,Calle Real Nº 95,Farmacéutico,346453346577,Tarde,2775
+45,Laura García,26074538R,671967275,laura.garcía@gmail.com,Avenida del Sol Nº 151,Reponedor,303290194044,Tarde,1142
+46,Marta Martínez,37920770E,681420220,marta.martínez@hotmail.com,Calle Real Nº 121,Reponedor,903458458058,Noche,1205
+47,Irene Martínez,89088463G,638464426,irene.martínez@hotmail.com,Calle Real Nº 77,Técnico de Farmacia,601509792475,Noche,1746
+48,Laura Díaz,77940297P,640880269,laura.díaz@hotmail.com,Ronda Norte Nº 196,Encargado,172097355074,Noche,2037
+49,Jorge Ruiz,69764169B,666990132,jorge.ruiz@farmacia.es,Calle Luna Nº 26,Encargado,034976773419,Tarde,2456
+50,Jorge Ruiz,41405941Q,667778297,jorge.ruiz@gmail.com,Calle Mayor Nº 17,Reponedor,281633843596,Tarde,1224
+51,Carmen Díaz,08630499S,618765478,carmen.díaz@farmacia.es,Paseo del Prado Nº 13,Técnico de Farmacia,147436898635,Noche,1766
+52,Javier López,13285997G,605059083,javier.lópez@gmail.com,Calle Luna Nº 106,Encargado,646681756404,Noche,2339
+53,Sofía Morales,85507518G,609056014,sofía.morales@hotmail.com,Avenida del Sol Nº 126,Auxiliar,736611506727,Mañana,1392
+54,Irene Ruiz,27249754Q,609169685,irene.ruiz@gmail.com,Calle Mayor Nº 110,Auxiliar,231546794637,Tarde,1218
+55,Sofía Castro,83685590H,661356539,sofía.castro@farmacia.es,Paseo del Prado Nº 44,Encargado,226864889469,Tarde,1893
+56,Elena Santos,51166742I,668043375,elena.santos@gmail.com,Calle Real Nº 197,Auxiliar,154768307814,Noche,1307
+57,Jorge Castro,75117847B,689916780,jorge.castro@farmacia.es,Avenida del Sol Nº 29,Farmacéutico,095604616459,Tarde,2699
+58,Marta García,96105031L,694578555,marta.garcía@hotmail.com,Calle Real Nº 41,Técnico de Farmacia,775167052064,Tarde,1849
+59,Lucía García,60270339M,606271782,lucía.garcía@hotmail.com,Calle Luna Nº 106,Farmacéutico,403112894245,Mañana,2467
+60,Luis García,29163649Z,602651728,luis.garcía@hotmail.com,Paseo del Prado Nº 73,Farmacéutico,815340652675,Tarde,2026
+61,Diego Ruiz,28398876A,689578734,diego.ruiz@farmacia.es,Ronda Norte Nº 197,Reponedor,384454410302,Tarde,1185
+62,María Díaz,17177178P,658596461,maría.díaz@hotmail.com,Calle Real Nº 75,Encargado,502004771321,Tarde,1826
+63,Raúl Martínez,81025884O,673806303,raúl.martínez@farmacia.es,Avenida del Sol Nº 173,Técnico de Farmacia,304054247200,Noche,1979
+64,Ana García,52286778U,639544903,ana.garcía@farmacia.es,Avenida del Sol Nº 147,Reponedor,114887141740,Noche,1254
+65,Andrés Castro,58778847U,663247567,andrés.castro@farmacia.es,Calle Mayor Nº 139,Farmacéutico,299124695528,Tarde,2243
+66,Sofía Martínez,74984807O,605423399,sofía.martínez@farmacia.es,Calle Luna Nº 123,Técnico de Farmacia,819604601367,Mañana,1911
+67,Pedro Morales,29493604X,603141751,pedro.morales@gmail.com,Avenida del Sol Nº 11,Técnico de Farmacia,255368089081,Noche,1507
+68,Raúl García,26450763H,606531299,raúl.garcía@farmacia.es,Calle Luna Nº 74,Técnico de Farmacia,112988127124,Tarde,1997
+69,Diego Hernández,39550861I,621843386,diego.hernández@gmail.com,Calle Luna Nº 135,Encargado,404040177205,Noche,2260
+70,Pedro Hernández,83045555L,632466843,pedro.hernández@hotmail.com,Calle Real Nº 43,Auxiliar,468942842894,Mañana,1383
+71,Jorge Martínez,90841308L,641122205,jorge.martínez@farmacia.es,Calle Real Nº 146,Auxiliar,052155748052,Mañana,1216
+72,Manuel Ruiz,18326184I,668298576,manuel.ruiz@hotmail.com,Paseo del Prado Nº 78,Farmacéutico,933897218931,Noche,2643
+73,Jorge Díaz,23854720W,663845349,jorge.díaz@gmail.com,Ronda Norte Nº 147,Farmacéutico,378298269404,Mañana,2722
+74,Elena Martínez,31865392O,668889086,elena.martínez@hotmail.com,Avenida del Sol Nº 68,Auxiliar,746373399170,Tarde,1448
+75,Pedro López,58703462P,665574926,pedro.lópez@gmail.com,Avenida del Sol Nº 120,Encargado,659841193211,Tarde,2094
+76,Lucía Hernández,90928774O,663886943,lucía.hernández@gmail.com,Paseo del Prado Nº 155,Encargado,974354824956,Tarde,2223
+77,Ana García,45759762U,681167374,ana.garcía@farmacia.es,Calle Mayor Nº 105,Técnico de Farmacia,917727278135,Tarde,1608
+78,Javier Morales,24662744Y,621918880,javier.morales@gmail.com,Calle Real Nº 44,Encargado,211028774440,Tarde,2321
+79,Pedro García,91865759G,685540128,pedro.garcía@gmail.com,Calle Mayor Nº 150,Reponedor,498605464780,Tarde,1252
+80,Irene Castro,51770609E,664697113,irene.castro@farmacia.es,Calle Luna Nº 134,Técnico de Farmacia,335466150186,Tarde,1528
+81,Sofía Torres,08319857W,659247020,sofía.torres@hotmail.com,Ronda Norte Nº 108,Técnico de Farmacia,410039189238,Tarde,1585
+82,Carmen Martínez,67816015O,693771202,carmen.martínez@gmail.com,Avenida del Sol Nº 55,Reponedor,570202067552,Mañana,1293
+83,Marta Martínez,21650352D,618595703,marta.martínez@farmacia.es,Calle Luna Nº 57,Encargado,694943739391,Mañana,1821
+84,Pablo López,39266229W,634872958,pablo.lópez@farmacia.es,Avenida del Sol Nº 41,Reponedor,851121823014,Tarde,1260
+85,María Torres,57192656B,659020726,maría.torres@farmacia.es,Avenida del Sol Nº 187,Farmacéutico,818915058673,Mañana,2295
+86,Pablo Torres,31315493M,676201530,pablo.torres@hotmail.com,Calle Real Nº 26,Técnico de Farmacia,360818058138,Noche,1726
+87,Sofía Ruiz,24437178Q,688626114,sofía.ruiz@gmail.com,Calle Real Nº 107,Reponedor,497397510258,Noche,1166
+88,Diego Ruiz,89606139R,615433095,diego.ruiz@gmail.com,Avenida del Sol Nº 73,Encargado,365849086247,Tarde,2450
+89,Ana Santos,83138103O,654429308,ana.santos@hotmail.com,Ronda Norte Nº 77,Reponedor,544541182510,Mañana,1292
+90,Manuel López,13612592Y,679329480,manuel.lópez@farmacia.es,Ronda Norte Nº 177,Farmacéutico,185424201497,Mañana,2068
+91,Lucía Díaz,83568840O,621020344,lucía.díaz@farmacia.es,Paseo del Prado Nº 101,Farmacéutico,411155377014,Tarde,2106
+92,Manuel Martínez,95044185J,605495446,manuel.martínez@farmacia.es,Ronda Norte Nº 39,Reponedor,053059040240,Tarde,1265
+93,Manuel Díaz,12350490D,612753254,manuel.díaz@farmacia.es,Ronda Norte Nº 4,Reponedor,505370974482,Tarde,1231
+94,Irene Díaz,54300466P,602513171,irene.díaz@farmacia.es,Calle Luna Nº 62,Técnico de Farmacia,737130706847,Mañana,1656
+95,Andrés López,34268483D,610130392,andrés.lópez@farmacia.es,Ronda Norte Nº 66,Auxiliar,097745064638,Noche,1281
+96,Marta López,84942371A,678949664,marta.lópez@gmail.com,Avenida del Sol Nº 99,Técnico de Farmacia,329791907611,Tarde,1535
+97,Jorge Martínez,12863663O,620486558,jorge.martínez@hotmail.com,Calle Real Nº 110,Encargado,844509898718,Mañana,1988
+98,Marta López,20952931E,637418865,marta.lópez@gmail.com,Calle Mayor Nº 91,Encargado,284728736656,Noche,2114
+99,Raúl López,83384004Q,636288972,raúl.lópez@farmacia.es,Calle Luna Nº 192,Reponedor,906694088553,Mañana,1112
+100,Manuel Díaz,65822737F,676556566,manuel.díaz@gmail.com,Calle Real Nº 53,Encargado,673908633886,Mañana,2222
+101,Carlos López,33207063V,695976824,carlos.lópez@hotmail.com,Calle Luna Nº 93,Técnico de Farmacia,404044447723,Tarde,1630
+102,Elena López,38150758J,610019243,elena.lópez@gmail.com,Calle Luna Nº 177,Encargado,836875334479,Tarde,2118
+103,Jorge Díaz,34992531Y,658491351,jorge.díaz@hotmail.com,Calle Mayor Nº 110,Farmacéutico,698568425744,Noche,2296
+104,Laura Díaz,60636814N,639131555,laura.díaz@hotmail.com,Calle Luna Nº 69,Técnico de Farmacia,840257995179,Tarde,1881
+105,Andrés López,79845579H,684492477,andrés.lópez@gmail.com,Calle Luna Nº 158,Farmacéutico,806857024599,Noche,2224
+106,Pablo Santos,19468043H,661768848,pablo.santos@hotmail.com,Calle Luna Nº 157,Farmacéutico,083278066436,Noche,2101
+107,Ana Torres,90461695B,661465256,ana.torres@gmail.com,Calle Mayor Nº 80,Reponedor,454614349419,Mañana,1255
+108,Manuel Morales,12828661L,648844003,manuel.morales@hotmail.com,Calle Mayor Nº 83,Técnico de Farmacia,790964637586,Tarde,1561
+109,Laura Santos,64168653M,632116718,laura.santos@gmail.com,Calle Mayor Nº 144,Reponedor,102112388950,Mañana,1225
+110,Marta Torres,78254985W,651961098,marta.torres@farmacia.es,Ronda Norte Nº 139,Técnico de Farmacia,624640753598,Mañana,1799
+111,Sara Martínez,36570626P,634615829,sara.martínez@farmacia.es,Avenida del Sol Nº 35,Encargado,604271916680,Noche,2127
+112,Luis López,62356167J,664097715,luis.lópez@farmacia.es,Calle Real Nº 35,Farmacéutico,098761666292,Mañana,2557
+113,Javier Hernández,82281983I,627691665,javier.hernández@hotmail.com,Calle Mayor Nº 98,Reponedor,659476702687,Mañana,1182
+114,María Hernández,86282621C,624815777,maría.hernández@farmacia.es,Calle Mayor Nº 72,Farmacéutico,152356957483,Tarde,2583
+115,Carlos Martínez,78906617F,606623382,carlos.martínez@gmail.com,Calle Real Nº 184,Auxiliar,036712323071,Mañana,1253
+116,Pedro Martínez,21102504F,642624437,pedro.martínez@gmail.com,Calle Luna Nº 78,Farmacéutico,826885298425,Noche,2431
+117,Carmen Martínez,54289163Q,685725839,carmen.martínez@hotmail.com,Calle Mayor Nº 5,Farmacéutico,342126221211,Tarde,2714
+118,Irene García,04245239D,655188114,irene.garcía@gmail.com,Calle Luna Nº 82,Farmacéutico,886191287931,Tarde,2738
+119,Marta Díaz,43840686E,647625090,marta.díaz@farmacia.es,Paseo del Prado Nº 2,Encargado,951171498738,Noche,2039
+120,Marta Hernández,63827894E,635610069,marta.hernández@gmail.com,Paseo del Prado Nº 163,Auxiliar,446509617410,Mañana,1315
+121,Elena García,72444933L,674328977,elena.garcía@farmacia.es,Avenida del Sol Nº 76,Auxiliar,647863266852,Mañana,1364
+122,Andrés Castro,18058272J,671833216,andrés.castro@hotmail.com,Calle Luna Nº 32,Auxiliar,190859551346,Tarde,1462
+123,Sara Santos,05473940G,677650831,sara.santos@farmacia.es,Ronda Norte Nº 127,Técnico de Farmacia,517190448835,Noche,1524
+124,Raúl Morales,63839663O,669351598,raúl.morales@gmail.com,Avenida del Sol Nº 89,Reponedor,897553919727,Noche,1273
+125,Carlos García,61041225M,673320349,carlos.garcía@gmail.com,Calle Mayor Nº 8,Encargado,399226745900,Noche,1873
+126,Carmen Díaz,39333207P,610880721,carmen.díaz@hotmail.com,Paseo del Prado Nº 188,Encargado,996557243631,Noche,2163
+127,Irene García,85640633A,684070550,irene.garcía@farmacia.es,Calle Real Nº 51,Encargado,912509544101,Noche,1865
+128,Carmen Hernández,85343209L,667624765,carmen.hernández@hotmail.com,Ronda Norte Nº 105,Técnico de Farmacia,971856458839,Noche,1544
+129,Diego López,94713189Q,641948224,diego.lópez@farmacia.es,Ronda Norte Nº 24,Encargado,205770474149,Mañana,1951
+130,Laura Morales,24740355U,621180695,laura.morales@farmacia.es,Paseo del Prado Nº 94,Reponedor,470565872157,Mañana,1247
+131,Sara Ruiz,35505066L,615805621,sara.ruiz@hotmail.com,Calle Real Nº 142,Auxiliar,424913732326,Tarde,1297
+132,María Díaz,52726696V,658272483,maría.díaz@hotmail.com,Ronda Norte Nº 152,Auxiliar,400506802277,Mañana,1251
+133,Javier Martínez,43696423U,656293445,javier.martínez@hotmail.com,Calle Luna Nº 96,Encargado,181195314297,Mañana,2237
+134,Pablo Castro,78039115R,697323216,pablo.castro@farmacia.es,Calle Mayor Nº 11,Técnico de Farmacia,924862404452,Mañana,1504
+135,Andrés López,84839242K,695818437,andrés.lópez@farmacia.es,Avenida del Sol Nº 118,Encargado,781682729524,Noche,2493
+136,Jorge Ruiz,87394602S,616644470,jorge.ruiz@hotmail.com,Avenida del Sol Nº 114,Técnico de Farmacia,150464166807,Tarde,1868
+137,Andrés Díaz,73997772H,651966562,andrés.díaz@gmail.com,Paseo del Prado Nº 158,Reponedor,266414933433,Noche,1100
+138,Elena López,05738911W,613465912,elena.lópez@gmail.com,Paseo del Prado Nº 117,Encargado,121552497968,Noche,2049
+139,Sara Castro,62876414E,682110547,sara.castro@hotmail.com,Paseo del Prado Nº 121,Reponedor,445810442997,Noche,1198
+140,Carmen Morales,09752343X,657783663,carmen.morales@hotmail.com,Calle Luna Nº 24,Encargado,259483939256,Tarde,2225
+141,Javier Díaz,95410748S,684563255,javier.díaz@hotmail.com,Calle Luna Nº 96,Reponedor,229062479323,Mañana,1103
+142,María Ruiz,56100389D,657334938,maría.ruiz@gmail.com,Calle Luna Nº 142,Técnico de Farmacia,181464279655,Noche,1584
+143,Elena Ruiz,72794380Y,617234886,elena.ruiz@gmail.com,Calle Luna Nº 18,Encargado,716061756651,Tarde,2099
+144,Pedro Santos,07718266N,612180571,pedro.santos@farmacia.es,Paseo del Prado Nº 121,Farmacéutico,039764462022,Tarde,2142
+145,Javier Morales,34475767S,601733786,javier.morales@farmacia.es,Calle Real Nº 133,Reponedor,073498102212,Mañana,1162
+146,Marta Torres,93690310A,688745600,marta.torres@gmail.com,Calle Real Nº 63,Farmacéutico,903148577596,Mañana,2112
+147,Lucía Ruiz,59978240U,694512189,lucía.ruiz@hotmail.com,Paseo del Prado Nº 68,Farmacéutico,087308634326,Mañana,2471
+148,Manuel Martínez,47857277K,669948447,manuel.martínez@farmacia.es,Calle Mayor Nº 161,Encargado,997749112929,Tarde,2206
+149,Sofía García,73645044E,695905044,sofía.garcía@farmacia.es,Calle Real Nº 59,Reponedor,658308549304,Noche,1180
+150,Diego López,37421983A,612006766,diego.lópez@farmacia.es,Avenida del Sol Nº 172,Reponedor,717825196347,Tarde,1210

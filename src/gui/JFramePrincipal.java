@@ -7,13 +7,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+
+import db.Cliente;
 
 public abstract class JFramePrincipal extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -22,6 +26,8 @@ public abstract class JFramePrincipal extends JFrame{
 	private Map<String, ImageIcon> cache = new HashMap<>();
 	
 	public JFramePrincipal() {
+		ImageIcon logoPrincipal = new ImageIcon("resources/images/iconoBarraNombre.png");
+		this.setIconImage(logoPrincipal.getImage());
 		if (!(this instanceof JFrameSelPedido) && !(this instanceof JFrameFichaCliente) && panelActual != null) {
 			System.out.println(panelActual);
 			panelActual.dispose();
@@ -30,7 +36,7 @@ public abstract class JFramePrincipal extends JFrame{
 		
 		panel = new JPanel();
 		panel.setOpaque(true);
-		panel.setBackground(new Color(171, 245, 182));
+		panel.setBackground(new Color(149, 217, 195));
 		
 		//Dibujado y diseño de pantalla
 		this.setTitle("Ventana principal");		
@@ -90,4 +96,6 @@ public abstract class JFramePrincipal extends JFrame{
 		
 		return listener;		
 	}
+	
+	
 }

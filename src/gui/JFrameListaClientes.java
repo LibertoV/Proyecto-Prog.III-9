@@ -176,7 +176,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 			
 		});
 			
-		txtFiltro = new JTextField(20);
+		txtFiltro = new ModernTextField(20);
 		
 		DocumentListener doclistener = new DocumentListener() {
 			
@@ -246,61 +246,66 @@ public class JFrameListaClientes extends JFramePrincipal{
 			
 			
 			JPanel panelCabecera = new JPanel();
-			panelCabecera.setBackground(new Color(194, 192, 148));
-			JLabel newCl = new JLabel("AÑADIR NUEVO CLIENTE");
-			newCl.setFont(new Font("Arial", Font.PLAIN,16));
-			newCl.setForeground(Color.black);
+			panelCabecera.setBackground(new Color(237, 246, 249));
+			JLabel newCl = new JLabel();
+			newCl.setText("AÑADIR NUEVO CLIENTE");
+			ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
+			dialog.setIconImage(logoAñadir.getImage());
+		
+			newCl.setFont(new Font("Century Gothic", Font.BOLD, 16));
+			newCl.setForeground(new Color(10, 16, 13));
 			panelCabecera.add(newCl);
 			
 			JPanel panelCampos = new JPanel(new GridLayout(7,2,5,12));
 			panelCampos.setBorder(BorderFactory.createEmptyBorder(15,20,15,20));
-			panelCampos.setBackground(new Color(194, 192, 148));
+			panelCampos.setBackground(new Color(237, 246, 249));
 			
 			panelCampos.add(new JLabel("NOMBRE:"));
-			JTextField textoNombre = new JTextField();
+			ModernTextField textoNombre = new ModernTextField(15);
 			panelCampos.add(textoNombre);
 			
 			panelCampos.add(new JLabel("DNI:"));
-			JTextField textoDNI = new JTextField();
+			ModernTextField textoDNI = new ModernTextField(15);
 			panelCampos.add(textoDNI);
 			
 			panelCampos.add(new JLabel("TELEFONO:"));
-			JTextField textoTelefono = new JTextField();
+			ModernTextField textoTelefono = new ModernTextField(15);
 			panelCampos.add(textoTelefono);
 			
 			panelCampos.add(new JLabel("EMAIL:"));
-			JTextField textoEmail = new JTextField();
+			ModernTextField textoEmail = new ModernTextField(15);
 			panelCampos.add(textoEmail);
 			
 			panelCampos.add(new JLabel("DIRECCIÓN:"));
-			JTextField textoDireccion = new JTextField();
+			ModernTextField textoDireccion = new ModernTextField(15);
 			panelCampos.add(textoDireccion);
 			
 			dialog.add(panelCabecera, BorderLayout.NORTH);
 			dialog.add(panelCampos);
 			
 			JPanel botones = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			botones.setBackground(new Color(194, 192, 148));
+			botones.setBackground(new Color(237, 246, 249));
 			JButton guardar = new JButton("GUARDAR");
 			JButton cancelar = new JButton("CANCELAR");
 			
 			for (Component comp : panelCampos.getComponents()) {
 				if(comp instanceof JLabel) {
-					comp.setFont(new Font("Arial", Font.BOLD, 14));
-					
+					comp.setFont(new Font("Century Gothic", Font.BOLD, 14));
+					comp.setForeground(new Color(10, 16, 13));
 				}else if(comp instanceof JTextField){
 					comp.setFont(new Font("Arial", Font.PLAIN,14)); //IAG
+					comp.setBackground(new Color(237, 246, 249));;
 				}
 			}
 			
-			guardar.setBackground(new Color(42, 114, 33));
-			guardar.setForeground(Color.white);
-			guardar.setFont(new Font("Arial",Font.BOLD,14));
+			guardar.setBackground(new Color(18, 102, 79));
+			guardar.setForeground(new Color(237, 246, 249));
+			guardar.setFont(new Font("Century Gothic",Font.BOLD,14));
 			guardar.setPreferredSize(new Dimension(120,40));
 			
-			cancelar.setForeground(Color.white);
-			cancelar.setBackground(new Color(167, 38, 8));
-			cancelar.setFont(new Font("Arial",Font.BOLD,14));
+			cancelar.setForeground(new Color(237, 246, 249));
+			cancelar.setBackground(new Color(182, 23, 75));
+			cancelar.setFont(new Font("Century Gothic",Font.BOLD,14));
 			cancelar.setPreferredSize(new Dimension(120,40));
 			
 			
