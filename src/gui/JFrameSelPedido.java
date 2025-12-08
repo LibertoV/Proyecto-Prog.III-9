@@ -12,6 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -29,12 +32,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import domain.Pedido;
+import domain.Producto;
+
 public class JFrameSelPedido extends JFramePrincipal {
 
 	private static final long serialVersionUID = 1L;
+	private Pedido pedido;
 
-	public JFrameSelPedido() {
-		this.setTitle("Informacion del pedido");
+	public JFrameSelPedido(Pedido pedidoRecibido) {
+		this.pedido = pedidoRecibido;
+		
+		this.setTitle("Informacion del pedido " + pedido.getId());
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -47,30 +56,23 @@ public class JFrameSelPedido extends JFramePrincipal {
 			}
 		});
 
-		// Cabecera
 		this.add(crearCabecera(), BorderLayout.NORTH);
-
-		// Cuerpo
 		this.add(crearCuerpo(), BorderLayout.CENTER);
-
-		// Parte de abajo
 		this.add(crearAbajo(), BorderLayout.SOUTH);
 
 		this.setVisible(true);
-		this.setFocusable(true); //IAG
+		this.setFocusable(true);
 		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
-
 	}
 
 	public JPanel crearCabecera() {
 		JPanel main = new JPanel(new BorderLayout());
-
 		JPanel izq = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JLabel nPed = new JLabel("Nº pedido: ");
 		izq.add(nPed);
 
-		JLabel numero = new JLabel("000", SwingConstants.RIGHT);
+		JLabel numero = new JLabel(pedido.getId(), SwingConstants.RIGHT);
 		numero.setPreferredSize(new Dimension(70, 20));
 		numero.setBackground(Color.white);
 		numero.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -79,17 +81,33 @@ public class JFrameSelPedido extends JFramePrincipal {
 		main.add(izq, BorderLayout.WEST);
 
 		JPanel dcha = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JLabel estado = new JLabel("Pendiente", SwingConstants.CENTER);
+		
+		Date fechaActual = new Date();
+		boolean haLlegado = fechaActual.after(pedido.getFechaLlegada());
+		
+		String textoEstado;
+		Color colorFondo;
+		
+		if (!haLlegado) {
+			textoEstado = "Llegado";
+			colorFondo = new Color(144, 238, 144);
+		}else {
+			textoEstado = "Pendiente";
+			colorFondo = new Color(255, 255, 224); 
+		}
+
+		
+		
+		JLabel estado = new JLabel(textoEstado, SwingConstants.CENTER);
 		estado.setPreferredSize(new Dimension(150, 20));
 		estado.setOpaque(true);
-		estado.setBackground(Color.LIGHT_GRAY);
+		estado.setBackground(colorFondo);
 		estado.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 		dcha.add(estado);
 		main.add(dcha, BorderLayout.EAST);
 
 		return main;
-
 	}
 
 	public JPanel crearCuerpo() {
@@ -102,64 +120,61 @@ public class JFrameSelPedido extends JFramePrincipal {
 		infoGeneral.setBorder(BorderFactory.createTitledBorder("Información general"));
 		infoGeneral.setBackground(Color.WHITE);
 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 		infoGeneral.add(new JLabel("Fecha de pedido:"));
-		infoGeneral.add(new JLabel("2025-11-06"));
+		infoGeneral.add(new JLabel(sdf.format(pedido.getFechaOrden())));
 
 		infoGeneral.add(new JLabel("Fecha de llegada estimada:"));
-		infoGeneral.add(new JLabel("2025-11-10"));
+		infoGeneral.add(new JLabel(sdf.format(pedido.getFechaLlegada())));
 
 		infoGeneral.add(new JLabel("Proveedor:"));
-		infoGeneral.add(new JLabel("Amazon"));
+		infoGeneral.add(new JLabel(pedido.getProveedor()));
 
 		infoGeneral.add(new JLabel("Método de envío:"));
-		infoGeneral.add(new JLabel("Urgente (24h)"));
+		infoGeneral.add(new JLabel("Estándar"));
 
 		JPanel panelProductos = new JPanel(new BorderLayout());
 		panelProductos.setBorder(BorderFactory.createTitledBorder("Productos del pedido"));
 		panelProductos.setBackground(Color.WHITE);
 
 		String[] columnas = { "Producto", "Cantidad", "Precio unitario (€)" };
-		Object[][] datos = { { "Ibuprofeno M3", 200, 1 }, { "Paracetamol", 10, 2 }, { "Aspirinas", 50, 5 },
-				{ "Enantium", 100, 2 } };
+		
+		ArrayList<Producto> listaProds = pedido.getProductos();
+		Object[][] datos = new Object[listaProds.size()][3];
+		
+		int totalCantidad = 0;
+		for(int i = 0; i < listaProds.size(); i++) {
+			Producto p = listaProds.get(i);
+			datos[i][0] = p.getNombre();
+			datos[i][1] = p.getCantidad();
+			datos[i][2] = p.getPrecioUnitario();
+			totalCantidad += p.getCantidad();
+		}
 
 		JTable tabla = new JTable(new DefaultTableModel(datos, columnas)) {
 			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-
+			public boolean isCellEditable(int row, int column) { return false; }
 		};
 		tabla.getTableHeader().setReorderingAllowed(false);
 
 		final int[] filaHover = { -1 };
-
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
 				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-				if (column == 1 || column == 2) { // Cantidad y Precio
-		            setHorizontalAlignment(SwingConstants.RIGHT);
-		        } else {
-		            setHorizontalAlignment(SwingConstants.LEFT);
-		        }
+				if (column == 1 || column == 2) setHorizontalAlignment(SwingConstants.RIGHT);
+				else setHorizontalAlignment(SwingConstants.LEFT);
 				
-				if (isSelected) {
-					c.setBackground(new Color(173, 216, 230));
-				} else if (row == filaHover[0]) {
-					c.setBackground(new Color(220, 240, 255));
-				} else {
-					c.setBackground(Color.WHITE);
-				}
-
+				if (isSelected) c.setBackground(new Color(173, 216, 230));
+				else if (row == filaHover[0]) c.setBackground(new Color(220, 240, 255));
+				else c.setBackground(Color.WHITE);
 				return c;
 			}
 		};
 		
-		for (int i = 0; i < tabla.getColumnCount(); i++) {
-			tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);
-		}
+		for (int i = 0; i < tabla.getColumnCount(); i++) tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);
 
 		JScrollPane scroll = new JScrollPane(tabla);
 		
@@ -173,7 +188,6 @@ public class JFrameSelPedido extends JFramePrincipal {
 		        }
 		    }
 		});
-
 		tabla.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseExited(MouseEvent e) {
@@ -181,23 +195,21 @@ public class JFrameSelPedido extends JFramePrincipal {
 		        tabla.repaint();
 		    }
 		});
-
 		
 		panelProductos.add(scroll, BorderLayout.CENTER);
 
 		JPanel resumen = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		resumen.setBackground(Color.WHITE);
+		
 		JLabel totalProd = new JLabel("Total productos: ");
-		JLabel prod = new JLabel("360");
+		JLabel prod = new JLabel(String.valueOf(totalCantidad));
 
 		JLabel totalPrec = new JLabel("Precio total: ");
-		JLabel prec = new JLabel("1000€");
+		JLabel prec = new JLabel(String.format("%.2f €", pedido.calcularTotal()));
 
-		resumen.add(totalProd);
-		resumen.add(prod);
+		resumen.add(totalProd); resumen.add(prod);
 		resumen.add(Box.createRigidArea(new Dimension(20, 0)));
-		resumen.add(totalPrec);
-		resumen.add(prec);
+		resumen.add(totalPrec); resumen.add(prec);
 
 		cuerpo.add(infoGeneral);
 		cuerpo.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -206,25 +218,11 @@ public class JFrameSelPedido extends JFramePrincipal {
 		cuerpo.add(resumen);
 
 		return cuerpo;
-
 	}
 
 	public JPanel crearAbajo() {
 		JPanel abajo = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-		JLabel nombreUsuario = new JLabel("Usuario: ");
-		abajo.add(nombreUsuario);
-
-		JLabel nombre = new JLabel("XXX");
-		abajo.add(nombre);
-
+		abajo.add(new JLabel("Admin")); 
 		return abajo;
-
 	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new JFrameSelPedido());
-
-	}
-
 }

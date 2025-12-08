@@ -60,6 +60,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private Cursor cursorNormal = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private final ImageIcon ICONO_ELIMINAR;
+	
+	private ArrayList<Pedido> listaObjetosPedidos = new ArrayList<>();
 
 	public JFrameListaPedidos() {
 
@@ -86,8 +88,18 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	}
 
 	public void agregarNuevoPedido(Pedido pedido) {
-		modelo.addRow(pedido.añadirloTabla());
-		actualizarTotales();
+	    listaObjetosPedidos.add(pedido);
+	    modelo.addRow(pedido.añadirloTabla());
+	    actualizarTotales();
+	}
+	
+	private Pedido buscarPedidoPorId(String id) {
+	    for (Pedido p : listaObjetosPedidos) {
+	        if (p.getId().equals(id)) {
+	            return p;
+	        }
+	    }
+	    return null;
 	}
 
 	private JPanel crearPanelCabecera() {
@@ -323,9 +335,16 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					}
 
 					if (e.getClickCount() == 2) {
-						Object id = modelo.getValueAt(fila, 0);
-						JFrameSelPedido frameSel = new JFrameSelPedido();
-						frameSel.setVisible(true);
+					    String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+					    
+					    Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+					    
+					    if (pedidoReal != null) {
+					        JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+					        frameSel.setVisible(true);
+					    } else {
+					        JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Todavia no estan cargados de la base de datos");
+					    }
 					}
 				}
 			}
@@ -349,12 +368,18 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				int fila = tablaPedidos.getSelectedRow();
 				boolean ctrlPresionado = e.isControlDown();
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (fila >= 0) {
-						Object id = modelo.getValueAt(fila, 0);
-						JFrameSelPedido frameSel = new JFrameSelPedido();
-						frameSel.setVisible(true);
-					}
-					e.consume();
+				    if (fila >= 0) {
+				        String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+				        Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+				        
+				        if (pedidoReal != null) {
+				            JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+				            frameSel.setVisible(true);
+				        } else {
+				             JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Todavia no están cargados de la base de datos.");
+				        }
+				    }
+				    e.consume();
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -608,12 +633,18 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				int fila = tablaHistorial.getSelectedRow();
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (fila >= 0) {
-						Object id = modelo.getValueAt(fila, 0);
-						JFrameSelPedido frameSel = new JFrameSelPedido();
-						frameSel.setVisible(true);
-					}
-					e.consume();
+				    if (fila >= 0) {
+				        String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+				        Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+				        
+				        if (pedidoReal != null) {
+				            JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+				            frameSel.setVisible(true);
+				        } else {
+				             JOptionPane.showMessageDialog(JFrameListaPedidos.this, "todavia no estan cargados de la base de datos.");
+				        }
+				    }
+				    e.consume();
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -658,13 +689,17 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				int fila = tablaHistorial.rowAtPoint(e.getPoint());
+
 				if (e.getClickCount() == 2) {
-					int fila = tablaHistorial.rowAtPoint(e.getPoint());
-					if (fila != -1) {
-						Object id = model.getValueAt(fila, 0); // ID del pedido
-						JFrameSelPedido frameSel = new JFrameSelPedido();
-						frameSel.setVisible(true);
-					}
+				    String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+				    Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+				    if (pedidoReal != null) {
+				        JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+				        frameSel.setVisible(true);
+				    } else {
+				        JOptionPane.showMessageDialog(JFrameListaPedidos.this, "todavia no estan cargados de la base de datos.");
+				    }
 				}
 			}
 		});
