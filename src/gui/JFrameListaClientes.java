@@ -47,6 +47,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -158,18 +159,18 @@ public class JFrameListaClientes extends JFramePrincipal{
 		private JPanel crearPanelCabecera() {
 		JPanel panelCabecera = new JPanel(new BorderLayout());
 		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		
+		panelCabecera.setBackground(new Color(0, 28, 85));
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+		panelFiltro.setBackground(new Color(0, 28, 85));
 		
 		
 		JButton añadir = new JButton();
-		añadir.setBackground(Color.white);
+		añadir.setBackground(new Color(166, 225, 250));
 		añadir.setText("+ Añadir cliente");
 		ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
 		ImageIcon logoAjustado2 = new ImageIcon(logoAñadir.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
 		añadir.setIcon(logoAjustado2);
-		
+		añadir.setFont(new Font("Century Gothic", Font.BOLD, 16));
 		añadir.addActionListener((e)->{
 			nuevoCliente();
 			
@@ -205,6 +206,10 @@ public class JFrameListaClientes extends JFramePrincipal{
 		txtFiltro.getDocument().addDocumentListener(doclistener);
 		String[]tipoFiltro ={"Nombre", "ID", "DNI"};
 		combo = new JComboBox<>(tipoFiltro);
+		combo.setBackground(new Color(166, 225, 250));
+		combo.setForeground(Color.black);
+		combo.setPreferredSize(new Dimension(100, 35));
+		combo.setFont(new Font("Century Gothic", Font.BOLD, 14));
 		combo.addActionListener(e -> {
             txtFiltro.setText("");           // Limpia el campo de texto
             filtroCliente("");
@@ -212,7 +217,14 @@ public class JFrameListaClientes extends JFramePrincipal{
 		panelFiltro.add(combo);
 		panelFiltro.add(añadir, BorderLayout.EAST);
 		JPanel panelBusqueda = new JPanel();
-		panelBusqueda.add(new JLabel("Buscar Cliente"));
+		panelBusqueda.setBackground(new Color(0, 28, 85));
+		
+		JLabel bCliente = new JLabel("Buscar Cliente");
+		bCliente.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		bCliente.setBackground(new Color(0, 28, 85));
+		bCliente.setForeground(Color.white);
+		panelBusqueda.add(bCliente);
+		
 		panelBusqueda.add(txtFiltro);
 		panelCabecera.add(panelBusqueda,BorderLayout.CENTER);
 		
@@ -222,7 +234,7 @@ public class JFrameListaClientes extends JFramePrincipal{
         ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JButton MenuPrincipal = new JButton(logoAjustado1);
 		MenuPrincipal.setBorder(null);
-		MenuPrincipal.setBackground(Color.white);
+		MenuPrincipal.setBackground(new Color(0, 28, 85));
 		panelCabecera.add(MenuPrincipal, BorderLayout.WEST);
 		
 		MenuPrincipal.addActionListener(e->{
@@ -442,6 +454,7 @@ public class JFrameListaClientes extends JFramePrincipal{
 			
 			JPanel panelCentral = new JPanel(new BorderLayout());
 			
+			
 	        columnNames.add("ID");
 	        columnNames.add("Nombre");
 	        columnNames.add("DNI");
@@ -459,6 +472,14 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        
 	        tablaClientes = new JTable(model);
 	        tablaClientes.getTableHeader().setReorderingAllowed(false);
+	        
+	        CustomHeaderRenderer headerRenderer = new CustomHeaderRenderer(tablaClientes);
+			tablaClientes.getTableHeader().setDefaultRenderer(headerRenderer);
+			
+			CustomDataCellRenderer dataRenderer = new CustomDataCellRenderer();
+			for (int i = 0; i < tablaClientes.getColumnCount(); i++) {
+				tablaClientes.getColumnModel().getColumn(i).setCellRenderer(dataRenderer);
+			}
 	        
 	        agregarMenuContextualTabla();
 	        
@@ -488,7 +509,11 @@ public class JFrameListaClientes extends JFramePrincipal{
 	        
 	        	        
 	        JScrollPane scrollPane = new JScrollPane(tablaClientes);
-	        scrollPane.setBorder(BorderFactory.createTitledBorder("Listado de Clientes"));
+	        TitledBorder titledBorder = BorderFactory.createTitledBorder("Listado de Clientes");
+	        titledBorder.setTitleFont(new Font("Century Gothic",Font.BOLD,14));
+	        scrollPane.setForeground(Color.white);
+	        scrollPane.setBorder(titledBorder);
+	        scrollPane.setBackground(new Color(126, 232, 250));
 			panelCentral.add(scrollPane);
 			tablaClientes.addKeyListener(new KeyListener() {
 				
@@ -622,13 +647,19 @@ public class JFrameListaClientes extends JFramePrincipal{
 
 		private JPanel crearPanelInferior() {
 			JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
-			
+			panelInferior.setBackground(new Color(0, 28, 85));
 			String ficha = "Ver ficha";
 			JButton verFichaCliente = new JButton(ficha);
+			verFichaCliente.setFont(new Font("Century Gothic", Font.BOLD, 14));
+			verFichaCliente.setBackground(new Color(166, 225, 250));
+			verFichaCliente.setForeground(Color.black);
 			verFichaCliente.addActionListener(e ->{
             	gestionarMenu(ficha);
             });
 			JButton eliminar = new JButton("Eliminar");
+			eliminar.setFont(new Font("Century Gothic", Font.BOLD, 14));
+			eliminar.setBackground(new Color(166, 225, 250));
+			eliminar.setForeground(Color.black);
 			eliminar.addActionListener(e->{
 				int fila = tablaClientes.getSelectedRow();
 		        if (fila != -1) {
@@ -720,7 +751,84 @@ public class JFrameListaClientes extends JFramePrincipal{
 			SwingUtilities.invokeLater(() -> new JFrameListaClientes());
 			
 		}
+		
+		//IAG
+		// Clase anidada (preferiblemente dentro de JFrameListaClientes, o justo antes de main)
+		private class CustomHeaderRenderer extends JLabel implements TableCellRenderer {
+		    private static final long serialVersionUID = 1L;
+		    
+		    // Color de la cabecera: Gris Oscuro (124, 122, 122)
+		    private final Color HEADER_BG_COLOR = new Color(124, 122, 122);
+		    private final Color HEADER_FG_COLOR = Color.WHITE; // Usamos blanco para el texto
+		    
+		    public CustomHeaderRenderer(JTable table) {
+		        setOpaque(true);
+		        setHorizontalAlignment(CENTER);
+		        setFont(table.getTableHeader().getFont().deriveFont(Font.BOLD));
+		        setBorder(BorderFactory.createEtchedBorder());
+		        setBackground(HEADER_BG_COLOR);
+		        setForeground(HEADER_FG_COLOR);
+		    }
 
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value,
+		            boolean isSelected, boolean hasFocus, int row, int column) {
+		        
+		        setText(value != null ? value.toString() : "");
+		        // El color se establece en el constructor y se mantiene fijo
+		        
+		        return this;
+		    }
+		}
+		
+		//IAG
+		// Clase anidada (preferiblemente dentro de JFrameListaClientes, o justo antes de main)
+		private class CustomDataCellRenderer extends JLabel implements TableCellRenderer {
+		    private static final long serialVersionUID = 1L;
+		    
+		    // Color principal de datos: Azul Claro (166, 225, 250)
+		    private final Color DATA_BG_COLOR = new Color(166, 225, 250);
+		    // Color alterno para efecto "Cebra": Blanco (o Gris muy claro para mejor contraste)
+		    private final Color ALT_DATA_BG_COLOR = Color.WHITE; // Puedes usar new Color(240, 240, 240) si prefieres un gris suave.
+		    
+		    private final Color SELECTION_BG_COLOR = new Color(70, 130, 180); // Azul acero para selección
+		    
+		    public CustomDataCellRenderer() {
+		        setOpaque(true);
+		    }
+
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value,
+		            boolean isSelected, boolean hasFocus, int row, int column) {
+		        
+		        setText(value != null ? value.toString() : "");
+		        
+		        // 1. Manejar la selección
+		        if (isSelected) {
+		            setBackground(SELECTION_BG_COLOR);
+		            setForeground(Color.WHITE);
+		        } else {
+		            // 2. Aplicar colores de fondo alternos (Efecto Cebra)
+		            if (row % 2 == 0) { // Filas pares
+		                setBackground(DATA_BG_COLOR); // Color (166, 225, 250)
+		            } else { // Filas impares
+		                setBackground(ALT_DATA_BG_COLOR); // Blanco
+		            }
+		            setForeground(Color.BLACK); // Color de texto por defecto
+		        }
+
+		        // 3. Opcional: Centrar el texto en algunas columnas (ej. ID, Recetas)
+		        	setHorizontalAlignment(CENTER);
+		        // 4. Manejar el foco (el borde)
+		        if (hasFocus) {
+		            setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		        } else {
+		            setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1)); // Borde invisible
+		        }
+		        
+		        return this;
+		    }
+		}
 		 
 	
 }
