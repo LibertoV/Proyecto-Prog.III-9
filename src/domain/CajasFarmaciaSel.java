@@ -55,7 +55,7 @@ public class CajasFarmaciaSel extends JFrame{
 		JPanel panelP = new JPanel(new BorderLayout());
 		JLabel encabezado = new JLabel("Pedidos a proveedores");
 		
-		Vector<Vector<Object>> dataClientes = DataPedidos.cargarPedidos();
+		Vector<Vector<Object>> dataClientes = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
 		
 		Vector<String> columnNames = new Vector<>();
         columnNames.add("N*");

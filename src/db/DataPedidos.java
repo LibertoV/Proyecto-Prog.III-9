@@ -1,7 +1,18 @@
 package db;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Vector;
+
+import domain.Pedido;
+import domain.Producto;
+import jdbc.GestorBDInitializerPedido;
 
 public class DataPedidos {
 	private static final String IMAGES_PATH = "resources/images/";
@@ -22,170 +33,99 @@ public class DataPedidos {
         return IMAGES_PATH + PROVEEDOR_IMGS[index];
     }
 	
-	public static Vector<Vector<Object>> cargarPedidos() {
+	public static Vector<Vector<Object>> cargaPedidos(String path){
 		Vector<Vector<Object>> data = new Vector<>();
+		
+		GestorBDInitializerPedido gestorBD = new GestorBDInitializerPedido();
+		gestorBD.crearBBDD();
+		
+		List<Pedido> pedidos = gestorBD.obtenerDatos();
+		if(pedidos == null || pedidos.isEmpty()) {
+	        System.out.println("Cargando desde CSV...");
+	        List<Pedido> pedidosCSV = initPedidos();
+	        
+	        System.out.println("Pedidos del CSV: " + pedidosCSV.size());
+	        
+	        gestorBD.borrarBBDD();
+	        gestorBD.crearBBDD();
+	        
+	        
+	        gestorBD.insertarDatos(pedidosCSV.toArray(new Pedido[pedidosCSV.size()]));
+	        
+	        pedidos = gestorBD.obtenerDatos();
+	        System.out.println("Después de insertar: " + pedidos.size());
+	    }
+		
+		
 
-		Vector<Object> pedidoA = new Vector<>();
-		pedidoA.add("001");
-		pedidoA.add("2025-10-01");
-		pedidoA.add("2025-10-05");
-		pedidoA.add("9003");
-		pedidoA.add(getProveedorImagenAleatoria());
-		data.add(pedidoA);
-
-		Vector<Object> pedidoB = new Vector<>();
-		pedidoB.add("002");
-		pedidoB.add("2025-10-02");
-		pedidoB.add("2025-10-06");
-		pedidoB.add("4023");
-		pedidoB.add(getProveedorImagenAleatoria());
-		data.add(pedidoB);
-
-		Vector<Object> pedidoC = new Vector<>();
-		pedidoC.add("003");
-		pedidoC.add("2025-10-03");
-		pedidoC.add("2025-10-07");
-		pedidoC.add("2322");
-		pedidoC.add(getProveedorImagenAleatoria());
-		data.add(pedidoC);
-
-		Vector<Object> pedidoD = new Vector<>();
-		pedidoD.add("004");
-		pedidoD.add("2025-10-04");
-		pedidoD.add("2025-10-08");
-		pedidoD.add("5232");
-		pedidoD.add(getProveedorImagenAleatoria());
-		data.add(pedidoD);
-
-		Vector<Object> pedidoE = new Vector<>();
-		pedidoE.add("005");
-		pedidoE.add("2025-10-05");
-		pedidoE.add("2025-10-09");
-		pedidoE.add("6123");
-		pedidoE.add(getProveedorImagenAleatoria());
-		data.add(pedidoE);
-
-		Vector<Object> pedidoF = new Vector<>();
-		pedidoF.add("006");
-		pedidoF.add("2025-10-06");
-		pedidoF.add("2025-10-10");
-		pedidoF.add("0332");
-		pedidoF.add(getProveedorImagenAleatoria());
-		data.add(pedidoF);
-
-		Vector<Object> pedidoG = new Vector<>();
-		pedidoG.add("007");
-		pedidoG.add("2025-10-07");
-		pedidoG.add("2025-10-11");
-		pedidoG.add("4000");
-		pedidoG.add(getProveedorImagenAleatoria());
-		data.add(pedidoG);
-
-		Vector<Object> pedidoH = new Vector<>();
-		pedidoH.add("008");
-		pedidoH.add("2025-10-08");
-		pedidoH.add("2025-10-12");
-		pedidoH.add("5020");
-		pedidoH.add(getProveedorImagenAleatoria());
-		data.add(pedidoH);
-
-		Vector<Object> pedidoI = new Vector<>();
-		pedidoI.add("009");
-		pedidoI.add("2025-10-09");
-		pedidoI.add("2025-10-13");
-		pedidoI.add("2050");
-		pedidoI.add(getProveedorImagenAleatoria());
-		data.add(pedidoI);
-
-		Vector<Object> pedidoJ = new Vector<>();
-		pedidoJ.add("010");
-		pedidoJ.add("2025-10-10");
-		pedidoJ.add("2025-10-14");
-		pedidoJ.add("7004");
-		pedidoJ.add(getProveedorImagenAleatoria());
-		data.add(pedidoJ);
-
-		Vector<Object> pedidoK = new Vector<>();
-		pedidoK.add("011");
-		pedidoK.add("2025-10-11");
-		pedidoK.add("2025-10-15");
-		pedidoK.add("3009");
-		pedidoK.add(getProveedorImagenAleatoria());
-		data.add(pedidoK);
-
-		Vector<Object> pedidoL = new Vector<>();
-		pedidoL.add("012");
-		pedidoL.add("2025-10-12");
-		pedidoL.add("2025-10-16");
-		pedidoL.add("4134");
-		pedidoL.add(getProveedorImagenAleatoria());
-		data.add(pedidoL);
-
-		Vector<Object> pedidoM = new Vector<>();
-		pedidoM.add("013");
-		pedidoM.add("2025-10-13");
-		pedidoM.add("2025-10-17");
-		pedidoM.add("5233");
-		pedidoM.add(getProveedorImagenAleatoria());
-		data.add(pedidoM);
-
-		Vector<Object> pedidoN = new Vector<>();
-		pedidoN.add("014");
-		pedidoN.add("2025-10-14");
-		pedidoN.add("2025-10-18");
-		pedidoN.add("6102");
-		pedidoN.add(getProveedorImagenAleatoria());
-		data.add(pedidoN);
-
-		Vector<Object> pedidoO = new Vector<>();
-		pedidoO.add("015");
-		pedidoO.add("2025-10-15");
-		pedidoO.add("2025-10-19");
-		pedidoO.add("3323");
-		pedidoO.add(getProveedorImagenAleatoria());
-		data.add(pedidoO);
-
-		Vector<Object> pedidoP = new Vector<>();
-		pedidoP.add("016");
-		pedidoP.add("2025-10-16");
-		pedidoP.add("2025-10-20");
-		pedidoP.add("4557");
-		pedidoP.add(getProveedorImagenAleatoria());
-		data.add(pedidoP);
-
-		Vector<Object> pedidoQ = new Vector<>();
-		pedidoQ.add("017");
-		pedidoQ.add("2025-10-17");
-		pedidoQ.add("2025-10-21");
-		pedidoQ.add("2456");
-		pedidoQ.add(getProveedorImagenAleatoria());
-		data.add(pedidoQ);
-
-		Vector<Object> pedidoR = new Vector<>();
-		pedidoR.add("018");
-		pedidoR.add("2025-10-18");
-		pedidoR.add("2025-10-22");
-		pedidoR.add("5765");
-		pedidoR.add(getProveedorImagenAleatoria());
-		data.add(pedidoR);
-
-		Vector<Object> pedidoS = new Vector<>();
-		pedidoS.add("019");
-		pedidoS.add("2025-10-19");
-		pedidoS.add("2025-10-23");
-		pedidoS.add("4876");
-		pedidoS.add(getProveedorImagenAleatoria());
-		data.add(pedidoS);
-
-		Vector<Object> pedidoT = new Vector<>();
-		pedidoT.add("020");
-		pedidoT.add("2025-10-20");
-		pedidoT.add("2025-10-24");
-		pedidoT.add("6367");
-		pedidoT.add(getProveedorImagenAleatoria());
-		data.add(pedidoT);
-
-		return data;
+		for (Pedido pedido : pedidos) {
+			Vector<Object> pedidoTemp = new Vector<>();
+			pedidoTemp.add(pedido.getId());
+			pedidoTemp.add(pedido.getFechaOrden());
+			pedidoTemp.add(pedido.getFechaLlegada());
+			pedidoTemp.add(pedido.calcularTotal());
+			pedidoTemp.add(getProveedorImagenAleatoria());
+			
+			data.add(pedidoTemp);
+		}
+		return data; 
+	}
+	
+	public static List<Pedido> initPedidos() {
+		List<Pedido> pedidos = new ArrayList<>();		
+		
+		
+		try {
+			// Abrir el fichero
+			File fichero = new File("resources/db/pedidos.csv");
+			Scanner sc = new Scanner(fichero);
+			HashMap<Pedido,ArrayList<Producto>> pedidosMap = new HashMap<Pedido,ArrayList<Producto>>();
+			// Leer el fichero
+			while (sc.hasNextLine()) {
+			
+				String linea = sc.nextLine();
+				
+				String[] campos = linea.split(",");
+				
+				
+				String id = campos[0];
+				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+				Date fecha_orden = formateador.parse(campos[1]);
+				Date fecha_llegada = formateador.parse(campos[2]);
+				String proveedor = campos[3];
+				String nombre = campos[4];
+				int cantidad = Integer.parseInt(campos[5]);
+				double precio_U = Double.parseDouble(campos[6]);
+				
+				Pedido pedido = new Pedido(id,proveedor,fecha_orden,fecha_llegada);
+				Producto producto = new Producto(nombre,cantidad,precio_U);
+				
+				if (pedidosMap.containsKey(pedido)) {
+				    ArrayList<Producto> listaProductos = pedidosMap.get(pedido);
+				    listaProductos.add(producto);
+				} else {
+				    ArrayList<Producto> nuevaListaProductos = new ArrayList<>();
+				    nuevaListaProductos.add(producto);
+				    pedidosMap.put(pedido, nuevaListaProductos);
+				}
+				
+			}
+			
+			
+			for (Pedido pedido : pedidosMap.keySet()) {
+				for (Producto producto : pedidosMap.get(pedido)) {
+					pedido.agregarProducto(producto);
+				}
+				pedidos.add(pedido);
+			}
+			
+			// Cerrar el fichero
+			sc.close();
+		} catch (Exception e) {
+			System.err.println("Error al cargar datos desde pedidos.csv");
+			e.printStackTrace();
+		}
+		return pedidos;
 	}
 
 }

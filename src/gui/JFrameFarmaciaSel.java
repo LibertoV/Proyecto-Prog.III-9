@@ -198,6 +198,13 @@ public class JFrameFarmaciaSel extends JFrameLobby {
 				tarjeta.setBorder(new LineBorder(new Color(220, 220, 220), 1)); 
 			}
 
+				
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String formatoBueno = string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
+				gestionarMenu(formatoBueno);
+			}
+
 		});
 		return tarjeta;
 	}

@@ -1,8 +1,9 @@
 package domain;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
 
 public class Pedido {
 	private String id;
@@ -66,4 +67,17 @@ public class Pedido {
 	public ArrayList<Producto> getProductos() {
 		return productos;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedido pedido = (Pedido) o;
+        return Objects.equals(id, pedido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); 
+    }
 }
