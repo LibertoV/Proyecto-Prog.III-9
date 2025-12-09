@@ -10,6 +10,7 @@ public class Pedido {
 	private Date fechaOrden;
 	private Date fechaLlegada;
 	private ArrayList<Producto> productos;
+	private double totalImportado = 0.0;
 
 	public Pedido(String id, String proveedor, Date fechaOrden, Date fechaLlegada) {
 		this.id = id;
@@ -24,13 +25,21 @@ public class Pedido {
 	}
 
 	public double calcularTotal() {
-		double total = 0;
-		for (Producto p : productos) {
-			total += p.getSubtotal();
-		}
-		return total;
-	}
-
+        if (!productos.isEmpty()) {
+            double total = 0;
+            for (Producto p : productos) {
+                total += p.getSubtotal();
+            }
+            return total;
+        } else {
+            return totalImportado;
+        }
+    }
+    
+    public void setTotalImportado(double total) {
+        this.totalImportado = total;
+    }
+    
 	public Object[] añadirloTabla() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String totalFormateado = String.format("%.2f €", calcularTotal()).replace(",", ".");
