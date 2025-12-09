@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -101,12 +102,17 @@ public class GestorBDInitializerPedido {
 			PreparedStatement pstPedido = con.prepareStatement(sqlPedido);
 			PreparedStatement pstLinea = con.prepareStatement(sqlLinea);
 			
+			SimpleDateFormat dbFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			
 			System.out.println("\n- Insertando pedidos y sus productos...");
 			
 			for (Pedido p : pedidos) {				
 				pstPedido.setString(1, p.getId());
-				pstPedido.setString(2, p.getFechaOrden().toString());
-				pstPedido.setString(3, p.getFechaLlegada().toString());
+				
+				// **** CAMBIO AQUI ****: Usa el formateador para la BBDD
+				pstPedido.setString(2, dbFormatter.format(p.getFechaOrden())); 
+				pstPedido.setString(3, dbFormatter.format(p.getFechaLlegada()));
+				
 				pstPedido.setDouble(4, p.calcularTotal());
 				pstPedido.setString(5, p.getProveedor());
 				pstPedido.setInt(6, 1);
