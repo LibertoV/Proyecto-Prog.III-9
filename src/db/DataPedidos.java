@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import domain.Pedido;
 import domain.Producto;
+import gui.JFramePrincipal;
 import jdbc.GestorBDInitializerPedido;
 
 public class DataPedidos {
@@ -40,6 +41,7 @@ public class DataPedidos {
 		gestorBD.crearBBDD();
 		
 		List<Pedido> pedidos = gestorBD.obtenerDatos();
+		
 		if(pedidos == null || pedidos.isEmpty()) {
 	        System.out.println("Cargando desde CSV...");
 	        List<Pedido> pedidosCSV = initPedidos();
@@ -96,8 +98,9 @@ public class DataPedidos {
 				String nombre = campos[4];
 				int cantidad = Integer.parseInt(campos[5]);
 				double precio_U = Double.parseDouble(campos[6]);
+				int idFarmacia = Integer.parseInt(campos[7]);
 				
-				Pedido pedido = new Pedido(id,proveedor,fecha_orden,fecha_llegada);
+				Pedido pedido = new Pedido(id,proveedor,fecha_orden,fecha_llegada,idFarmacia);
 				Producto producto = new Producto(nombre,cantidad,precio_U);
 				
 				if (pedidosMap.containsKey(pedido)) {

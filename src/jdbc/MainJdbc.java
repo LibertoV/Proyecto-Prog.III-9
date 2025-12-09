@@ -16,6 +16,7 @@ import domain.Pedido;
 import domain.Producto;
 import domain.Trabajador;
 import gui.JFrameListaClientes;
+import gui.JFramePrincipal;
 
 public class MainJdbc {
 
@@ -208,7 +209,7 @@ public class MainJdbc {
 	            Pedido p = mapaPedidos.get(id);
 
 	            if (p == null) {
-	                p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg));
+	                p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), JFramePrincipal.idFarActual);
 	                mapaPedidos.put(id, p);
 	            }
 

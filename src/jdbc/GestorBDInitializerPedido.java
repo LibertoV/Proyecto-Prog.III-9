@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import domain.Pedido;
 import domain.Producto;
+import gui.JFramePrincipal;
 
 public class GestorBDInitializerPedido {
 	
@@ -115,7 +116,7 @@ public class GestorBDInitializerPedido {
 				
 				pstPedido.setDouble(4, p.calcularTotal());
 				pstPedido.setString(5, p.getProveedor());
-				pstPedido.setInt(6, 1);
+				pstPedido.setInt(6, p.getIdFarmacia());
 				pstPedido.executeUpdate();
 				
 				for (Producto prod : p.getProductos()) {
@@ -144,8 +145,9 @@ public class GestorBDInitializerPedido {
 		
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			
-			String sqlPedido = "SELECT * FROM PEDIDO";
+			String sqlPedido = "SELECT * FROM PEDIDO WHERE ID_FARMACIA = ?";
 			PreparedStatement pstPedido = con.prepareStatement(sqlPedido);
+			pstPedido.setInt(1, JFramePrincipal.idFarActual);
 			ResultSet rs = pstPedido.executeQuery();			
 			
 			String sqlProductos = "SELECT * FROM LINEA_PEDIDO WHERE ID_PEDIDO = ?";
@@ -156,8 +158,9 @@ public class GestorBDInitializerPedido {
 				String fechaOrd = rs.getString("FECHA_ORDEN");
 				String fechaLleg = rs.getString("FECHA_LLEGADA");
 				String proveedor = rs.getString("PROVEEDOR");
+				int idFarmacia = rs.getInt("ID_FARMACIA");
 				
-				Pedido p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg));
+				Pedido p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg),idFarmacia);
 				
 				pstProductos.setString(1, id);
 				ResultSet rsProd = pstProductos.executeQuery();

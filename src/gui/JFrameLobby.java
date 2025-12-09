@@ -338,6 +338,7 @@ public class JFrameLobby extends JFramePrincipal {
             
             System.out.println("Botón 'SEL' presionado en la fila: " + currentRow);
             System.out.println("Farmacia seleccionada: " + nombreFarmacia);
+            idFarActual = DataFarmacias.getFarmaciaActual(nombreFarmacia).getId();
             JDialogConfirmacion nuevaVentana = new JDialogConfirmacion(parent);
             nuevaVentana.setVisible(true);	
         }

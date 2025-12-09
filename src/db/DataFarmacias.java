@@ -11,6 +11,7 @@ import domain.Farmacia;
 import jdbc.GestorBDInitializerFarmacias;
 
 public class DataFarmacias {
+	
 	public static Vector<Vector<Object>> cargaFarmacia(String path){
 		Vector<Vector<Object>> data = new Vector<>();
 		
@@ -86,6 +87,16 @@ public class DataFarmacias {
 			e.printStackTrace();
 		}
 		return farmacias;
+	}
+	public static Farmacia getFarmaciaActual(String nombre) {
+		GestorBDInitializerFarmacias gestorBD = new GestorBDInitializerFarmacias();
+		List<Farmacia> farmacias = gestorBD.obtenerDatos();
+		for (Farmacia farmacia :farmacias) {
+			if(farmacia.getNombre().equals(nombre)) {
+				return farmacia;
+			}
+		}
+		return null;
 	}
 }
 	

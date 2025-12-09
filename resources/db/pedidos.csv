@@ -1,83 +1,480 @@
-PED-001,2023-11-01,2023-11-03,Amazon,Ibuprofeno 600mg (Caja 40),50,3.50
-PED-001,2023-11-01,2023-11-03,Amazon,Omeprazol 20mg,100,2.10
-PED-001,2023-11-01,2023-11-03,Amazon,Paracetamol 1g,200,1.80
-PED-001,2023-11-01,2023-11-03,Amazon,Enantyum 25mg,60,4.20
-PED-001,2023-11-01,2023-11-03,Amazon,Almax Forte Sobres,40,5.50
-PED-002,2023-11-02,2023-11-02,Cofares,Pa�ales Talla 1,30,15.00
-PED-002,2023-11-02,2023-11-02,Cofares,Toallitas H�medas Pack,50,2.50
-PED-002,2023-11-02,2023-11-02,Cofares,Crema Pa�al Suavinex,20,6.50
-PED-002,2023-11-02,2023-11-02,Cofares,Suero Fisiol�gico Monodosis,40,3.20
-PED-002,2023-11-02,2023-11-02,Cofares,Gasas Est�riles Beb�,50,1.80
-PED-003,2023-11-03,2023-11-05,Bayer,Aspirina C Efervescente,50,4.50
-PED-003,2023-11-03,2023-11-05,Bayer,Supradyn Vitaminas,30,12.00
-PED-003,2023-11-03,2023-11-05,Bayer,Redoxon Vitamina C,40,8.50
-PED-003,2023-11-03,2023-11-05,Bayer,Bepanthol Crema,25,9.00
-PED-003,2023-11-03,2023-11-05,Bayer,Gine-Canest�n,15,11.50
-PED-004,2023-11-04,2023-11-06,Cinfa,Alcohol 96,60,1.20
-PED-004,2023-11-04,2023-11-06,Cinfa,Agua Oxigenada,40,0.90
-PED-004,2023-11-04,2023-11-06,Cinfa,Algod�n Zigzag 100g,50,1.10
-PED-004,2023-11-04,2023-11-06,Cinfa,Esparadrapo Tela,60,2.50
-PED-004,2023-11-04,2023-11-06,Cinfa,Tiritas Resistentes,100,1.50
-PED-005,2023-11-05,2023-11-10,Pfizer,Lorazepam 1mg,40,1.50
-PED-005,2023-11-05,2023-11-10,Pfizer,Orfidal 1mg,50,1.80
-PED-005,2023-11-05,2023-11-10,Pfizer,L�tica 20mg,30,4.50
-PED-005,2023-11-05,2023-11-10,Pfizer,Trankimazin 0.5mg,50,2.10
-PED-006,2023-11-06,2023-11-07,Normon,Amoxicilina 500mg,80,2.30
-PED-006,2023-11-06,2023-11-07,Normon,Azitromicina 500mg,40,3.50
-PED-006,2023-11-06,2023-11-07,Normon,Clamoxyl 1g,50,2.80
-PED-006,2023-11-06,2023-11-07,Normon,Augmentine Plus,30,4.20
-PED-007,2023-11-07,2023-11-09,Amazon,Mascarillas FFP2 (Pack 10),100,5.00
-PED-007,2023-11-07,2023-11-09,Amazon,Guantes Nitrilo Caja 100,50,7.00
-PED-007,2023-11-07,2023-11-09,Amazon,Gel Hidroalcoh�lico 500ml,40,3.50
-PED-007,2023-11-07,2023-11-09,Amazon,Term�metro Digital,20,12.00
-PED-007,2023-11-07,2023-11-09,Amazon,Ox�metro de Dedo,10,15.00
-PED-008,2023-11-08,2023-11-12,Roche,Tiras Reactivas Glucosa,50,22.50
-PED-008,2023-11-08,2023-11-12,Roche,Lancetas Est�riles,50,4.00
-PED-008,2023-11-08,2023-11-12,Roche,Medidor Glucosa Accu-Chek,5,35.00
-PED-008,2023-11-08,2023-11-12,Roche,Agujas Insulina 4mm,60,8.50
-PED-009,2023-11-09,2023-11-11,Johnson&Johnson,Champ� Johnson Baby,25,3.20
-PED-009,2023-11-09,2023-11-11,Johnson&Johnson,Aceite Corporal,30,2.80
-PED-009,2023-11-09,2023-11-11,Johnson&Johnson,Neutrogena Manos,40,5.90
-PED-009,2023-11-09,2023-11-11,Johnson&Johnson,Listerine Mentol,30,4.10
-PED-009,2023-11-09,2023-11-11,Johnson&Johnson,Hilo Dental,50,1.50
-PED-010,2023-11-10,2023-11-15,Novartis,Voltaren Emulgel,40,9.50
-PED-010,2023-11-10,2023-11-15,Novartis,Thrombocid Forte,35,8.20
-PED-010,2023-11-10,2023-11-15,Novartis,Reflex Spray,30,7.50
-PED-010,2023-11-10,2023-11-15,Novartis,Parches T�rmicos,20,6.00
-PED-011,2023-11-11,2023-11-13,Sanofi,Nolotil Ampollas,60,3.80
-PED-011,2023-11-11,2023-11-13,Sanofi,Buscapina Compositum,30,6.20
-PED-011,2023-11-11,2023-11-13,Sanofi,Bisolvon Mucol�tico,50,5.80
-PED-011,2023-11-11,2023-11-13,Sanofi,Mucosolvan Jarabe,40,6.50
-PED-012,2023-11-12,2023-11-14,GSK,Ventolin Inhalador,45,3.95
-PED-012,2023-11-12,2023-11-14,GSK,Rhinomer Fuerza 2,30,7.50
-PED-012,2023-11-12,2023-11-14,GSK,Zovirax Crema,25,8.20
-PED-012,2023-11-12,2023-11-14,GSK,Parodontax Pasta,40,4.20
-PED-013,2023-11-13,2023-11-16,Merck,Eutirox 100mcg,50,2.90
-PED-013,2023-11-13,2023-11-16,Merck,Eutirox 50mcg,40,2.50
-PED-013,2023-11-13,2023-11-16,Merck,Concor 5mg,30,4.50
-PED-013,2023-11-13,2023-11-16,Merck,Glucophage 850mg,60,3.10
-PED-014,2023-11-14,2023-11-15,Abbott,Ensure NutriVigor Vainilla,20,18.50
-PED-014,2023-11-14,2023-11-15,Abbott,Ensure NutriVigor Chocolate,15,18.50
-PED-014,2023-11-14,2023-11-15,Abbott,Pedialyte Sabor Fresa,30,6.00
-PED-014,2023-11-14,2023-11-15,Abbott,Pedialyte Sabor Manzana,25,6.00
-PED-015,2023-11-15,2023-11-20,Amazon,Jeringuillas 5ml,100,0.15
-PED-015,2023-11-15,2023-11-20,Amazon,Jeringuillas 10ml,80,0.20
-PED-015,2023-11-15,2023-11-20,Amazon,Agujas Intramusculares,100,0.10
-PED-015,2023-11-15,2023-11-20,Amazon,Contenedor Agujas,10,4.50
-PED-016,2023-11-16,2023-11-18,Cofares,Dalsy Jarabe Ni�os,80,4.20
-PED-016,2023-11-16,2023-11-18,Cofares,Apiretal Gotas,80,3.90
-PED-016,2023-11-16,2023-11-18,Cofares,Junifen 20mg,50,3.50
-PED-016,2023-11-16,2023-11-18,Cofares,Suero Oral Sabores,100,5.50
-PED-017,2023-11-17,2023-11-21,Bayer,Canest�n Crema,30,9.50
-PED-017,2023-11-17,2023-11-21,Bayer,Bepanthol Tattoo,20,10.50
-PED-017,2023-11-17,2023-11-21,Bayer,Tabcin Noche,40,6.80
-PED-018,2023-11-18,2023-11-19,Cinfa,Bicarbonato S�dico,50,1.10
-PED-018,2023-11-18,2023-11-19,Cinfa,Manzanilla con An�s,40,2.50
-PED-018,2023-11-18,2023-11-19,Cinfa,Tila Alpina,30,2.20
-PED-018,2023-11-18,2023-11-19,Cinfa,Valeriana Leo,25,7.50
-PED-019,2023-11-19,2023-11-25,Pfizer,Viagra 50mg,20,55.00
-PED-019,2023-11-19,2023-11-25,Pfizer,Cialis 20mg,15,60.00
-PED-019,2023-11-19,2023-11-25,Pfizer,Preservativos Pack 12,50,8.00
-PED-020,2023-11-20,2023-11-22,Normon,Diazepam 5mg,60,1.90
-PED-020,2023-11-20,2023-11-22,Normon,Bromazepam 1.5mg,50,2.00
-PED-020,2023-11-20,2023-11-22,Normon,Alprazolam 0.5mg,40,1.80
+PED-001,2023-11-01,2023-11-03,Amazon,Ibuprofeno 600mg (Caja 40),50,3.50,1
+PED-001,2023-11-01,2023-11-03,Amazon,Omeprazol 20mg,100,2.10,1
+PED-001,2023-11-01,2023-11-03,Amazon,Paracetamol 1g,200,1.80,1
+PED-001,2023-11-01,2023-11-03,Amazon,Enantyum 25mg,60,4.20,1
+PED-002,2023-11-02,2023-11-04,Cofares,Pañales Talla 1,30,15.00,1
+PED-002,2023-11-02,2023-11-04,Cofares,Toallitas Húmedas Pack,50,2.50,1
+PED-002,2023-11-02,2023-11-04,Cofares,Crema Pañal Suavinex,20,6.50,1
+PED-002,2023-11-02,2023-11-04,Cofares,Suero Fisiológico Monodosis,40,3.20,1
+PED-003,2023-11-03,2023-11-05,Bayer,Aspirina C Efervescente,50,4.50,1
+PED-003,2023-11-03,2023-11-05,Bayer,Supradyn Vitaminas,30,12.00,1
+PED-003,2023-11-03,2023-11-05,Bayer,Redoxon Vitamina C,40,8.50,1
+PED-003,2023-11-03,2023-11-05,Bayer,Bepanthol Crema,25,9.00,1
+PED-004,2023-11-04,2023-11-06,Cinfa,Alcohol 96,60,1.20,1
+PED-004,2023-11-04,2023-11-06,Cinfa,Agua Oxigenada,40,0.90,1
+PED-004,2023-11-04,2023-11-06,Cinfa,Algodón Zigzag 100g,50,1.10,1
+PED-004,2023-11-04,2023-11-06,Cinfa,Esparadrapo Tela,60,2.50,1
+PED-005,2023-11-05,2023-11-07,Amazon,Mascarillas FFP2 (Pack 10),100,5.00,2
+PED-005,2023-11-05,2023-11-07,Amazon,Gel Hidroalcohólico 500ml,40,3.50,2
+PED-005,2023-11-05,2023-11-07,Amazon,Termómetro Digital,20,12.00,2
+PED-005,2023-11-05,2023-11-07,Amazon,Guantes Nitrilo Caja 100,50,7.00,2
+PED-006,2023-11-06,2023-11-08,Cofares,Tiras Reactivas Glucosa,50,22.50,2
+PED-006,2023-11-06,2023-11-08,Cofares,Lancetas Estériles,50,4.00,2
+PED-006,2023-11-06,2023-11-08,Cofares,Medidor Glucosa Accu-Chek,5,35.00,2
+PED-006,2023-11-06,2023-11-08,Cofares,Agujas Insulina 4mm,60,8.50,2
+PED-007,2023-11-07,2023-11-09,Bayer,Champú Johnson Baby,25,3.20,2
+PED-007,2023-11-07,2023-11-09,Bayer,Aceite Corporal,30,2.80,2
+PED-007,2023-11-07,2023-11-09,Bayer,Neutrogena Manos,40,5.90,2
+PED-007,2023-11-07,2023-11-09,Bayer,Listerine Mentol,30,4.10,2
+PED-008,2023-11-08,2023-11-10,Cinfa,Voltaren Emulgel,40,9.50,2
+PED-008,2023-11-08,2023-11-10,Cinfa,Thrombocid Forte,35,8.20,2
+PED-008,2023-11-08,2023-11-10,Cinfa,Reflex Spray,30,7.50,2
+PED-008,2023-11-08,2023-11-10,Cinfa,Parches Térmicos,20,6.00,2
+PED-009,2023-11-09,2023-11-11,Pfizer,Nolotil Ampollas,60,3.80,3
+PED-009,2023-11-09,2023-11-11,Pfizer,Buscapina Compositum,30,6.20,3
+PED-009,2023-11-09,2023-11-11,Pfizer,Bisolvon Mucolítico,50,5.80,3
+PED-009,2023-11-09,2023-11-11,Pfizer,Mucosolvan Jarabe,40,6.50,3
+PED-010,2023-11-10,2023-11-12,Normon,Ventolin Inhalador,45,3.95,3
+PED-010,2023-11-10,2023-11-12,Normon,Rhinomer Fuerza 2,30,7.50,3
+PED-010,2023-11-10,2023-11-12,Normon,Zovirax Crema,25,8.20,3
+PED-010,2023-11-10,2023-11-12,Normon,Parodontax Pasta,40,4.20,3
+PED-011,2023-11-11,2023-11-13,Merck,Eutirox 100mcg,50,2.90,3
+PED-011,2023-11-11,2023-11-13,Merck,Eutirox 50mcg,40,2.50,3
+PED-011,2023-11-11,2023-11-13,Merck,Concor 5mg,30,4.50,3
+PED-011,2023-11-11,2023-11-13,Merck,Glucophage 850mg,60,3.10,3
+PED-012,2023-11-12,2023-11-14,Abbott,Ensure NutriVigor Vainilla,20,18.50,3
+PED-012,2023-11-12,2023-11-14,Abbott,Ensure NutriVigor Chocolate,15,18.50,3
+PED-012,2023-11-12,2023-11-14,Abbott,Pedialyte Sabor Fresa,30,6.00,3
+PED-012,2023-11-12,2023-11-14,Abbott,Pedialyte Sabor Manzana,25,6.00,3
+PED-013,2023-11-13,2023-11-15,Amazon,Jeringuillas 5ml,100,0.15,4
+PED-013,2023-11-13,2023-11-15,Amazon,Jeringuillas 10ml,80,0.20,4
+PED-013,2023-11-13,2023-11-15,Amazon,Agujas Intramusculares,100,0.10,4
+PED-013,2023-11-13,2023-11-15,Amazon,Contenedor Agujas,10,4.50,4
+PED-014,2023-11-14,2023-11-16,Cofares,Dalsy Jarabe Niños,80,4.20,4
+PED-014,2023-11-14,2023-11-16,Cofares,Apiretal Gotas,80,3.90,4
+PED-014,2023-11-14,2023-11-16,Cofares,Junifen 20mg,50,3.50,4
+PED-014,2023-11-14,2023-11-16,Cofares,Suero Oral Sabores,100,5.50,4
+PED-015,2023-11-15,2023-11-17,Bayer,Canestén Crema,30,9.50,4
+PED-015,2023-11-15,2023-11-17,Bayer,Bepanthol Tattoo,20,10.50,4
+PED-015,2023-11-15,2023-11-17,Bayer,Tabcin Noche,40,6.80,4
+PED-015,2023-11-15,2023-11-17,Bayer,Pastillas Cefalea,25,7.50,4
+PED-016,2023-11-16,2023-11-18,Cinfa,Bicarbonato Sódico,50,1.10,4
+PED-016,2023-11-16,2023-11-18,Cinfa,Manzanilla con Anís,40,2.50,4
+PED-016,2023-11-16,2023-11-18,Cinfa,Tila Alpina,30,2.20,4
+PED-016,2023-11-16,2023-11-18,Cinfa,Valeriana Leo,25,7.50,4
+PED-017,2023-11-17,2023-11-19,Pfizer,Zoloft 50mg,40,3.50,5
+PED-017,2023-11-17,2023-11-19,Pfizer,Lyrica 75mg,50,8.80,5
+PED-017,2023-11-17,2023-11-19,Pfizer,Xanax 1mg,30,2.10,5
+PED-017,2023-11-17,2023-11-19,Pfizer,Effexor 37.5mg,50,4.20,5
+PED-018,2023-11-18,2023-11-20,Normon,Cefalexina 500mg,80,2.50,5
+PED-018,2023-11-18,2023-11-20,Normon,Metronidazol 500mg,40,3.80,5
+PED-018,2023-11-18,2023-11-20,Normon,Ciprofloxacino 250mg,50,3.10,5
+PED-018,2023-11-18,2023-11-20,Normon,Doxiciclina 100mg,30,4.50,5
+PED-019,2023-11-19,2023-11-21,Merck,Tiras Cetónicas,50,18.50,5
+PED-019,2023-11-19,2023-11-21,Merck,Monitor de Presión,50,45.00,5
+PED-019,2023-11-19,2023-11-21,Merck,Pulsoxímetro Avanzado,5,28.00,5
+PED-019,2023-11-19,2023-11-21,Merck,Kit Primeros Auxilios,60,12.50,5
+PED-020,2023-11-20,2023-11-22,Abbott,Band-Aids Flexibles,25,4.20,5
+PED-020,2023-11-20,2023-11-22,Abbott,Toallitas Desmaquillantes,30,3.50,5
+PED-020,2023-11-20,2023-11-22,Abbott,Crema Corporal Piel Seca,40,7.90,5
+PED-020,2023-11-20,2023-11-22,Abbott,Enjuague Bucal Sin Alcohol,30,5.10,5
+PED-021,2023-11-21,2023-11-23,Amazon,Fenistil Gel,40,7.50,6
+PED-021,2023-11-21,2023-11-23,Amazon,Mucosan Comprimidos,35,6.20,6
+PED-021,2023-11-21,2023-11-23,Amazon,Tussidrill Jarabe,30,8.50,6
+PED-021,2023-11-21,2023-11-23,Amazon,Gotas Oculares Hidratantes,20,5.00,6
+PED-022,2023-11-22,2023-11-24,Cofares,Dolalgial 500mg,60,3.80,6
+PED-022,2023-11-22,2023-11-24,Cofares,Fortasec Cápsulas,30,6.20,6
+PED-022,2023-11-22,2023-11-24,Cofares,Buscapina Tabletas,50,5.80,6
+PED-022,2023-11-22,2023-11-24,Cofares,Enterogermina Viales,40,10.50,6
+PED-023,2023-11-23,2023-11-25,Bayer,Fluticasona Nasal,45,8.95,6
+PED-023,2023-11-23,2023-11-25,Bayer,Bronquial Forte Jarabe,30,6.50,6
+PED-023,2023-11-23,2023-11-25,Bayer,Coldrex Comprimidos,25,5.20,6
+PED-023,2023-11-23,2023-11-25,Bayer,Pasta Dental Sensodyne,40,4.90,6
+PED-024,2023-11-24,2023-11-26,Cinfa,Sintrom 4mg,50,3.90,6
+PED-024,2023-11-24,2023-11-26,Cinfa,Dercutane 20mg,40,12.50,6
+PED-024,2023-11-24,2023-11-26,Cinfa,Lercanidipino 10mg,30,4.80,6
+PED-024,2023-11-24,2023-11-26,Cinfa,Metformina 500mg,60,2.10,6
+PED-025,2023-11-25,2023-11-27,Pfizer,Glucerna SR Vainilla,20,19.50,7
+PED-025,2023-11-25,2023-11-27,Pfizer,Ensure Plus Chocolate,15,20.50,7
+PED-025,2023-11-25,2023-11-27,Pfizer,Pedialyte Manzana Litro,30,7.00,7
+PED-025,2023-11-25,2023-11-27,Pfizer,FreeStyle Libre Sensor,10,65.00,7
+PED-026,2023-11-26,2023-11-28,Normon,Cánulas Nasales,100,0.50,7
+PED-026,2023-11-26,2023-11-28,Normon,Guantes Vinilo Caja 100,80,6.00,7
+PED-026,2023-11-26,2023-11-28,Normon,Bolsas Orina 2L,100,1.50,7
+PED-026,2023-11-26,2023-11-28,Normon,Sondas Foley,10,3.50,7
+PED-027,2023-11-27,2023-11-29,Merck,Kit Primeros Dientes,80,6.20,7
+PED-027,2023-11-27,2023-11-29,Merck,Cepillo Dedo Bebé,80,3.90,7
+PED-027,2023-11-27,2023-11-29,Merck,Crema Corporal Pediátrica,50,8.50,7
+PED-027,2023-11-27,2023-11-29,Merck,Baberos Desechables,100,2.50,7
+PED-028,2023-11-28,2023-11-30,Abbott,Desodorante Roll-On,30,4.50,7
+PED-028,2023-11-28,2023-11-30,Abbott,Pastillas Cefalea,20,7.50,7
+PED-028,2023-11-28,2023-11-30,Abbott,Anti-Vómito Comprimidos,40,6.80,7
+PED-028,2023-11-28,2023-11-30,Abbott,Jeringuillas de Insulina,50,5.10,7
+PED-029,2023-11-29,2023-12-01,Amazon,Toallitas de Alcohol,40,1.90,8
+PED-029,2023-11-29,2023-12-01,Amazon,Vendas Gasa Enrolladas,30,1.50,8
+PED-029,2023-11-29,2023-12-01,Amazon,Parches Nicotina Fase 1,25,18.50,8
+PED-029,2023-11-29,2023-12-01,Amazon,Champix 0.5mg,20,45.00,8
+PED-030,2023-11-30,2023-12-02,Cofares,Lyrica 150mg,15,12.00,8
+PED-030,2023-11-30,2023-12-02,Cofares,Inyecciones Hormona Crecimiento,50,90.00,8
+PED-030,2023-11-30,2023-12-02,Cofares,Tramadol 50mg,60,2.10,8
+PED-030,2023-11-30,2023-12-02,Cofares,Morfina Solución Oral,50,4.50,8
+PED-031,2023-12-01,2023-12-03,Bayer,Oxicodona 10mg,40,3.80,8
+PED-031,2023-12-01,2023-12-03,Bayer,Fentanilo Parches,30,15.50,8
+PED-031,2023-12-01,2023-12-03,Bayer,Gotas para Oídos,100,4.50,8
+PED-031,2023-12-01,2023-12-03,Bayer,Spray Nasal Descongestivo,50,5.00,8
+PED-032,2023-12-02,2023-12-04,Cinfa,Pastillas para Dormir,40,6.50,8
+PED-032,2023-12-02,2023-12-04,Cinfa,Colirio Anti-Alergico,20,7.50,8
+PED-032,2023-12-02,2023-12-04,Cinfa,Barritas Sustitutivas,30,2.20,8
+PED-032,2023-12-02,2023-12-04,Cinfa,Batidos Proteicos,50,3.50,8
+PED-033,2023-12-03,2023-12-05,Pfizer,Geles Energéticos,20,1.90,9
+PED-033,2023-12-03,2023-12-05,Pfizer,Creatina Monohidrato,40,19.90,9
+PED-033,2023-12-03,2023-12-05,Pfizer,Aceite de Ricino,50,3.80,9
+PED-033,2023-12-03,2023-12-05,Pfizer,Agua de Rosas,30,4.20,9
+PED-034,2023-12-04,2023-12-06,Normon,Glicerina Líquida,40,5.50,9
+PED-034,2023-12-04,2023-12-06,Normon,Peróxido de Benzoilo,25,7.50,9
+PED-034,2023-12-04,2023-12-06,Normon,Vitamina B12 Inyectable,60,12.20,9
+PED-034,2023-12-04,2023-12-06,Normon,Hierro Quelado Cápsulas,40,8.90,9
+PED-035,2023-12-05,2023-12-07,Merck,Magnesio Comprimidos,50,5.50,9
+PED-035,2023-12-05,2023-12-07,Merck,Calcio + Vitamina D,100,7.50,9
+PED-035,2023-12-05,2023-12-07,Merck,Gabapentina 300mg,40,4.50,9
+PED-035,2023-12-05,2023-12-07,Merck,Pregabalina 75mg,50,6.80,9
+PED-036,2023-12-06,2023-12-08,Abbott,Topiramato 25mg,30,5.20,9
+PED-036,2023-12-06,2023-12-08,Abbott,Lamotrigina 50mg,50,4.10,9
+PED-036,2023-12-06,2023-12-08,Abbott,Ceftriaxona 1g Inyectable,80,9.30,9
+PED-036,2023-12-06,2023-12-08,Abbott,Vancomicina 500mg,40,18.50,9
+PED-037,2023-12-07,2023-12-09,Amazon,Meropenem 1g,50,25.80,10
+PED-037,2023-12-07,2023-12-09,Amazon,Linezolid 600mg,30,35.20,10
+PED-037,2023-12-07,2023-12-09,Amazon,Tensiometro de Muñeca,100,25.00,10
+PED-037,2023-12-07,2023-12-09,Amazon,Fonendoscopio,50,18.00,10
+PED-038,2023-12-08,2023-12-10,Cofares,Linterna Médica,40,5.50,10
+PED-038,2023-12-08,2023-12-10,Cofares,Martillo de Reflejos,20,8.00,10
+PED-038,2023-12-08,2023-12-10,Cofares,Kit Colesterol HDL/LDL,50,32.50,10
+PED-038,2023-12-08,2023-12-10,Cofares,Medidor de Lactato,50,75.00,10
+PED-039,2023-12-09,2023-12-11,Bayer,Medidor de Ácido Úrico,5,45.00,10
+PED-039,2023-12-09,2023-12-11,Bayer,Pipetas de Transferencia,60,6.50,10
+PED-039,2023-12-09,2023-12-11,Bayer,Crema Aclarante Facial,25,14.20,10
+PED-039,2023-12-09,2023-12-11,Bayer,Sérum Vitamina E,30,18.80,10
+PED-040,2023-12-10,2023-12-12,Cinfa,Hidratante SPF 30,40,11.90,10
+PED-040,2023-12-10,2023-12-12,Cinfa,Acondicionador Profundo,30,5.10,10
+PED-040,2023-12-10,2023-12-12,Cinfa,Piretrinas Spray Anti-Piojos,40,9.50,10
+PED-040,2023-12-10,2023-12-12,Cinfa,Loción Anti-Piojos Plus,35,11.20,10
+PED-041,2023-12-11,2023-12-13,Pfizer,Peine Lendrera Metálico,30,4.50,11
+PED-041,2023-12-11,2023-12-13,Pfizer,Protector Diario Anti-Piojos,20,7.00,11
+PED-041,2023-12-11,2023-12-13,Pfizer,Amoxicilina 500mg,80,2.30,11
+PED-041,2023-12-11,2023-12-13,Pfizer,Azitromicina 500mg,40,3.50,11
+PED-042,2023-12-12,2023-12-14,Normon,Clamoxyl 1g,50,2.80,11
+PED-042,2023-12-12,2023-12-14,Normon,Augmentine Plus,30,4.20,11
+PED-042,2023-12-12,2023-12-14,Normon,Lorazepam 1mg,40,1.50,11
+PED-042,2023-12-12,2023-12-14,Normon,Orfidal 1mg,50,1.80,11
+PED-043,2023-12-13,2023-12-15,Merck,Lítica 20mg,30,4.50,11
+PED-043,2023-12-13,2023-12-15,Merck,Trankimazin 0.5mg,50,2.10,11
+PED-043,2023-12-13,2023-12-15,Merck,Viagra 50mg,20,55.00,11
+PED-043,2023-12-13,2023-12-15,Merck,Cialis 20mg,15,60.00,11
+PED-044,2023-12-14,2023-12-16,Abbott,Preservativos Pack 12,50,8.00,11
+PED-044,2023-12-14,2023-12-16,Abbott,Diazepam 5mg,60,1.90,11
+PED-044,2023-12-14,2023-12-16,Abbott,Bromazepam 1.5mg,50,2.00,11
+PED-044,2023-12-14,2023-12-16,Abbott,Alprazolam 0.5mg,40,1.80,11
+PED-045,2023-12-15,2023-12-17,Amazon,Antiséptico Cutáneo,100,3.50,12
+PED-045,2023-12-15,2023-12-17,Amazon,Vendas Elásticas 5m,50,2.50,12
+PED-045,2023-12-15,2023-12-17,Amazon,Parches Calor,40,5.50,12
+PED-045,2023-12-15,2023-12-17,Amazon,Nebulizador Portátil,5,45.00,12
+PED-046,2023-12-16,2023-12-18,Cofares,Leche en Polvo Premium,30,25.00,12
+PED-046,2023-12-16,2023-12-18,Cofares,Cereal Infantil,50,4.50,12
+PED-046,2023-12-16,2023-12-18,Cofares,Protector Solar Infantil,20,12.50,12
+PED-046,2023-12-16,2023-12-18,Cofares,Gotas Nasales Bebé,40,4.80,12
+PED-047,2023-12-17,2023-12-19,Bayer,Talquistina Polvo,50,7.50,12
+PED-047,2023-12-17,2023-12-19,Bayer,Crema Anti-Picazón,30,6.20,12
+PED-047,2023-12-17,2023-12-19,Bayer,Multivitamínico Diario,40,15.50,12
+PED-047,2023-12-17,2023-12-19,Bayer,Aerosol Bucal,25,8.00,12
+PED-048,2023-12-18,2023-12-20,Cinfa,Tiras Reactivas pH,60,9.20,12
+PED-048,2023-12-18,2023-12-20,Cinfa,Pastillas Garganta,40,3.90,12
+PED-048,2023-12-18,2023-12-20,Cinfa,Cepillo Eléctrico Recambio,50,12.10,12
+PED-048,2023-12-18,2023-12-20,Cinfa,Flúor Dental Enjuague,100,4.50,12
+PED-049,2023-12-19,2023-12-21,Pfizer,Compresas Postparto,100,8.00,13
+PED-049,2023-12-19,2023-12-21,Pfizer,Sujetador Lactancia,50,15.00,13
+PED-049,2023-12-19,2023-12-21,Pfizer,Discos de Lactancia,40,5.50,13
+PED-049,2023-12-19,2023-12-21,Pfizer,Pezoneras Silicona,20,9.00,13
+PED-050,2023-12-20,2023-12-22,Normon,Tiras Cetónicas (Roche),50,18.50,13
+PED-050,2023-12-20,2023-12-22,Normon,Monitor de Presión (Roche),50,45.00,13
+PED-050,2023-12-20,2023-12-22,Normon,Pulsoxímetro Avanzado (Roche),5,28.00,13
+PED-050,2023-12-20,2023-12-22,Normon,Kit Primeros Auxilios (Roche),60,12.50,13
+PED-051,2023-12-21,2023-12-23,Merck,Band-Aids Flexibles (J&J),25,4.20,13
+PED-051,2023-12-21,2023-12-23,Merck,Toallitas Desmaquillantes (J&J),30,3.50,13
+PED-051,2023-12-21,2023-12-23,Merck,Crema Corporal Piel Seca (J&J),40,7.90,13
+PED-051,2023-12-21,2023-12-23,Merck,Enjuague Bucal Sin Alcohol (J&J),30,5.10,13
+PED-052,2023-12-22,2023-12-24,Abbott,Fenistil Gel (Novartis),40,7.50,13
+PED-052,2023-12-22,2023-12-24,Abbott,Mucosan Comprimidos (Novartis),35,6.20,13
+PED-052,2023-12-22,2023-12-24,Abbott,Tussidrill Jarabe (Novartis),30,8.50,13
+PED-052,2023-12-22,2023-12-24,Abbott,Gotas Oculares Hidratantes (Novartis),20,5.00,13
+PED-053,2023-12-23,2023-12-25,Amazon,Dolalgial 500mg (Sanofi),60,3.80,14
+PED-053,2023-12-23,2023-12-25,Amazon,Fortasec Cápsulas (Sanofi),30,6.20,14
+PED-053,2023-12-23,2023-12-25,Amazon,Buscapina Tabletas (Sanofi),50,5.80,14
+PED-053,2023-12-23,2023-12-25,Amazon,Enterogermina Viales (Sanofi),40,10.50,14
+PED-054,2023-12-24,2023-12-26,Cofares,Fluticasona Nasal (GSK),45,8.95,14
+PED-054,2023-12-24,2023-12-26,Cofares,Bronquial Forte Jarabe (GSK),30,6.50,14
+PED-054,2023-12-24,2023-12-26,Cofares,Coldrex Comprimidos (GSK),25,5.20,14
+PED-054,2023-12-24,2023-12-26,Cofares,Pasta Dental Sensodyne (GSK),40,4.90,14
+PED-055,2023-12-25,2023-12-27,Bayer,Sintrom 4mg (Merck),50,3.90,14
+PED-055,2023-12-25,2023-12-27,Bayer,Dercutane 20mg (Merck),40,12.50,14
+PED-055,2023-12-25,2023-12-27,Bayer,Lercanidipino 10mg (Merck),30,4.80,14
+PED-055,2023-12-25,2023-12-27,Bayer,Metformina 500mg (Merck),60,2.10,14
+PED-056,2023-12-26,2023-12-28,Cinfa,Glucerna SR Vainilla (Abbott),20,19.50,14
+PED-056,2023-12-26,2023-12-28,Cinfa,Ensure Plus Chocolate (Abbott),15,20.50,14
+PED-056,2023-12-26,2023-12-28,Cinfa,Pedialyte Manzana Litro (Abbott),30,7.00,14
+PED-056,2023-12-26,2023-12-28,Cinfa,FreeStyle Libre Sensor (Abbott),10,65.00,14
+PED-057,2023-12-27,2023-12-29,Pfizer,Cánulas Nasales (Amazon),100,0.50,15
+PED-057,2023-12-27,2023-12-29,Pfizer,Guantes Vinilo Caja 100 (Amazon),80,6.00,15
+PED-057,2023-12-27,2023-12-29,Pfizer,Bolsas Orina 2L (Amazon),100,1.50,15
+PED-057,2023-12-27,2023-12-29,Pfizer,Sondas Foley (Amazon),10,3.50,15
+PED-058,2023-12-28,2023-12-30,Normon,Kit Primeros Dientes (Cofares),80,6.20,15
+PED-058,2023-12-28,2023-12-30,Normon,Cepillo Dedo Bebé (Cofares),80,3.90,15
+PED-058,2023-12-28,2023-12-30,Normon,Crema Corporal Pediátrica (Cofares),50,8.50,15
+PED-058,2023-12-28,2023-12-30,Normon,Baberos Desechables (Cofares),100,2.50,15
+PED-059,2023-12-29,2023-12-31,Merck,Desodorante Roll-On (Bayer),30,4.50,15
+PED-059,2023-12-29,2023-12-31,Merck,Pastillas Cefalea (Bayer),20,7.50,15
+PED-059,2023-12-29,2023-12-31,Merck,Anti-Vómito Comprimidos (Bayer),40,6.80,15
+PED-059,2023-12-29,2023-12-31,Merck,Jeringuillas de Insulina (Cinfa),50,5.10,15
+PED-060,2023-12-30,2024-01-01,Abbott,Toallitas de Alcohol (Cinfa),40,1.90,15
+PED-060,2023-12-30,2024-01-01,Abbott,Vendas Gasa Enrolladas (Cinfa),30,1.50,15
+PED-060,2023-12-30,2024-01-01,Abbott,Parches Nicotina Fase 1 (Cinfa),25,18.50,15
+PED-060,2023-12-30,2024-01-01,Abbott,Champix 0.5mg (Pfizer),20,45.00,15
+PED-061,2024-01-01,2024-01-03,Amazon,Lyrica 150mg (Pfizer),15,12.00,16
+PED-061,2024-01-01,2024-01-03,Amazon,Inyecciones Hormona Crecimiento (Pfizer),50,90.00,16
+PED-061,2024-01-01,2024-01-03,Amazon,Tramadol 50mg (Normon),60,2.10,16
+PED-061,2024-01-01,2024-01-03,Amazon,Morfina Solución Oral (Normon),50,4.50,16
+PED-062,2024-01-02,2024-01-04,Cofares,Oxicodona 10mg (Normon),40,3.80,16
+PED-062,2024-01-02,2024-01-04,Cofares,Fentanilo Parches (Normon),30,15.50,16
+PED-062,2024-01-02,2024-01-04,Cofares,Gotas para Oídos (Amazon),100,4.50,16
+PED-062,2024-01-02,2024-01-04,Cofares,Spray Nasal Descongestivo (Amazon),50,5.00,16
+PED-063,2024-01-03,2024-01-05,Bayer,Pastillas para Dormir (Amazon),40,6.50,16
+PED-063,2024-01-03,2024-01-05,Bayer,Colirio Anti-Alergico (Amazon),20,7.50,16
+PED-063,2024-01-03,2024-01-05,Bayer,Barritas Sustitutivas (Cofares),30,2.20,16
+PED-063,2024-01-03,2024-01-05,Bayer,Batidos Proteicos (Cofares),50,3.50,16
+PED-064,2024-01-04,2024-01-06,Cinfa,Geles Energéticos (Cofares),20,1.90,16
+PED-064,2024-01-04,2024-01-06,Cinfa,Creatina Monohidrato (Cofares),40,19.90,16
+PED-064,2024-01-04,2024-01-06,Cinfa,Aceite de Ricino (Bayer),50,3.80,16
+PED-064,2024-01-04,2024-01-06,Cinfa,Agua de Rosas (Bayer),30,4.20,16
+PED-065,2024-01-05,2024-01-07,Pfizer,Glicerina Líquida (Bayer),40,5.50,17
+PED-065,2024-01-05,2024-01-07,Pfizer,Peróxido de Benzoilo (Bayer),25,7.50,17
+PED-065,2024-01-05,2024-01-07,Pfizer,Vitamina B12 Inyectable (Cinfa),60,12.20,17
+PED-065,2024-01-05,2024-01-07,Pfizer,Hierro Quelado Cápsulas (Cinfa),40,8.90,17
+PED-066,2024-01-06,2024-01-08,Normon,Magnesio Comprimidos (Cinfa),50,5.50,17
+PED-066,2024-01-06,2024-01-08,Normon,Calcio + Vitamina D (Cinfa),100,7.50,17
+PED-066,2024-01-06,2024-01-08,Normon,Gabapentina 300mg (Pfizer),40,4.50,17
+PED-066,2024-01-06,2024-01-08,Normon,Pregabalina 75mg (Pfizer),50,6.80,17
+PED-067,2024-01-07,2024-01-09,Merck,Topiramato 25mg (Pfizer),30,5.20,17
+PED-067,2024-01-07,2024-01-09,Merck,Lamotrigina 50mg (Pfizer),50,4.10,17
+PED-067,2024-01-07,2024-01-09,Merck,Ceftriaxona 1g Inyectable (Normon),80,9.30,17
+PED-067,2024-01-07,2024-01-09,Merck,Vancomicina 500mg (Normon),40,18.50,17
+PED-068,2024-01-08,2024-01-10,Abbott,Meropenem 1g (Normon),50,25.80,17
+PED-068,2024-01-08,2024-01-10,Abbott,Linezolid 600mg (Normon),30,35.20,17
+PED-068,2024-01-08,2024-01-10,Abbott,Tensiometro de Muñeca (Amazon),100,25.00,17
+PED-068,2024-01-08,2024-01-10,Abbott,Fonendoscopio (Amazon),50,18.00,17
+PED-069,2024-01-09,2024-01-11,Amazon,Linterna Médica (Amazon),40,5.50,18
+PED-069,2024-01-09,2024-01-11,Amazon,Martillo de Reflejos (Amazon),20,8.00,18
+PED-069,2024-01-09,2024-01-11,Amazon,Kit Colesterol HDL/LDL (Roche),50,32.50,18
+PED-069,2024-01-09,2024-01-11,Amazon,Medidor de Lactato (Roche),50,75.00,18
+PED-070,2024-01-10,2024-01-12,Cofares,Medidor de Ácido Úrico (Roche),5,45.00,18
+PED-070,2024-01-10,2024-01-12,Cofares,Pipetas de Transferencia (Roche),60,6.50,18
+PED-070,2024-01-10,2024-01-12,Cofares,Crema Aclarante Facial (J&J),25,14.20,18
+PED-070,2024-01-10,2024-01-12,Cofares,Sérum Vitamina E (J&J),30,18.80,18
+PED-071,2024-01-11,2024-01-13,Bayer,Hidratante SPF 30 (J&J),40,11.90,18
+PED-071,2024-01-11,2024-01-13,Bayer,Acondicionador Profundo (J&J),30,5.10,18
+PED-071,2024-01-11,2024-01-13,Bayer,Piretrinas Spray Anti-Piojos (Novartis),40,9.50,18
+PED-071,2024-01-11,2024-01-13,Bayer,Loción Anti-Piojos Plus (Novartis),35,11.20,18
+PED-072,2024-01-12,2024-01-14,Cinfa,Peine Lendrera Metálico (Novartis),30,4.50,18
+PED-072,2023-01-12,2023-01-14,Cinfa,Protector Diario Anti-Piojos (Novartis),20,7.00,18
+PED-072,2023-01-12,2023-01-14,Cinfa,Amoxicilina 500mg (Normon),80,2.30,18
+PED-072,2023-01-12,2023-01-14,Cinfa,Azitromicina 500mg (Normon),40,3.50,18
+PED-073,2024-01-13,2024-01-15,Pfizer,Clamoxyl 1g (Normon),50,2.80,19
+PED-073,2024-01-13,2024-01-15,Pfizer,Augmentine Plus (Normon),30,4.20,19
+PED-073,2024-01-13,2024-01-15,Pfizer,Lorazepam 1mg (Pfizer),40,1.50,19
+PED-073,2024-01-13,2024-01-15,Pfizer,Orfidal 1mg (Pfizer),50,1.80,19
+PED-074,2024-01-14,2024-01-16,Normon,Lítica 20mg (Pfizer),30,4.50,19
+PED-074,2024-01-14,2024-01-16,Normon,Trankimazin 0.5mg (Pfizer),50,2.10,19
+PED-074,2024-01-14,2024-01-16,Normon,Viagra 50mg (Pfizer),20,55.00,19
+PED-074,2024-01-14,2024-01-16,Normon,Cialis 20mg (Pfizer),15,60.00,19
+PED-075,2024-01-15,2024-01-17,Merck,Preservativos Pack 12 (Pfizer),50,8.00,19
+PED-075,2024-01-15,2024-01-17,Merck,Diazepam 5mg (Normon),60,1.90,19
+PED-075,2024-01-15,2024-01-17,Merck,Bromazepam 1.5mg (Normon),50,2.00,19
+PED-075,2024-01-15,2024-01-17,Merck,Alprazolam 0.5mg (Normon),40,1.80,19
+PED-076,2024-01-16,2024-01-18,Abbott,Antiséptico Cutáneo (Amazon),100,3.50,19
+PED-076,2024-01-16,2024-01-18,Abbott,Vendas Elásticas 5m (Amazon),50,2.50,19
+PED-076,2024-01-16,2024-01-18,Abbott,Parches Calor (Amazon),40,5.50,19
+PED-076,2024-01-16,2024-01-18,Abbott,Nebulizador Portátil (Amazon),5,45.00,19
+PED-077,2024-01-17,2024-01-19,Amazon,Leche en Polvo Premium (Cofares),30,25.00,20
+PED-077,2024-01-17,2024-01-19,Amazon,Cereal Infantil (Cofares),50,4.50,20
+PED-077,2024-01-17,2024-01-19,Amazon,Protector Solar Infantil (Cofares),20,12.50,20
+PED-077,2024-01-17,2024-01-19,Amazon,Gotas Nasales Bebé (Cofares),40,4.80,20
+PED-078,2024-01-18,2024-01-20,Cofares,Talquistina Polvo (Bayer),50,7.50,20
+PED-078,2024-01-18,2024-01-20,Cofares,Crema Anti-Picazón (Bayer),30,6.20,20
+PED-078,2024-01-18,2024-01-20,Cofares,Multivitamínico Diario (Bayer),40,15.50,20
+PED-078,2024-01-18,2024-01-20,Cofares,Aerosol Bucal (Bayer),25,8.00,20
+PED-079,2024-01-19,2024-01-21,Bayer,Tiras Reactivas pH (Cinfa),60,9.20,20
+PED-079,2024-01-19,2024-01-21,Bayer,Pastillas Garganta (Cinfa),40,3.90,20
+PED-079,2024-01-19,2024-01-21,Bayer,Cepillo Eléctrico Recambio (Cinfa),50,12.10,20
+PED-079,2024-01-19,2024-01-21,Bayer,Flúor Dental Enjuague (Cinfa),100,4.50,20
+PED-080,2024-01-20,2024-01-22,Cinfa,Compresas Postparto (Amazon),100,8.00,20
+PED-080,2024-01-20,2024-01-22,Cinfa,Sujetador Lactancia (Amazon),50,15.00,20
+PED-080,2024-01-20,2024-01-22,Cinfa,Discos de Lactancia (Amazon),40,5.50,20
+PED-080,2024-01-20,2024-01-22,Cinfa,Pezoneras Silicona (Amazon),20,9.00,20
+PED-081,2024-01-21,2024-01-23,Pfizer,Tiras Cetónicas (Roche),50,18.50,21
+PED-081,2024-01-21,2024-01-23,Pfizer,Monitor de Presión (Roche),50,45.00,21
+PED-081,2024-01-21,2024-01-23,Pfizer,Pulsoxímetro Avanzado (Roche),5,28.00,21
+PED-081,2024-01-21,2024-01-23,Pfizer,Kit Primeros Auxilios (Roche),60,12.50,21
+PED-082,2024-01-22,2024-01-24,Normon,Band-Aids Flexibles (J&J),25,4.20,21
+PED-082,2024-01-22,2024-01-24,Normon,Toallitas Desmaquillantes (J&J),30,3.50,21
+PED-082,2024-01-22,2024-01-24,Normon,Crema Corporal Piel Seca (J&J),40,7.90,21
+PED-082,2024-01-22,2024-01-24,Normon,Enjuague Bucal Sin Alcohol (J&J),30,5.10,21
+PED-083,2024-01-23,2024-01-25,Merck,Fenistil Gel (Novartis),40,7.50,21
+PED-083,2024-01-23,2024-01-25,Merck,Mucosan Comprimidos (Novartis),35,6.20,21
+PED-083,2024-01-23,2024-01-25,Merck,Tussidrill Jarabe (Novartis),30,8.50,21
+PED-083,2024-01-23,2024-01-25,Merck,Gotas Oculares Hidratantes (Novartis),20,5.00,21
+PED-084,2024-01-24,2024-01-26,Abbott,Dolalgial 500mg (Sanofi),60,3.80,21
+PED-084,2024-01-24,2024-01-26,Abbott,Fortasec Cápsulas (Sanofi),30,6.20,21
+PED-084,2024-01-24,2024-01-26,Abbott,Buscapina Tabletas (Sanofi),50,5.80,21
+PED-084,2024-01-24,2024-01-26,Abbott,Enterogermina Viales (Sanofi),40,10.50,21
+PED-085,2024-01-25,2024-01-27,Amazon,Fluticasona Nasal (GSK),45,8.95,22
+PED-085,2024-01-25,2024-01-27,Amazon,Bronquial Forte Jarabe (GSK),30,6.50,22
+PED-085,2024-01-25,2024-01-27,Amazon,Coldrex Comprimidos (GSK),25,5.20,22
+PED-085,2024-01-25,2024-01-27,Amazon,Pasta Dental Sensodyne (GSK),40,4.90,22
+PED-086,2024-01-26,2024-01-28,Cofares,Sintrom 4mg (Merck),50,3.90,22
+PED-086,2024-01-26,2024-01-28,Cofares,Dercutane 20mg (Merck),40,12.50,22
+PED-086,2024-01-26,2024-01-28,Cofares,Lercanidipino 10mg (Merck),30,4.80,22
+PED-086,2024-01-26,2024-01-28,Cofares,Metformina 500mg (Merck),60,2.10,22
+PED-087,2024-01-27,2024-01-29,Bayer,Glucerna SR Vainilla (Abbott),20,19.50,22
+PED-087,2024-01-27,2024-01-29,Bayer,Ensure Plus Chocolate (Abbott),15,20.50,22
+PED-087,2024-01-27,2024-01-29,Bayer,Pedialyte Manzana Litro (Abbott),30,7.00,22
+PED-087,2024-01-27,2024-01-29,Bayer,FreeStyle Libre Sensor (Abbott),10,65.00,22
+PED-088,2024-01-28,2024-01-30,Cinfa,Cánulas Nasales (Amazon),100,0.50,22
+PED-088,2024-01-28,2024-01-30,Cinfa,Guantes Vinilo Caja 100 (Amazon),80,6.00,22
+PED-088,2024-01-28,2024-01-30,Cinfa,Bolsas Orina 2L (Amazon),100,1.50,22
+PED-088,2024-01-28,2024-01-30,Cinfa,Sondas Foley (Amazon),10,3.50,22
+PED-089,2024-01-29,2024-01-31,Pfizer,Kit Primeros Dientes (Cofares),80,6.20,23
+PED-089,2024-01-29,2024-01-31,Pfizer,Cepillo Dedo Bebé (Cofares),80,3.90,23
+PED-089,2024-01-29,2024-01-31,Pfizer,Crema Corporal Pediátrica (Cofares),50,8.50,23
+PED-089,2024-01-29,2024-01-31,Pfizer,Baberos Desechables (Cofares),100,2.50,23
+PED-090,2024-01-30,2024-02-01,Normon,Desodorante Roll-On (Bayer),30,4.50,23
+PED-090,2024-01-30,2024-02-01,Normon,Pastillas Cefalea (Bayer),20,7.50,23
+PED-090,2024-01-30,2024-02-01,Normon,Anti-Vómito Comprimidos (Bayer),40,6.80,23
+PED-090,2024-01-30,2024-02-01,Normon,Jeringuillas de Insulina (Cinfa),50,5.10,23
+PED-091,2024-01-31,2024-02-02,Merck,Toallitas de Alcohol (Cinfa),40,1.90,23
+PED-091,2024-01-31,2024-02-02,Merck,Vendas Gasa Enrolladas (Cinfa),30,1.50,23
+PED-091,2024-01-31,2024-02-02,Merck,Parches Nicotina Fase 1 (Cinfa),25,18.50,23
+PED-091,2024-01-31,2024-02-02,Merck,Champix 0.5mg (Pfizer),20,45.00,23
+PED-092,2024-02-01,2024-02-03,Abbott,Lyrica 150mg (Pfizer),15,12.00,23
+PED-092,2024-02-01,2024-02-03,Abbott,Inyecciones Hormona Crecimiento (Pfizer),50,90.00,23
+PED-092,2024-02-01,2024-02-03,Abbott,Tramadol 50mg (Normon),60,2.10,23
+PED-092,2024-02-01,2024-02-03,Abbott,Morfina Solución Oral (Normon),50,4.50,23
+PED-093,2024-02-02,2024-02-04,Amazon,Oxicodona 10mg (Normon),40,3.80,24
+PED-093,2024-02-02,2024-02-04,Amazon,Fentanilo Parches (Normon),30,15.50,24
+PED-093,2024-02-02,2024-02-04,Amazon,Gotas para Oídos (Amazon),100,4.50,24
+PED-093,2024-02-02,2024-02-04,Amazon,Spray Nasal Descongestivo (Amazon),50,5.00,24
+PED-094,2024-02-03,2024-02-05,Cofares,Pastillas para Dormir (Amazon),40,6.50,24
+PED-094,2024-02-03,2024-02-05,Cofares,Colirio Anti-Alergico (Amazon),20,7.50,24
+PED-094,2024-02-03,2024-02-05,Cofares,Barritas Sustitutivas (Cofares),30,2.20,24
+PED-094,2024-02-03,2024-02-05,Cofares,Batidos Proteicos (Cofares),50,3.50,24
+PED-095,2024-02-04,2024-02-06,Bayer,Geles Energéticos (Cofares),20,1.90,24
+PED-095,2024-02-04,2024-02-06,Bayer,Creatina Monohidrato (Cofares),40,19.90,24
+PED-095,2024-02-04,2024-02-06,Bayer,Aceite de Ricino (Bayer),50,3.80,24
+PED-095,2024-02-04,2024-02-06,Bayer,Agua de Rosas (Bayer),30,4.20,24
+PED-096,2024-02-05,2024-02-07,Cinfa,Glicerina Líquida (Bayer),40,5.50,24
+PED-096,2024-02-05,2024-02-07,Cinfa,Peróxido de Benzoilo (Bayer),25,7.50,24
+PED-096,2024-02-05,2024-02-07,Cinfa,Vitamina B12 Inyectable (Cinfa),60,12.20,24
+PED-096,2024-02-05,2024-02-07,Cinfa,Hierro Quelado Cápsulas (Cinfa),40,8.90,24
+PED-097,2024-02-06,2024-02-08,Pfizer,Magnesio Comprimidos (Cinfa),50,5.50,25
+PED-097,2024-02-06,2024-02-08,Pfizer,Calcio + Vitamina D (Cinfa),100,7.50,25
+PED-097,2024-02-06,2024-02-08,Pfizer,Gabapentina 300mg (Pfizer),40,4.50,25
+PED-097,2024-02-06,2024-02-08,Pfizer,Pregabalina 75mg (Pfizer),50,6.80,25
+PED-098,2024-02-07,2024-02-09,Normon,Topiramato 25mg (Pfizer),30,5.20,25
+PED-098,2024-02-07,2024-02-09,Normon,Lamotrigina 50mg (Pfizer),50,4.10,25
+PED-098,2024-02-07,2024-02-09,Normon,Ceftriaxona 1g Inyectable (Normon),80,9.30,25
+PED-098,2024-02-07,2024-02-09,Normon,Vancomicina 500mg (Normon),40,18.50,25
+PED-099,2024-02-08,2024-02-10,Merck,Meropenem 1g (Normon),50,25.80,25
+PED-099,2024-02-08,2024-02-10,Merck,Linezolid 600mg (Normon),30,35.20,25
+PED-099,2024-02-08,2024-02-10,Merck,Tensiometro de Muñeca (Amazon),100,25.00,25
+PED-099,2024-02-08,2024-02-10,Merck,Fonendoscopio (Amazon),50,18.00,25
+PED-100,2024-02-09,2024-02-11,Abbott,Linterna Médica (Amazon),40,5.50,25
+PED-100,2024-02-09,2024-02-11,Abbott,Martillo de Reflejos (Amazon),20,8.00,25
+PED-100,2024-02-09,2024-02-11,Abbott,Kit Colesterol HDL/LDL (Roche),50,32.50,25
+PED-100,2024-02-09,2024-02-11,Abbott,Medidor de Lactato (Roche),50,75.00,25
+PED-101,2024-02-10,2024-02-12,Amazon,Medidor de Ácido Úrico (Roche),5,45.00,26
+PED-101,2024-02-10,2024-02-12,Amazon,Pipetas de Transferencia (Roche),60,6.50,26
+PED-101,2024-02-10,2024-02-12,Amazon,Crema Aclarante Facial (J&J),25,14.20,26
+PED-101,2024-02-10,2024-02-12,Amazon,Sérum Vitamina E (J&J),30,18.80,26
+PED-102,2024-02-11,2024-02-13,Cofares,Hidratante SPF 30 (J&J),40,11.90,26
+PED-102,2024-02-11,2024-02-13,Cofares,Acondicionador Profundo (J&J),30,5.10,26
+PED-102,2024-02-11,2024-02-13,Cofares,Piretrinas Spray Anti-Piojos (Novartis),40,9.50,26
+PED-102,2024-02-11,2024-02-13,Cofares,Loción Anti-Piojos Plus (Novartis),35,11.20,26
+PED-103,2024-02-12,2024-02-14,Bayer,Peine Lendrera Metálico (Novartis),30,4.50,26
+PED-103,2024-02-12,2024-02-14,Bayer,Protector Diario Anti-Piojos (Novartis),20,7.00,26
+PED-103,2024-02-12,2024-02-14,Bayer,Ibuprofeno 600mg (Amazon),50,3.50,26
+PED-103,2024-02-12,2024-02-14,Bayer,Omeprazol 20mg (Amazon),100,2.10,26
+PED-104,2024-02-13,2024-02-15,Cinfa,Paracetamol 1g (Amazon),200,1.80,26
+PED-104,2024-02-13,2024-02-15,Cinfa,Enantyum 25mg (Amazon),60,4.20,26
+PED-104,2024-02-13,2024-02-15,Cinfa,Pañales Talla 1 (Cofares),30,15.00,26
+PED-104,2024-02-13,2024-02-15,Cinfa,Toallitas Húmedas Pack (Cofares),50,2.50,26
+PED-105,2024-02-14,2024-02-16,Pfizer,Crema Pañal Suavinex (Cofares),20,6.50,27
+PED-105,2024-02-14,2024-02-16,Pfizer,Suero Fisiológico Monodosis (Cofares),40,3.20,27
+PED-105,2024-02-14,2024-02-16,Pfizer,Aspirina C Efervescente (Bayer),50,4.50,27
+PED-105,2024-02-14,2024-02-16,Pfizer,Supradyn Vitaminas (Bayer),30,12.00,27
+PED-106,2024-02-15,2024-02-17,Normon,Redoxon Vitamina C (Bayer),40,8.50,27
+PED-106,2024-02-15,2024-02-17,Normon,Bepanthol Crema (Bayer),25,9.00,27
+PED-106,2024-02-15,2024-02-17,Normon,Alcohol 96 (Cinfa),60,1.20,27
+PED-106,2024-02-15,2024-02-17,Normon,Agua Oxigenada (Cinfa),40,0.90,27
+PED-107,2024-02-16,2024-02-18,Merck,Algodón Zigzag 100g (Cinfa),50,1.10,27
+PED-107,2024-02-16,2024-02-18,Merck,Esparadrapo Tela (Cinfa),60,2.50,27
+PED-107,2024-02-16,2024-02-18,Merck,Mascarillas FFP2 (Pack 10) (Amazon),100,5.00,27
+PED-107,2024-02-16,2024-02-18,Merck,Gel Hidroalcohólico 500ml (Amazon),40,3.50,27
+PED-108,2024-02-17,2024-02-19,Abbott,Termómetro Digital (Amazon),20,12.00,27
+PED-108,2024-02-17,2024-02-19,Abbott,Guantes Nitrilo Caja 100 (Amazon),50,7.00,27
+PED-108,2024-02-17,2024-02-19,Abbott,Tiras Reactivas Glucosa (Cofares),50,22.50,27
+PED-108,2024-02-17,2024-02-19,Abbott,Lancetas Estériles (Cofares),50,4.00,27
+PED-109,2024-02-18,2024-02-20,Amazon,Medidor Glucosa Accu-Chek (Cofares),5,35.00,28
+PED-109,2024-02-18,2024-02-20,Amazon,Agujas Insulina 4mm (Cofares),60,8.50,28
+PED-109,2024-02-18,2024-02-20,Amazon,Champú Johnson Baby (Bayer),25,3.20,28
+PED-109,2024-02-18,2024-02-20,Amazon,Aceite Corporal (Bayer),30,2.80,28
+PED-110,2024-02-19,2024-02-21,Cofares,Neutrogena Manos (Bayer),40,5.90,28
+PED-110,2024-02-19,2024-02-21,Cofares,Listerine Mentol (Bayer),30,4.10,28
+PED-110,2024-02-19,2024-02-21,Cofares,Voltaren Emulgel (Cinfa),40,9.50,28
+PED-110,2024-02-19,2024-02-21,Cofares,Thrombocid Forte (Cinfa),35,8.20,28
+PED-111,2024-02-20,2024-02-22,Bayer,Reflex Spray (Cinfa),30,7.50,28
+PED-111,2024-02-20,2024-02-22,Bayer,Parches Térmicos (Cinfa),20,6.00,28
+PED-111,2024-02-20,2024-02-22,Bayer,Nolotil Ampollas (Pfizer),60,3.80,28
+PED-111,2024-02-20,2024-02-22,Bayer,Buscapina Compositum (Pfizer),30,6.20,28
+PED-112,2024-02-21,2024-02-23,Cinfa,Bisolvon Mucolítico (Pfizer),50,5.80,28
+PED-112,2024-02-21,2024-02-23,Cinfa,Mucosolvan Jarabe (Pfizer),40,6.50,28
+PED-112,2024-02-21,2024-02-23,Cinfa,Ventolin Inhalador (Normon),45,3.95,28
+PED-112,2024-02-21,2024-02-23,Cinfa,Rhinomer Fuerza 2 (Normon),30,7.50,28
+PED-113,2024-02-22,2024-02-24,Pfizer,Zovirax Crema (Normon),25,8.20,29
+PED-113,2024-02-22,2024-02-24,Pfizer,Parodontax Pasta (Normon),40,4.20,29
+PED-113,2024-02-22,2024-02-24,Pfizer,Eutirox 100mcg (Merck),50,2.90,29
+PED-113,2024-02-22,2024-02-24,Pfizer,Eutirox 50mcg (Merck),40,2.50,29
+PED-114,2024-02-23,2024-02-25,Normon,Concor 5mg (Merck),30,4.50,29
+PED-114,2024-02-23,2024-02-25,Normon,Glucophage 850mg (Merck),60,3.10,29
+PED-114,2024-02-23,2024-02-25,Normon,Ensure NutriVigor Vainilla (Abbott),20,18.50,29
+PED-114,2024-02-23,2024-02-25,Normon,Ensure NutriVigor Chocolate (Abbott),15,18.50,29
+PED-115,2024-02-24,2024-02-26,Merck,Pedialyte Sabor Fresa (Abbott),30,6.00,29
+PED-115,2024-02-24,2024-02-26,Merck,Pedialyte Sabor Manzana (Abbott),25,6.00,29
+PED-115,2024-02-24,2024-02-26,Merck,Jeringuillas 5ml (Amazon),100,0.15,29
+PED-115,2024-02-24,2024-02-26,Merck,Jeringuillas 10ml (Amazon),80,0.20,29
+PED-116,2024-02-25,2024-02-27,Abbott,Agujas Intramusculares (Amazon),100,0.10,29
+PED-116,2024-02-25,2024-02-27,Abbott,Contenedor Agujas (Amazon),10,4.50,29
+PED-116,2024-02-25,2024-02-27,Abbott,Dalsy Jarabe Niños (Cofares),80,4.20,29
+PED-116,2024-02-25,2024-02-27,Abbott,Apiretal Gotas (Cofares),80,3.90,29
+PED-117,2024-02-26,2024-02-28,Amazon,Junifen 20mg (Cofares),50,3.50,30
+PED-117,2024-02-26,2024-02-28,Amazon,Suero Oral Sabores (Cofares),100,5.50,30
+PED-117,2024-02-26,2024-02-28,Amazon,Canestén Crema (Bayer),30,9.50,30
+PED-117,2024-02-26,2024-02-28,Amazon,Bepanthol Tattoo (Bayer),20,10.50,30
+PED-118,2024-02-27,2024-02-29,Cofares,Tabcin Noche (Bayer),40,6.80,30
+PED-118,2024-02-27,2024-02-29,Cofares,Pastillas Cefalea (Bayer),25,7.50,30
+PED-118,2024-02-27,2024-02-29,Cofares,Bicarbonato Sódico (Cinfa),50,1.10,30
+PED-118,2024-02-27,2024-02-29,Cofares,Manzanilla con Anís (Cinfa),40,2.50,30
+PED-119,2024-02-28,2024-03-01,Bayer,Tila Alpina (Cinfa),30,2.20,30
+PED-119,2024-02-28,2024-03-01,Bayer,Valeriana Leo (Cinfa),25,7.50,30
+PED-119,2024-02-28,2024-03-01,Bayer,Lorazepam 1mg (Pfizer),40,1.50,30
+PED-119,2024-02-28,2024-03-01,Bayer,Orfidal 1mg (Pfizer),50,1.80,30
+PED-120,2024-02-29,2024-03-02,Cinfa,Lítica 20mg (Pfizer),30,4.50,30
+PED-120,2024-02-29,2024-03-02,Cinfa,Trankimazin 0.5mg (Pfizer),50,2.10,30
+PED-120,2024-02-29,2024-03-02,Cinfa,Amoxicilina 500mg (Normon),80,2.30,30
+PED-120,2024-02-29,2024-03-02,Cinfa,Azitromicina 500mg (Normon),40,3.50,30

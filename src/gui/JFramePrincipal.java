@@ -23,6 +23,11 @@ public abstract class JFramePrincipal extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JPanel panel;
 	public static JFrame panelActual;	
+	
+	public static int idFarActual = 0;
+	
+	
+	
 	private Map<String, ImageIcon> cache = new HashMap<>();
 	
 	public JFramePrincipal() {
