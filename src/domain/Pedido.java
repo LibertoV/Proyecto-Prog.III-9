@@ -1,8 +1,9 @@
 package domain;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
 
 public class Pedido {
 	private String id;
@@ -10,6 +11,7 @@ public class Pedido {
 	private Date fechaOrden;
 	private Date fechaLlegada;
 	private ArrayList<Producto> productos;
+	private double totalImportado = 0.0;
 
 	public Pedido(String id, String proveedor, Date fechaOrden, Date fechaLlegada) {
 		this.id = id;
@@ -24,13 +26,21 @@ public class Pedido {
 	}
 
 	public double calcularTotal() {
-		double total = 0;
-		for (Producto p : productos) {
-			total += p.getSubtotal();
-		}
-		return total;
-	}
-
+        if (!productos.isEmpty()) {
+            double total = 0;
+            for (Producto p : productos) {
+                total += p.getSubtotal();
+            }
+            return total;
+        } else {
+            return totalImportado;
+        }
+    }
+    
+    public void setTotalImportado(double total) {
+        this.totalImportado = total;
+    }
+    
 	public Object[] añadirloTabla() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String totalFormateado = String.format("%.2f €", calcularTotal()).replace(",", ".");
@@ -57,4 +67,17 @@ public class Pedido {
 	public ArrayList<Producto> getProductos() {
 		return productos;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedido pedido = (Pedido) o;
+        return Objects.equals(id, pedido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); 
+    }
 }

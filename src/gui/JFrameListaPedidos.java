@@ -220,7 +220,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Proveedor");
 		columnas.add("Eliminar");
 
-		Vector<Vector<Object>> datos = DataPedidos.cargarPedidos();
+		Vector<Vector<Object>> datos = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
 
 		modelo = new DefaultTableModel(datos, columnas) {
 			@Override
@@ -469,7 +469,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	}
 
 	private void filtroPedido(String filtro) {
-		Vector<Vector<Object>> data = DataPedidos.cargarPedidos();
+		Vector<Vector<Object>> data = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
 
 		Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
 		String filtroLower = filtro.toLowerCase();

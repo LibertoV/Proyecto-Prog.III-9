@@ -23,7 +23,7 @@ public class CajasClientePedido extends JFrame {
 		JPanel panelPrincipal = new JPanel(new BorderLayout());
 		//JLabel encabezado = new JLabel("Ultimos clientes");
 		
-		Vector<Vector<Object>> dataPedidos = DataPedidos.cargarPedidos();
+		Vector<Vector<Object>> dataPedidos = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
 		
 		Vector<String> columnNames = new Vector<>();
         columnNames.add("Fecha");
