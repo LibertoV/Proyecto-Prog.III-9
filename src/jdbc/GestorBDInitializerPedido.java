@@ -95,7 +95,7 @@ public class GestorBDInitializerPedido {
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			con.setAutoCommit(false); 
 			
-			String sqlPedido = "INSERT OR IGNORE INTO PEDIDO (ID, FECHA_ORDEN, FECHA_LLEGADA, TOTAL, PROVEEDOR, ID_FARMACIA) VALUES (?,?,?,?,?,?);";
+			String sqlPedido = "INSERT INTO PEDIDO (ID, FECHA_ORDEN, FECHA_LLEGADA, TOTAL, PROVEEDOR, ID_FARMACIA) VALUES (?,?,?,?,?,?);";
 			String sqlLinea = "INSERT INTO LINEA_PEDIDO (ID_PEDIDO, NOMBRE_PRODUCTO, CANTIDAD, PRECIO_UNITARIO) VALUES (?,?,?,?);";
 			
 			PreparedStatement pstPedido = con.prepareStatement(sqlPedido);

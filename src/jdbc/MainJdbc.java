@@ -22,18 +22,24 @@ public class MainJdbc {
 	public static void main(String[] args) {
 
 		GestorBDInitializerCliente gestorClientes = new GestorBDInitializerCliente();
-		GestorBDInitializerTrabajadores gestorTrabajadores = new GestorBDInitializerTrabajadores();
-		GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias(); // Necesario para la FK
-		GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido(); // El nuevo gestor
+	    GestorBDInitializerTrabajadores gestorTrabajadores = new GestorBDInitializerTrabajadores();
+	    GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias();
+	    GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
 
-		System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
-		gestorFarmacias.crearBBDD();
-		gestorClientes.crearBBDD();
-		gestorTrabajadores.crearBBDD();
-		gestorPedidos.crearBBDD();
+	    System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
+	    gestorPedidos.borrarBBDD(); 
+	    gestorClientes.borrarBBDD();
+	    gestorTrabajadores.borrarBBDD();
+	    gestorFarmacias.borrarBBDD(); 
 
-		System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
-		Farmacia farmaciaPrincipal = new Farmacia(1, "Farmacia Central", "Barakaldo");
+	    System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
+	    gestorFarmacias.crearBBDD();
+	    gestorClientes.crearBBDD();
+	    gestorTrabajadores.crearBBDD();
+	    gestorPedidos.crearBBDD();
+
+	    System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
+	    Farmacia farmaciaPrincipal = new Farmacia(1, "Farmacia Central", "Barakaldo");
 		gestorFarmacias.insertarDatos(farmaciaPrincipal);
 
 		//List<Trabajador> trabajadores = initTrabajador();
