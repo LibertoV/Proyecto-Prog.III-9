@@ -43,7 +43,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import db.DataHistorial;
 import db.DataPedidos;
 import domain.Pedido;
 import domain.Producto;
