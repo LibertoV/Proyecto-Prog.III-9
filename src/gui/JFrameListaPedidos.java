@@ -121,6 +121,10 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	}
 
 	public void agregarNuevoPedido(Pedido pedido) {
+		pedido.setIdFarmacia(JFramePrincipal.idFarActual);
+		GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
+	    gestor.insertarDatos(pedido);
+	    
 		listaTotalPedidos.add(pedido); 
 		listaPedidosActivos.add(pedido);
 		modelo.addRow(pedido.añadirloTabla());
@@ -362,6 +366,15 @@ public class JFrameListaPedidos extends JFramePrincipal {
 								JOptionPane.YES_NO_OPTION);
 
 						if (confirmado == JOptionPane.YES_OPTION) {
+							String idParaBorrar = modelo.getValueAt(fila, 0).toString();
+							
+							GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
+					        gestor.borrarPedido(idParaBorrar);
+							
+					        //IAG
+					        listaPedidosActivos.removeIf(p -> p.getId().equals(idParaBorrar));
+					        listaTotalPedidos.removeIf(p -> p.getId().equals(idParaBorrar));
+							
 							modelo.removeRow(fila);
 
 							actualizarTotales();
@@ -381,7 +394,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 							frameSel.setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
-									"Todavia no estan cargados de la base de datos");
+									"No se puede acceder a este pedido");
 						}
 					}
 				}
@@ -415,7 +428,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 							frameSel.setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
-									"Todavia no están cargados de la base de datos.");
+									"No se puede acceder a este pedido.");
 						}
 					}
 					e.consume();
