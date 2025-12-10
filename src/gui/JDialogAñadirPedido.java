@@ -199,7 +199,7 @@ public class JDialogAñadirPedido extends JDialog {
 			java.sql.Date fechaSqlPedido = new java.sql.Date(dateChooserPedido.getDate().getTime());
 			java.sql.Date fechaSqlLlegada = new java.sql.Date(dateChooserEstimada.getDate().getTime());
 
-			Pedido nuevoPedido = new Pedido(ID, txtProveedor.getText(), fechaSqlPedido, fechaSqlLlegada);
+			Pedido nuevoPedido = new Pedido(ID, txtProveedor.getText(), fechaSqlPedido, fechaSqlLlegada, JFramePrincipal.idFarActual);
 
 			for (Producto p : listaProductos) {
 				nuevoPedido.agregarProducto(p);

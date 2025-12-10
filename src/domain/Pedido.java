@@ -11,13 +11,15 @@ public class Pedido {
 	private Date fechaOrden;
 	private Date fechaLlegada;
 	private ArrayList<Producto> productos;
+	private int idFarmacia;
 	private double totalImportado = 0.0;
 
-	public Pedido(String id, String proveedor, Date fechaOrden, Date fechaLlegada) {
+	public Pedido(String id, String proveedor, Date fechaOrden, Date fechaLlegada, int idFarmacia) {
 		this.id = id;
 		this.proveedor = proveedor;
 		this.fechaOrden = fechaOrden;
 		this.fechaLlegada = fechaLlegada;
+		this.idFarmacia = idFarmacia;
 		this.productos = new ArrayList<>();
 	}
 
@@ -80,4 +82,12 @@ public class Pedido {
     public int hashCode() {
         return Objects.hash(id); 
     }
+
+	public int getIdFarmacia() {
+		return idFarmacia;
+	}
+
+	public void setIdFarmacia(int idFarmacia) {
+		this.idFarmacia = idFarmacia;
+	}
 }

@@ -284,7 +284,8 @@ public class JFrameLobby extends JFramePrincipal {
             return this;
         }
     }
-
+    
+    //IAG
     private static class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     	
     	//esta entidad ha sido creada con ayuda y guia de una ia generativa
@@ -338,8 +339,11 @@ public class JFrameLobby extends JFramePrincipal {
             
             System.out.println("Botón 'SEL' presionado en la fila: " + currentRow);
             System.out.println("Farmacia seleccionada: " + nombreFarmacia);
+            idFarActual = DataFarmacias.getFarmaciaActual(nombreFarmacia).getId();
             JDialogConfirmacion nuevaVentana = new JDialogConfirmacion(parent);
             nuevaVentana.setVisible(true);	
+            JFrameFarmaciaSel farmacia = new JFrameFarmaciaSel();
+            farmacia.setVisible(true);
         }
     }
     

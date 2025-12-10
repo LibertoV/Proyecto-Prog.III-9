@@ -371,7 +371,7 @@ public class GestorBDInitializerTrabajadores {
 		}		
 	}
 	
-	public void borrarCliente(Integer id) {
+	public void borrarTrabajador(Integer id) {
 		
 		 String sql = "DELETE FROM TRABAJADOR WHERE id = ?";
 		    
