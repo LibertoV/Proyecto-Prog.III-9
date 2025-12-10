@@ -43,19 +43,19 @@ public class MainJdbc {
 	    Farmacia farmaciaPrincipal = new Farmacia(1, "Farmacia Central", "Barakaldo");
 		gestorFarmacias.insertarDatos(farmaciaPrincipal);
 
-		//List<Trabajador> trabajadores = initTrabajador();
-		//gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
+		List<Trabajador> trabajadores = initTrabajador();
+		gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
 
-		//List<Cliente> clientes = initClientes();
-		//gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
+		List<Cliente> clientes = initClientes();
+		gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
 
 		List<Pedido> pedidos = initPedidos();
 		gestorPedidos.insertarDatos(pedidos.toArray(new Pedido[0]));
-
-		System.out.println("\n--- 3. VERIFICACIÓN DE DATOS (SELECT) ---");
+//
+//		System.out.println("\n--- 3. VERIFICACIÓN DE DATOS (SELECT) ---");
 		// 4. MOSTRAR DATOS (SELECT)
-		// trabajadores = gestorTrabajadores.obtenerDatos();
-		// printTrabajadores(trabajadores);
+		 trabajadores = gestorTrabajadores.obtenerDatos();
+		 printTrabajadores(trabajadores);
 
 		// clientes = gestorClientes.obtenerDatos();
 		// printClientes(clientes);
@@ -164,9 +164,8 @@ public class MainJdbc {
 				String turno = campos[8];
 				Float salario = Float.parseFloat(campos[9]);
 
-				Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno,
-						salario);
-				trabajadores.add(trabajador);
+				//Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno,salario);
+				//trabajadores.add(trabajador);
 			}
 
 			// Cerrar el fichero

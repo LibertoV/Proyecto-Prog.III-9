@@ -13,11 +13,11 @@ public class Trabajador {
 	private String puesto;
 	private String nss;
 	private String turno;
-	private float salario;
+	private String salario;
 
 	
 	public Trabajador(int id, String nombre, String dni, String telefono, String email, String direccion,
-			String puesto, String nss,String turno, float salario) {
+			String puesto, String nss,String turno, String salario) {
 		this.id = id;
 		this.nombre = nombre;
 		this.dni = dni;
@@ -106,11 +106,11 @@ public class Trabajador {
 		this.turno = turno;
 	}
 
-	public float getSalario() {
+	public String getSalario() {
 		return salario;
 	}
 
-	public void setSalario(float salario) {
+	public void setSalario(String salario) {
 		this.salario = salario;
 	}
 

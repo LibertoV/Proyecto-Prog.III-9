@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -131,7 +134,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 				String puesto = campos[6];
 				String nss = campos[7];
 				String turno = campos[8];
-				Float salario = Float.parseFloat(campos[9]);
+				String salario = campos[9];
 				
 				Trabajador trabajador = new Trabajador(id,nombre,dni,tlf,email,direccion,puesto,nss,turno,salario);
 				trabajadores.add(trabajador);
@@ -179,9 +182,17 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int fila = tablaTrabajadores.rowAtPoint(e.getPoint());
-					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+					int id = (int)model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
 															// para porteriormente saber su información
-					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador();
+					
+					Trabajador trabajadorSel = null;
+					for (Trabajador trabajador : trabajadores) {
+						if(trabajador.getId()== id) {
+							trabajadorSel = trabajador;
+						}
+					}
+					
+					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador(trabajadorSel);			
 					frameSel.setVisible(true);
 				}
 			}
@@ -195,33 +206,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
         
 		panelCentral.add(scrollPane);
 		
-		tablaTrabajadores.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
-		        }else if(ctrlPresionado && e.getKeyCode() == KeyEvent.VK_ENTER) {
-					new JFrameFichaTrabajador();
-		    		
-                 }
-				
-			}
-		});
+		
 		return panelCentral;
 	}
 	
@@ -251,25 +236,8 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		panelFiltro.add(añadir, BorderLayout.EAST);
 		
 		añadir.addActionListener((e)->{
-			componentes[0] =  new JLabel("ID ");
-			componentes[1] = new ModernTextField(30);
-			componentes[2] =  new JLabel("Nombre ");
-			componentes[3] = new ModernTextField(30);
-			componentes[4] =  new JLabel("DNI ");
-			componentes[5] = new ModernTextField(30);
-			componentes[6] =  new JLabel("Telefono ");
-			componentes[7] = new ModernTextField(30);
-			componentes[8] =  new JLabel("Puesto ");
-			componentes[9] = new ModernTextField(30);
-			componentes[10] =  new JLabel("Turno ");
-			componentes[11] = new ModernTextField(30);
-			int resultado = JOptionPane.showConfirmDialog(null,componentes, "Añadir un Trabajador",JOptionPane.OK_CANCEL_OPTION);
-					if(resultado == JOptionPane.OK_OPTION) {
-						System.out.println("Hemos pulsado "+ resultado);
-						
-					}else if (resultado == JOptionPane.ERROR_MESSAGE){
-						System.out.println("Hemos pulsado "+ resultado);
-					}
+			nuevoTrabajador();
+			
 					
 			
 		});
@@ -284,23 +252,25 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		ImageIcon logoAjustado = new ImageIcon(logoeliminar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		eliminar.setIcon(logoAjustado);
 		
-		eliminar.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	int fila = tablaTrabajadores.getSelectedRow();
-	        	
-	        	if (fila == -1) {
-	        		JOptionPane.showMessageDialog(JFrameListaTrabajadores.this, "Por favor seleccione un pedido para eliminar", "Ningun pedido seleccionado" ,JOptionPane.YES_NO_OPTION);
-	        	} else {
-	        		int seleccionado = JOptionPane.showConfirmDialog(JFrameListaTrabajadores.this, "Estas seguro de que deseas eliminar el pedido seleccionado",
-	        				"Confirmar eliminicacion", JOptionPane.YES_NO_OPTION); //Esto devuelve 0 si es SI, 1 si si es no y -1 si se cierra
-	        		if (seleccionado == 0) {
-	        			Object idPedido = model.getValueAt(fila, 0);
-	        			
-	        			//Aqui deberia ir el codigo necesario para eliminar el pedido de la base de datos y luego recargar la pagina
-	        			
-	        		}
-	        	}
+		eliminar.addActionListener(e-> {
+			int fila = tablaTrabajadores.getSelectedRow();
+	        if (fila != -1) {
+	            int id = (int) model.getValueAt(fila, 0);
+	            String nombre = (String) model.getValueAt(fila, 1);
+	            String dni = (String) model.getValueAt(fila, 2);
+	            
+	            int confirmacion = JOptionPane.showConfirmDialog(
+	                this,
+	                "¿Está seguro que desea eliminar al cliente:\n" + 
+	                nombre + " (" + dni + ")?",
+	                "Confirmar Eliminación",
+	                JOptionPane.YES_NO_OPTION,
+	                JOptionPane.WARNING_MESSAGE
+	            );
+	            
+	            if (confirmacion == JOptionPane.YES_OPTION) {
+	                eliminarTrabajadorDeTabla(id, fila);
+	            }
 	        }
 	    });
 
@@ -371,9 +341,250 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		
 	}
 	
+	private void nuevoTrabajador() {
+		JDialog dialog = new JDialog(this, "Nuevo Trabajador", true);
+		dialog.setSize(580,600);
+		dialog.setLayout(new BorderLayout());
+		
+		
+		JPanel panelCabecera = new JPanel();
+		panelCabecera.setBackground(new Color(237, 246, 249));
+		JLabel newCl = new JLabel();
+		newCl.setText("AÑADIR NUEVO TRABAJADOR");
+		ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
+		dialog.setIconImage(logoAñadir.getImage());
+	
+		newCl.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		newCl.setForeground(new Color(10, 16, 13));
+		panelCabecera.add(newCl);
+		
+		JPanel panelCampos = new JPanel(new GridLayout(9,2,5,12));
+		panelCampos.setBorder(BorderFactory.createEmptyBorder(15,20,15,20));
+		panelCampos.setBackground(new Color(237, 246, 249));
+		
+		panelCampos.add(new JLabel("NOMBRE:"));
+		ModernTextField textoNombre = new ModernTextField(15);
+		panelCampos.add(textoNombre);
+		
+		panelCampos.add(new JLabel("DNI:"));
+		ModernTextField textoDNI = new ModernTextField(15);
+		panelCampos.add(textoDNI);
+		
+		panelCampos.add(new JLabel("TELEFONO:"));
+		ModernTextField textoTelefono = new ModernTextField(15);
+		panelCampos.add(textoTelefono);
+		
+		panelCampos.add(new JLabel("EMAIL:"));
+		ModernTextField textoEmail = new ModernTextField(15);
+		panelCampos.add(textoEmail);
+		
+		panelCampos.add(new JLabel("DIRECCIÓN:"));
+		ModernTextField textoDireccion = new ModernTextField(15);
+		panelCampos.add(textoDireccion);
+		
+		panelCampos.add(new JLabel("PUESTO:"));
+		ModernTextField textoPuesto = new ModernTextField(15);
+		panelCampos.add(textoPuesto);
+		
+		panelCampos.add(new JLabel("NSS:"));
+		ModernTextField textoNss = new ModernTextField(15);
+		panelCampos.add(textoNss);
+		
+		panelCampos.add(new JLabel("TURNO:"));
+		ModernTextField textoTurno = new ModernTextField(15);
+		panelCampos.add(textoTurno);
+		
+		panelCampos.add(new JLabel("SALARIO:"));
+		ModernTextField textoSalario = new ModernTextField(15);
+		panelCampos.add(textoSalario);
+		
+		dialog.add(panelCabecera, BorderLayout.NORTH);
+		dialog.add(panelCampos);
+		
+		JPanel botones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		botones.setBackground(new Color(237, 246, 249));
+		JButton guardar = new JButton("GUARDAR");
+		JButton cancelar = new JButton("CANCELAR");
+		
+		for (Component comp : panelCampos.getComponents()) {
+			if(comp instanceof JLabel) {
+				comp.setFont(new Font("Century Gothic", Font.BOLD, 14));
+				comp.setForeground(new Color(10, 16, 13));
+			}else if(comp instanceof JTextField){
+				comp.setFont(new Font("Arial", Font.PLAIN,14)); //IAG
+				comp.setBackground(new Color(237, 246, 249));;
+			}
+		}
+		
+		guardar.setBackground(new Color(18, 102, 79));
+		guardar.setForeground(new Color(237, 246, 249));
+		guardar.setFont(new Font("Century Gothic",Font.BOLD,14));
+		guardar.setPreferredSize(new Dimension(120,40));
+		
+		cancelar.setForeground(new Color(237, 246, 249));
+		cancelar.setBackground(new Color(182, 23, 75));
+		cancelar.setFont(new Font("Century Gothic",Font.BOLD,14));
+		cancelar.setPreferredSize(new Dimension(120,40));
+		
+		
+		
+		guardar.addActionListener(e->{
+			//IAG
+			if(validarCampos(textoNombre, textoDNI, textoTelefono, textoNss, textoPuesto, textoTurno, textoSalario)) {
+	            try {
+	            	int nuevoId = gestorBD.obtenerPrimerIdDisponible();
+	            	
+	            	System.out.println("Asignando ID: " + nuevoId);
+	                // Crear cliente
+	                Trabajador nuevoTrabajador = new Trabajador(
+	                    nuevoId,
+	                    textoNombre.getText().trim(),
+	                    textoDNI.getText().trim(),
+	                    textoTelefono.getText().trim(),
+	                    textoEmail.getText().trim(),
+	                    textoDireccion.getText().trim(),
+	                    textoPuesto.getText().trim(),
+	                    textoNss.getText().trim(),
+	                    textoTurno.getText().trim(),
+	                    textoSalario.getText().trim()
+	                    
+	                );
+	                
+	                // Insertar en BD
+	                gestorBD.insertarDatos(nuevoTrabajador);
+	                
+	                // Actualizar la lista local
+	                trabajadores.add(nuevoTrabajador);
+	                
+	                // Actualizar la tabla
+	                actualizarTabla();
+	                
+	                JOptionPane.showMessageDialog(dialog, 
+	                    "Trabajador añadido correctamente", 
+	                    "Éxito", 
+	                    JOptionPane.INFORMATION_MESSAGE);
+	                
+	                dialog.dispose();
+	                
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(dialog, 
+	                    "El campo 'Salario' debe ser un número", 
+	                    "Error", 
+	                    JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
+		});
+		cancelar.addActionListener(e ->{
+			dialog.dispose();
+		});
+				
+		guardar.setBorderPainted(false);
+		cancelar.setBorderPainted(false);
+		
+		botones.add(cancelar);
+		botones.add(guardar);
+		dialog.add(botones,BorderLayout.SOUTH);
+		dialog.setVisible(true);
+	}
+ 
+ //IAG
+ private boolean validarCampos(JTextField nombre, JTextField dni, JTextField telefono, JTextField nss, JTextField puesto, JTextField turno, JTextField salario) {
+	    if(nombre.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El nombre es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(dni.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El DNI es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(telefono.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El teléfono es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(nss.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El Nss es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(puesto.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El Puesto es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(turno.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El Turno es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    if(salario.getText().trim().isEmpty()) {
+	        JOptionPane.showMessageDialog(this, 
+	            "El Turno es obligatorio", 
+	            "Error", 
+	            JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    return true;
+	}
+
+
+ private void eliminarTrabajadorDeTabla(int id, int fila) {
+	    try {
+	        System.out.println("Intentando eliminar trabajador con ID: " + id);
+	        
+	        // PRIMERO eliminar de la base de datos
+	        gestorBD.borrarTrabajador(id);
+	        
+	        // ACTUALIZAR DESDE LA BD (esto es lo importante)
+	        actualizarTabla();
+	        
+	        System.out.println("Trabajador eliminado. Total ahora: " + trabajadores.size());
+	        
+	        JOptionPane.showMessageDialog(
+	            this,
+	            "Trabajador eliminado correctamente",
+	            "Éxito",
+	            JOptionPane.INFORMATION_MESSAGE
+	        );
+	        
+	    } catch (Exception ex) {
+	        System.err.println("Error completo: " + ex.getMessage());
+	        ex.printStackTrace();
+	        JOptionPane.showMessageDialog(
+	            this,
+	            "Error al eliminar el cliente: " + ex.getMessage(),
+	            "Error",
+	            JOptionPane.ERROR_MESSAGE
+	        );
+	    }
+	}
+
+ 
+	
 	private void filtroTrabajador(String filtro) {
 		 
-		 Vector<Vector<Object>> data = DataTrabajador.cargarTrabajadores("src/db/trabajadores.csv");
+		 Vector<Vector<Object>> data = convertirTrabajadoresAVector(this.trabajadores);
 			
 			datosOriginales = new Vector<>();
 	        for (Vector<Object> fila : data) {

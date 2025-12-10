@@ -108,7 +108,7 @@ public class JFrameLobby extends JFramePrincipal {
 
         JTable tablaFarmacias = new JTable(model);
         tablaFarmacias.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer()); 
-        tablaFarmacias.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(tablaFarmacias)); 
+        tablaFarmacias.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(tablaFarmacias, this));
         
         CustomRowRenderer rowRenderer = new CustomRowRenderer();
         for (int i = 0; i < tablaFarmacias.getColumnCount() -1; i++) {
@@ -232,6 +232,7 @@ public class JFrameLobby extends JFramePrincipal {
 			public void actionPerformed(ActionEvent e) {
 				new JFrameLogin();
 				System.out.println("deloged");
+				dispose();
 			}
         });
     }
@@ -284,7 +285,8 @@ public class JFrameLobby extends JFramePrincipal {
             return this;
         }
     }
-
+    
+    //IAG
     private static class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     	
     	//esta entidad ha sido creada con ayuda y guia de una ia generativa
@@ -295,7 +297,7 @@ public class JFrameLobby extends JFramePrincipal {
         private int currentRow; 
         private JFrameLobby parent;
 
-        public ButtonEditor(JTable table) {
+        public ButtonEditor(JTable table, JFrameLobby parent) {
             this.table = table;
             this.parent = parent;
             button = new JButton();
@@ -335,12 +337,10 @@ public class JFrameLobby extends JFramePrincipal {
             fireEditingStopped(); 
             
             String nombreFarmacia = (String) table.getModel().getValueAt(currentRow, 0); 
-            
-            System.out.println("Botón 'SEL' presionado en la fila: " + currentRow);
-            System.out.println("Farmacia seleccionada: " + nombreFarmacia);
+            System.out.println("Botón 'SEL' presionado en la fila: " + currentRow); 
             idFarActual = DataFarmacias.getFarmaciaActual(nombreFarmacia).getId();
             JDialogConfirmacion nuevaVentana = new JDialogConfirmacion(parent);
-            nuevaVentana.setVisible(true);	
+            nuevaVentana.setVisible(true);  
         }
     }
     

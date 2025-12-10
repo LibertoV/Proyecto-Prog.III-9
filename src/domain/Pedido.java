@@ -9,7 +9,7 @@ public class Pedido {
 	private String id;
 	private String proveedor;
 	private Date fechaOrden;
-	private Date fechaLlegada;
+	private Date fechaLlegada; // esto podria llegar a ser null
 	private ArrayList<Producto> productos;
 	private int idFarmacia;
 	private double totalImportado = 0.0;
@@ -39,17 +39,19 @@ public class Pedido {
         }
     }
     
+    public Object[] añadirloTabla() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String fechaLlegadaStr = (fechaLlegada != null) ? sdf.format(fechaLlegada) : "Pendiente";
+        String totalFormateado = String.format("%.2f €", calcularTotal());
+
+        return new Object[] { id, sdf.format(fechaOrden), fechaLlegadaStr, totalFormateado, proveedor, "ELIMINAR" };
+    }
+    
     public void setTotalImportado(double total) {
         this.totalImportado = total;
     }
     
-	public Object[] añadirloTabla() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String totalFormateado = String.format("%.2f €", calcularTotal()).replace(",", ".");
-
-		return new Object[] { id, sdf.format(fechaOrden), sdf.format(fechaLlegada), totalFormateado, proveedor, "" };
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -70,6 +72,14 @@ public class Pedido {
 		return productos;
 	}
 	
+	public int getIdFarmacia() {
+		return idFarmacia;
+	}
+
+	public void setIdFarmacia(int idFarmacia) {
+		this.idFarmacia = idFarmacia;
+	}
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,12 +92,4 @@ public class Pedido {
     public int hashCode() {
         return Objects.hash(id); 
     }
-
-	public int getIdFarmacia() {
-		return idFarmacia;
-	}
-
-	public void setIdFarmacia(int idFarmacia) {
-		this.idFarmacia = idFarmacia;
-	}
 }

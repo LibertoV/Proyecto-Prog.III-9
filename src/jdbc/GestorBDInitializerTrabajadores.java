@@ -52,7 +52,7 @@ public class GestorBDInitializerTrabajadores {
 	                   + " PUESTO TEXT NOT NULL,\n"
 	                   + " NSS TEXT NOT NULL,\n"
 	                   + " TURNO TEXT, \n"
-	                   + " SALARIO FLOAT NOT NULL\n"
+	                   + " SALARIO TEXT NOT NULL\n"
 	                   + ");";
 	        
 	        PreparedStatement pstmt = con.prepareStatement(sql);
@@ -123,7 +123,7 @@ public class GestorBDInitializerTrabajadores {
 	            pstmt.setString(7, t.getPuesto());
 	            pstmt.setString(8, t.getNss());
 	            pstmt.setString(9, t.getTurno());
-	            pstmt.setDouble(10, t.getSalario());
+	            pstmt.setString(10, t.getSalario());
 	            
 				
 				if (1 == pstmt.executeUpdate()) {					
@@ -154,7 +154,7 @@ public class GestorBDInitializerTrabajadores {
 			
 			//Se recorre el ResultSet y se crean objetos Cliente
 			while (rs.next()) {
-				trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getFloat("SALARIO"));
+				trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getString("SALARIO"));
 				trabajador.setId(rs.getInt("ID"));
 				
 				//Se inserta cada nuevo cliente en la lista de clientes
@@ -218,7 +218,7 @@ public class GestorBDInitializerTrabajadores {
 		}		
 	}
 
-	public void actualizarTelefono(Cliente trabajador, String newtlf) {
+	public void actualizarTelefono(Trabajador trabajador, String newtlf) {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se ejecuta la sentencia de borrado de datos
@@ -349,14 +349,14 @@ public class GestorBDInitializerTrabajadores {
 		}		
 	}
 	
-	public void actualizarSalario(Trabajador trabajador, Float newSalario) {
+	public void actualizarSalario(Trabajador trabajador, String newSalario) {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se ejecuta la sentencia de borrado de datos
 			String sql = "UPDATE TRABAJADOR SET SALARIO = ? WHERE ID = ?;";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);	
-			pstmt.setFloat(1, newSalario);
+			pstmt.setString(1, newSalario);
 			pstmt.setInt(2, trabajador.getId());
 			
 			int result = pstmt.executeUpdate();
@@ -371,7 +371,7 @@ public class GestorBDInitializerTrabajadores {
 		}		
 	}
 	
-	public void borrarCliente(Integer id) {
+	public void borrarTrabajador(Integer id) {
 		
 		 String sql = "DELETE FROM TRABAJADOR WHERE id = ?";
 		    
