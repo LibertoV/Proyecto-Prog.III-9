@@ -134,7 +134,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 				String puesto = campos[6];
 				String nss = campos[7];
 				String turno = campos[8];
-				Float salario = Float.parseFloat(campos[9]);
+				String salario = campos[9];
 				
 				Trabajador trabajador = new Trabajador(id,nombre,dni,tlf,email,direccion,puesto,nss,turno,salario);
 				trabajadores.add(trabajador);
@@ -182,9 +182,17 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int fila = tablaTrabajadores.rowAtPoint(e.getPoint());
-					Object id = model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
+					int id = (int)model.getValueAt(fila, 0); // Sirve para mas adelante tener el id del pedido
 															// para porteriormente saber su información
-					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador();
+					
+					Trabajador trabajadorSel = null;
+					for (Trabajador trabajador : trabajadores) {
+						if(trabajador.getId()== id) {
+							trabajadorSel = trabajador;
+						}
+					}
+					
+					JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador(trabajadorSel);			
 					frameSel.setVisible(true);
 				}
 			}
@@ -198,33 +206,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
         
 		panelCentral.add(scrollPane);
 		
-		tablaTrabajadores.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				boolean ctrlPresionado = e.isControlDown();
-				if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-		            dispose();
-		            SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true)); 
-		        }else if(ctrlPresionado && e.getKeyCode() == KeyEvent.VK_ENTER) {
-					new JFrameFichaTrabajador();
-		    		
-                 }
-				
-			}
-		});
+		
 		return panelCentral;
 	}
 	
@@ -464,7 +446,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	                    textoPuesto.getText().trim(),
 	                    textoNss.getText().trim(),
 	                    textoTurno.getText().trim(),
-	                     0
+	                    textoSalario.getText().trim()
 	                    
 	                );
 	                
@@ -602,7 +584,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	
 	private void filtroTrabajador(String filtro) {
 		 
-		 Vector<Vector<Object>> data = DataTrabajador.cargarTrabajadores("src/db/trabajadores.csv");
+		 Vector<Vector<Object>> data = convertirTrabajadoresAVector(this.trabajadores);
 			
 			datosOriginales = new Vector<>();
 	        for (Vector<Object> fila : data) {
