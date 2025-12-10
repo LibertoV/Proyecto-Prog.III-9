@@ -45,8 +45,11 @@ public class JDialogConfirmacion extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new JFrameFarmaciaSel();
-				dispose();
+				if (padre != null) {
+		            padre.dispose(); 
+		        }
+		        new JFrameFarmaciaSel().setVisible(true);
+		        dispose();
 			}
 
 		});

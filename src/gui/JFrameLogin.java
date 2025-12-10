@@ -117,7 +117,9 @@ public class JFrameLogin extends JFramePrincipal {
 
 				spinner.setOnFinish(() -> {
 					SwingUtilities.invokeLater(() -> {
-						new JFrameLobby();
+		                JFrameLobby lobby = new JFrameLobby();
+		                lobby.setVisible(true);
+		                dispose();
 					});
 				});
 
