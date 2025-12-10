@@ -22,57 +22,57 @@ public class MainJdbc {
 
 	public static void main(String[] args) {
 
-		GestorBDInitializerCliente gestorClientes = new GestorBDInitializerCliente();
-	    GestorBDInitializerTrabajadores gestorTrabajadores = new GestorBDInitializerTrabajadores();
-	    GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias();
-	    GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
+        GestorBDInitializerCliente gestorClientes = new GestorBDInitializerCliente();
+        GestorBDInitializerTrabajadores gestorTrabajadores = new GestorBDInitializerTrabajadores();
+        GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias();
+        GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
 
-	    System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
-	    gestorPedidos.borrarBBDD(); 
-	    gestorClientes.borrarBBDD();
-	    gestorTrabajadores.borrarBBDD();
-	    gestorFarmacias.borrarBBDD(); 
+        System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
+        // Borramos en orden inverso para evitar errores de claves foráneas
+        gestorPedidos.borrarBBDD();
+        gestorClientes.borrarBBDD();
+        gestorTrabajadores.borrarBBDD();
+        gestorFarmacias.borrarBBDD();
 
-	    System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
-	    gestorFarmacias.crearBBDD();
-	    gestorClientes.crearBBDD();
-	    gestorTrabajadores.crearBBDD();
-	    gestorPedidos.crearBBDD();
+        System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
+        gestorFarmacias.crearBBDD();
+        gestorClientes.crearBBDD();
+        gestorTrabajadores.crearBBDD();
+        gestorPedidos.crearBBDD();
 
-	    System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
-	    Farmacia farmaciaPrincipal = new Farmacia(1, "Farmacia Central", "Barakaldo");
-		gestorFarmacias.insertarDatos(farmaciaPrincipal);
+        System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
 
-		List<Trabajador> trabajadores = initTrabajador();
-		gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
+        // 1. FARMACIAS (Cargamos todas desde el CSV)
+        List<Farmacia> farmacias = initFarmacias();
+        if (farmacias.isEmpty()) {
+            System.err.println("⚠️ ALERTA: No se han cargado farmacias. Creando una por defecto para evitar errores.");
+            farmacias.add(new Farmacia(1, "Farmacia Default", "Barakaldo"));
+        }
+        gestorFarmacias.insertarDatos(farmacias.toArray(new Farmacia[0]));
 
-		List<Cliente> clientes = initClientes();
-		gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
+        // 2. TRABAJADORES
+        List<Trabajador> trabajadores = initTrabajador();
+        gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
 
-		List<Pedido> pedidos = initPedidos();
-		gestorPedidos.insertarDatos(pedidos.toArray(new Pedido[0]));
-//
-//		System.out.println("\n--- 3. VERIFICACIÓN DE DATOS (SELECT) ---");
-		// 4. MOSTRAR DATOS (SELECT)
-		 trabajadores = gestorTrabajadores.obtenerDatos();
-		 printTrabajadores(trabajadores);
+        // 3. CLIENTES
+        List<Cliente> clientes = initClientes();
+        gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
 
-		// clientes = gestorClientes.obtenerDatos();
-		// printClientes(clientes);
+        // 4. PEDIDOS (Lo último, para que existan las farmacias primero)
+        List<Pedido> pedidos = initPedidos();
+        gestorPedidos.insertarDatos(pedidos.toArray(new Pedido[0]));
 
-		List<Pedido> pedidosRecuperados = gestorPedidos.obtenerDatos();
-		printPedidos(pedidosRecuperados);
+        System.out.println("\n--- 3. VERIFICACIÓN DE DATOS (SELECT) ---");
+        
+        System.out.println("--- Farmacias ---");
+        List<Farmacia> farmaciasRecuperadas = gestorFarmacias.obtenerDatos();
+        for(Farmacia f : farmaciasRecuperadas) System.out.println(" - " + f.getNombre());
 
-		// 5. LIMPIEZA (Opcional - Comentado para que puedas ver los datos en DB
-		// Browser)
-		// Si quieres borrar todo al acabar, descomenta las líneas de abajo.
-		/*
-		 * System.out.println("\n--- 4. LIMPIEZA ---"); gestorPedidos.borrarBBDD(); //
-		 * Borrar pedidos primero (por las FK) gestorClientes.borrarCliente(1);
-		 * gestorClientes.borrarDatos(); gestorClientes.borrarBBDD();
-		 */
-	}
-
+        System.out.println("--- Pedidos ---");
+        List<Pedido> pedidosRecuperados = gestorPedidos.obtenerDatos();
+        printPedidos(pedidosRecuperados);
+    }
+	
 	private static void printTrabajadores(List<Trabajador> trabajadores) {
 		if (!trabajadores.isEmpty()) {
 			trabajadores.forEach(cliente -> System.out.format("\n - %s", cliente.toString()));
@@ -84,18 +84,19 @@ public class MainJdbc {
 			clientes.forEach(cliente -> System.out.format("\n - %s", cliente.toString()));
 		}
 	}
-	
+
 	private static void printPedidos(List<Pedido> pedidos) {
 		if (!pedidos.isEmpty()) {
 			for (Pedido p : pedidos) {
-				System.out.format("Pedido: %s | Fecha: %s | Total: %.2f € | Items: %d\n", 
-						p.getId(), p.getFechaOrden(), p.calcularTotal(), p.getProductos().size());
-				
-				for(Producto prod : p.getProductos()) {
-					System.out.format("\t -> %s (x%d) - %.2f €\n", prod.getNombre(), prod.getCantidad(), prod.getPrecioUnitario());
+				System.out.format("Pedido: %s | Fecha: %s | Total: %.2f € | Items: %d\n", p.getId(), p.getFechaOrden(),
+						p.calcularTotal(), p.getProductos().size());
+
+				for (Producto prod : p.getProductos()) {
+					System.out.format("\t -> %s (x%d) - %.2f €\n", prod.getNombre(), prod.getCantidad(),
+							prod.getPrecioUnitario());
 				}
 			}
-		}	
+		}
 	}
 
 	public static List<Cliente> initClientes() {
@@ -164,8 +165,9 @@ public class MainJdbc {
 				String turno = campos[8];
 				Float salario = Float.parseFloat(campos[9]);
 
-				//Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno,salario);
-				//trabajadores.add(trabajador);
+				// Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email,
+				// direccion, puesto, nss, turno,salario);
+				// trabajadores.add(trabajador);
 			}
 
 			// Cerrar el fichero
@@ -175,55 +177,89 @@ public class MainJdbc {
 		}
 		return trabajadores;
 	}
-
-	public static List<Pedido> initPedidos() {
-	    Map<String, Pedido> mapaPedidos = new HashMap<>();
+	
+	public static List<Farmacia> initFarmacias() {
+	    List<Farmacia> farmacias = new ArrayList<>();
 
 	    try {
-	        File fichero = new File("resources/db/pedidos.csv");
+	        File fichero = new File("resources/db/farmacias.csv"); 
 	        Scanner sc = new Scanner(fichero);
 
 	        while (sc.hasNextLine()) {
 	            String linea = sc.nextLine().trim();
-
 	            if (linea.isEmpty()) continue;
 
-	            String[] campos = linea.split(",", -1);
+	            String[] campos = linea.split(",");
+	            if (campos[0].equalsIgnoreCase("id")) continue;
 
-	            for (int i = 0; i < campos.length; i++) {
-	                campos[i] = campos[i].trim();
-	            }
+	            int id = Integer.parseInt(campos[0].trim());
+	            String nombre = campos[1].trim();
+	            String provincia = campos[2].trim();
 
-	            if (campos[0].equalsIgnoreCase("id_pedido"))
-	                continue;
-
-	            String id = campos[0];
-	            String fechaOrd = campos[1];
-	            String fechaLleg = campos[2];
-	            String proveedor = campos[3];
-	            String nombreProd = campos[4];
-	            int cantidad = Integer.parseInt(campos[5]);
-	            double precio = Double.parseDouble(campos[6]);
-	            //int idFarmaciaCSV = Integer.parseInt(campos[7]); 
-
-	            Pedido p = mapaPedidos.get(id);
-
-	            if (p == null) {
-	                p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), JFramePrincipal.idFarActual);
-		            //p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), idFarmaciaCSV);
-	                //para que esten relacionadas con las farmacias de la base de datos
-	                mapaPedidos.put(id, p);
-	            }
-
-	            Producto prod = new Producto(nombreProd, cantidad, precio);
-	            p.agregarProducto(prod);
+	            Farmacia f = new Farmacia(id, nombre, provincia);
+	            farmacias.add(f);
 	        }
 	        sc.close();
 	    } catch (Exception e) {
-	        System.err.println("Error al cargar datos desde pedidos.csv: " + e.getMessage());
-	        e.printStackTrace();
+	        System.err.println("Error al cargar farmacias.csv: " + e.getMessage());
 	    }
+	    return farmacias;
+	}
 
-	    return new ArrayList<>(mapaPedidos.values());
+	public static List<Pedido> initPedidos() {
+		Map<String, Pedido> mapaPedidos = new HashMap<>();
+
+		try {
+			File fichero = new File("resources/db/pedidos.csv");
+			Scanner sc = new Scanner(fichero);
+
+			if (sc.hasNextLine())
+				sc.nextLine(); // Saltar cabecera
+
+			while (sc.hasNextLine()) {
+				String linea = sc.nextLine().trim();
+				if (linea.isEmpty())
+					continue;
+
+				String[] campos = linea.split(",", -1);
+				if (campos[0].equalsIgnoreCase("id_pedido"))
+					continue;
+
+				String id = campos[0].trim();
+				String fechaOrd = campos[1].trim();
+				String fechaLleg = campos[2].trim();
+				String proveedor = campos[3].trim();
+				String nombreProd = campos[4].trim();
+
+				int cantidad = Integer.parseInt(campos[5].trim());
+				double precio = Double.parseDouble(campos[6].trim());
+
+				int idFarmacia = Integer.parseInt(campos[7].trim());
+				Pedido p = mapaPedidos.get(id);
+
+				if (p == null) {
+					Date fechaLlegadaSQL = null;
+					if (fechaLleg != null && !fechaLleg.isEmpty() && !fechaLleg.equalsIgnoreCase("null")) {
+						try {
+							fechaLlegadaSQL = Date.valueOf(fechaLleg);
+						} catch (Exception e) {
+							fechaLlegadaSQL = null;
+						}
+					}
+
+					p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), fechaLlegadaSQL, idFarmacia);
+					mapaPedidos.put(id, p);
+				}
+
+				Producto prod = new Producto(nombreProd, cantidad, precio);
+				p.agregarProducto(prod);
+			}
+			sc.close();
+		} catch (Exception e) {
+			System.err.println("Error al cargar pedidos: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return new ArrayList<>(mapaPedidos.values());
 	}
 }

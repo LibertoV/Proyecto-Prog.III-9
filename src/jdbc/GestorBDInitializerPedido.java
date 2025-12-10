@@ -143,10 +143,13 @@ public class GestorBDInitializerPedido {
 		List<Pedido> pedidos = new ArrayList<>();
 
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
-			con.createStatement().execute("PRAGMA foreign_keys = ON");
 			String sqlPedido = "SELECT * FROM PEDIDO WHERE ID_FARMACIA = ?";
 			PreparedStatement pstPedido = con.prepareStatement(sqlPedido);
-			pstPedido.setInt(1, JFramePrincipal.idFarActual);
+
+			int idParaBuscar = JFramePrincipal.idFarActual;
+			
+			pstPedido.setInt(1, idParaBuscar);
+
 			ResultSet rs = pstPedido.executeQuery();
 
 			String sqlProductos = "SELECT * FROM LINEA_PEDIDO WHERE ID_PEDIDO = ?";
@@ -154,12 +157,23 @@ public class GestorBDInitializerPedido {
 
 			while (rs.next()) {
 				String id = rs.getString("ID");
-				String fechaOrd = rs.getString("FECHA_ORDEN");
-				String fechaLleg = rs.getString("FECHA_LLEGADA");
+				String fechaOrdStr = rs.getString("FECHA_ORDEN");
+				String fechaLlegStr = rs.getString("FECHA_LLEGADA");
 				String proveedor = rs.getString("PROVEEDOR");
 				int idFarmacia = rs.getInt("ID_FARMACIA");
 
-				Pedido p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), idFarmacia);
+				Date fechaOrden = Date.valueOf(fechaOrdStr);
+				Date fechaLlegada = null;
+				
+				if (fechaLlegStr != null && !fechaLlegStr.isEmpty() && !fechaLlegStr.equalsIgnoreCase("null")) {
+					try {
+						fechaLlegada = Date.valueOf(fechaLlegStr);
+					} catch (Exception e) {
+						fechaLlegada = null; 
+					}
+				}
+
+				Pedido p = new Pedido(id, proveedor, fechaOrden, fechaLlegada, idFarmacia);
 
 				pstProductos.setString(1, id);
 				ResultSet rsProd = pstProductos.executeQuery();
@@ -172,11 +186,12 @@ public class GestorBDInitializerPedido {
 					Producto prod = new Producto(nombreProd, cantidad, precio);
 					p.agregarProducto(prod);
 				}
-				rsProd.close();
+				rsProd.close(); 
+
 				pedidos.add(p);
 			}
 
-			System.out.format("\n- Se han recuperado %d pedidos completos.", pedidos.size());
+			System.out.format("\n- Se han recuperado %d pedidos para la Farmacia %d.", pedidos.size(), idParaBuscar);
 
 			rs.close();
 			pstPedido.close();
@@ -187,8 +202,7 @@ public class GestorBDInitializerPedido {
 			ex.printStackTrace();
 		}
 		return pedidos;
-	}
-
+	}	
 	public void borrarPedido(String idPedido) {
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			con.createStatement().execute("PRAGMA foreign_keys = ON");
