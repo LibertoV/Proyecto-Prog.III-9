@@ -204,11 +204,14 @@ public class MainJdbc {
 	            String nombreProd = campos[4];
 	            int cantidad = Integer.parseInt(campos[5]);
 	            double precio = Double.parseDouble(campos[6]);
+	            //int idFarmaciaCSV = Integer.parseInt(campos[7]); 
 
 	            Pedido p = mapaPedidos.get(id);
 
 	            if (p == null) {
 	                p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), JFramePrincipal.idFarActual);
+		            //p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), Date.valueOf(fechaLleg), idFarmaciaCSV);
+	                //para que esten relacionadas con las farmacias de la base de datos
 	                mapaPedidos.put(id, p);
 	            }
 
