@@ -88,12 +88,20 @@ public class JFrameSelPedido extends JFramePrincipal {
 		String textoEstado;
 		Color colorFondo;
 		
-		if (!haLlegado) {
-			textoEstado = "Llegado";
-			colorFondo = new Color(144, 238, 144);
-		}else {
+		if (pedido.getFechaLlegada() == null) {
 			textoEstado = "Pendiente";
-			colorFondo = new Color(255, 255, 224); 
+			colorFondo = new Color(255, 255, 224);
+		} else {
+			Date fechaActual1 = new Date();
+			boolean haLlegado1 = fechaActual1.after(pedido.getFechaLlegada());
+			
+			if (haLlegado1) {
+				textoEstado = "Llegado";
+				colorFondo = new Color(144, 238, 144);
+			} else {
+				textoEstado = "En Camino";
+				colorFondo = new Color(173, 216, 230);
+			}
 		}
 
 		

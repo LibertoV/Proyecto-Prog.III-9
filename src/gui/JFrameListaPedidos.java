@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -45,6 +46,8 @@ import javax.swing.table.DefaultTableModel;
 import db.DataHistorial;
 import db.DataPedidos;
 import domain.Pedido;
+import domain.Producto;
+import jdbc.GestorBDInitializerPedido;
 
 //LISTADO DE PEDIDOS
 
@@ -60,8 +63,10 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private Cursor cursorNormal = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private final ImageIcon ICONO_ELIMINAR;
-	
-	private ArrayList<Pedido> listaObjetosPedidos = new ArrayList<>();
+
+	private ArrayList<Pedido> listaTotalPedidos = new ArrayList<>();
+	private ArrayList<Pedido> listaPedidosActivos = new ArrayList<>();
+	private ArrayList<Pedido> listaPedidosHistorial = new ArrayList<>();
 
 	public JFrameListaPedidos() {
 
@@ -73,6 +78,11 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.setTitle("Lista de Pedidos");
 		this.setSize(new Dimension(1200, 850));
 		this.setLocationRelativeTo(null);
+
+		GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
+		this.listaTotalPedidos = (ArrayList<Pedido>) gestor.obtenerDatos();
+
+		separarPedidos();
 
 		// Añadir la cabecera
 		this.add(crearPanelCabecera(), BorderLayout.NORTH);
@@ -87,19 +97,43 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
 	}
 
-	public void agregarNuevoPedido(Pedido pedido) {
-	    listaObjetosPedidos.add(pedido);
-	    modelo.addRow(pedido.añadirloTabla());
-	    actualizarTotales();
+	private void separarPedidos() {
+		listaPedidosActivos.clear();
+		listaPedidosHistorial.clear();
+
+		long unDiaEnMillis = 24 * 60 * 60 * 1000L;
+		Date haceUnDia = new Date(System.currentTimeMillis() - unDiaEnMillis);
+
+		for (Pedido p : listaTotalPedidos) {
+			if (p.getFechaLlegada() == null || p.getFechaLlegada().after(haceUnDia)) {
+				listaPedidosActivos.add(p);
+			} else {
+				listaPedidosHistorial.add(p);
+			}
+		}
 	}
-	
+
+	private void cargarTablaDesdeLista(ArrayList<Pedido> lista) {
+		modelo.setRowCount(0);
+		for (Pedido p : lista) {
+			modelo.addRow(p.añadirloTabla());
+		}
+		actualizarTotales();
+	}
+
+	public void agregarNuevoPedido(Pedido pedido) {
+		listaTotalPedidos.add(pedido); 
+		listaPedidosActivos.add(pedido);
+		modelo.addRow(pedido.añadirloTabla());
+		actualizarTotales();
+	}
+
 	private Pedido buscarPedidoPorId(String id) {
-	    for (Pedido p : listaObjetosPedidos) {
-	        if (p.getId().equals(id)) {
-	            return p;
-	        }
-	    }
-	    return null;
+		for (Pedido p : listaTotalPedidos) {
+			if (p.getId().equals(id))
+				return p;
+		}
+		return null;
 	}
 
 	private JPanel crearPanelCabecera() {
@@ -220,9 +254,10 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Proveedor");
 		columnas.add("Eliminar");
 
-		Vector<Vector<Object>> datos = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
+		// Vector<Vector<Object>> datos =
+		// DataPedidos.cargaPedidos("resources/db/pedidos.csv");
 
-		modelo = new DefaultTableModel(datos, columnas) {
+		modelo = new DefaultTableModel(null, columnas) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -230,6 +265,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		};
 
 		tablaPedidos = new JTable(modelo);
+
+		cargarTablaDesdeLista(this.listaPedidosActivos);
+
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
 		tablaPedidos.setRowHeight(20);
 
@@ -335,16 +373,17 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					}
 
 					if (e.getClickCount() == 2) {
-					    String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-					    
-					    Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-					    
-					    if (pedidoReal != null) {
-					        JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-					        frameSel.setVisible(true);
-					    } else {
-					        JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Todavia no estan cargados de la base de datos");
-					    }
+						String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+
+						Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+
+						if (pedidoReal != null) {
+							JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+							frameSel.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
+									"Todavia no estan cargados de la base de datos");
+						}
 					}
 				}
 			}
@@ -368,18 +407,19 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				int fila = tablaPedidos.getSelectedRow();
 				boolean ctrlPresionado = e.isControlDown();
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				    if (fila >= 0) {
-				        String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-				        Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-				        
-				        if (pedidoReal != null) {
-				            JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-				            frameSel.setVisible(true);
-				        } else {
-				             JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Todavia no están cargados de la base de datos.");
-				        }
-				    }
-				    e.consume();
+					if (fila >= 0) {
+						String idSeleccionado = modelo.getValueAt(fila, 0).toString();
+						Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+
+						if (pedidoReal != null) {
+							JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
+							frameSel.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
+									"Todavia no están cargados de la base de datos.");
+						}
+					}
+					e.consume();
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -469,31 +509,16 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	}
 
 	private void filtroPedido(String filtro) {
-		Vector<Vector<Object>> data = DataPedidos.cargaPedidos("resources/db/pedidos.csv");
+	    String filtroLower = filtro.toLowerCase();
+	    ArrayList<Pedido> filtrados = new ArrayList<>();
 
-		Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
-		String filtroLower = filtro.toLowerCase();
-
-		if (filtroLower.isEmpty()) {
-			cargaFiltrada.addAll(data);
-		} else {
-			for (Vector<Object> fila : data) {
-				String id = fila.get(0).toString().toLowerCase();
-				String proveedor = fila.get(4).toString().toLowerCase();
-
-				if (id.contains(filtroLower) || proveedor.contains(filtroLower)) {
-					cargaFiltrada.add(fila);
-				}
-			}
-		}
-
-		modelo.setRowCount(0);
-		for (Vector<Object> vector : cargaFiltrada) {
-			modelo.addRow(vector);
-		}
-		modelo.fireTableDataChanged();
-		actualizarTotales();
-
+	    for (Pedido p : listaPedidosActivos) {
+	        if (p.getId().toLowerCase().contains(filtroLower) || 
+	            p.getProveedor().toLowerCase().contains(filtroLower)) {
+	            filtrados.add(p);
+	        }
+	    }
+	    cargarTablaDesdeLista(filtrados);
 	}
 
 	private JPanel crearOpcionesInferior() {
@@ -535,7 +560,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 		});
 
-		// Centrar botones horizontalmente
 		anadir.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		panelañadir.add(Box.createVerticalGlue());
@@ -549,7 +573,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private JPanel crearHistorialPedido() {
 		JPanel panelhistorial = new JPanel();
 		panelhistorial.setLayout(new BoxLayout(panelhistorial, BoxLayout.Y_AXIS));
-		panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial de pedidos"));
+		panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial (+24h antigüedad)"));
 		panelhistorial.setPreferredSize(new Dimension(400, 200));
 
 		Vector<Object> columnas = new Vector<>();
@@ -557,28 +581,38 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Fecha llegada");
 		columnas.add("Productos recibidos");
 
-		Vector<Vector<Object>> historial = DataHistorial.cargarHistorial();
+		Vector<Vector<Object>> datosHistorial = new Vector<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-		// Añadir lo años al combobox
+		for (Pedido p : listaPedidosHistorial) {
+		    Vector<Object> fila = new Vector<>();
+		    fila.add(p.getId());
+
+		    if (p.getFechaLlegada() != null) {
+		        fila.add(sdf.format(p.getFechaLlegada()));
+		    } else {
+		        fila.add("---");
+		    }
+
+		    int cantidadTotal = 0;
+		    for (Producto prod : p.getProductos()) {
+		        cantidadTotal += prod.getCantidad();
+		    }
+
+		    fila.add(cantidadTotal); 
+
+		    datosHistorial.add(fila);
+		}
 		Vector<String> añosVector = new Vector<>();
 		añosVector.add("Todos");
 		ArrayList<String> años = new ArrayList<>();
 
-		for (Vector<Object> fila : historial) {
-			Object fechaObj = fila.get(1);
-
-			if (fechaObj instanceof String) {
-				String fechaStr = (String) fechaObj;
-
-				if (fechaStr != null && fechaStr.length() >= 4) {
-					String año = fechaStr.substring(0, 4);
-
-					if (!años.contains(año)) {
-						años.add(año);
-					}
-				}
+		for (Pedido p : listaPedidosHistorial) {
+			if (p.getFechaLlegada() != null) {
+				String año = new SimpleDateFormat("yyyy").format(p.getFechaLlegada());
+				if (!años.contains(año))
+					años.add(año);
 			}
-
 		}
 		Collections.sort(años, Collections.reverseOrder());
 		añosVector.addAll(años);
@@ -591,7 +625,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelFiltro.add(comboAños);
 		panelFiltro.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelFiltro.getPreferredSize().height));
 
-		DefaultTableModel model = new DefaultTableModel(historial, columnas) {
+		DefaultTableModel model = new DefaultTableModel(datosHistorial, columnas) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -631,20 +665,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int fila = tablaHistorial.getSelectedRow();
-
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				    if (fila >= 0) {
-				        String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-				        Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-				        
-				        if (pedidoReal != null) {
-				            JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-				            frameSel.setVisible(true);
-				        } else {
-				             JOptionPane.showMessageDialog(JFrameListaPedidos.this, "todavia no estan cargados de la base de datos.");
-				        }
-				    }
-				    e.consume();
+					if (fila >= 0) {
+						String idSeleccionado = model.getValueAt(fila, 0).toString();
+						Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+						if (pedidoReal != null)
+							new JFrameSelPedido(pedidoReal);
+					}
+					e.consume();
 				}
 
 				else if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -690,34 +718,26 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaHistorial.rowAtPoint(e.getPoint());
-
-				if (e.getClickCount() == 2) {
-				    String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-				    Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-				    if (pedidoReal != null) {
-				        JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-				        frameSel.setVisible(true);
-				    } else {
-				        JOptionPane.showMessageDialog(JFrameListaPedidos.this, "todavia no estan cargados de la base de datos.");
-				    }
+				if (e.getClickCount() == 2 && fila >= 0) {
+					String idSeleccionado = model.getValueAt(fila, 0).toString();
+					Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
+					if (pedidoReal != null) new JFrameSelPedido(pedidoReal);
 				}
 			}
 		});
-		Vector<Vector<Object>> historialOriginal = new Vector<>();
-		for (Vector<Object> fila : historial) {
-			historialOriginal.add(new Vector<>(fila));
-		}
+
+		Vector<Vector<Object>> datosHistorialOriginal = new Vector<>(datosHistorial);
 
 		comboAños.addActionListener(e -> {
 			String añosel = (String) comboAños.getSelectedItem();
 
 			model.setRowCount(0);
 			if (añosel.equals("Todos")) {
-				for (Vector<Object> fila : historialOriginal) {
+				for (Vector<Object> fila : datosHistorialOriginal) {
 					model.addRow(fila);
 				}
 			} else {
-				for (Vector<Object> fila : historialOriginal) {
+				for (Vector<Object> fila : datosHistorialOriginal) {
 					Object fechaObj = fila.get(1);
 					if (fechaObj instanceof String) {
 						String fechaStr = (String) fechaObj;
