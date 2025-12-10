@@ -164,9 +164,8 @@ public class MainJdbc {
 				String turno = campos[8];
 				Float salario = Float.parseFloat(campos[9]);
 
-				Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno,
-						salario);
-				trabajadores.add(trabajador);
+				//Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno,salario);
+				//trabajadores.add(trabajador);
 			}
 
 			// Cerrar el fichero
