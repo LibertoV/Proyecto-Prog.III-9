@@ -123,9 +123,9 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	public void agregarNuevoPedido(Pedido pedido) {
 		pedido.setIdFarmacia(JFramePrincipal.idFarActual);
 		GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
-	    gestor.insertarDatos(pedido);
-	    
-		listaTotalPedidos.add(pedido); 
+		gestor.insertarDatos(pedido);
+
+		listaTotalPedidos.add(pedido);
 		listaPedidosActivos.add(pedido);
 		modelo.addRow(pedido.añadirloTabla());
 		actualizarTotales();
@@ -206,48 +206,83 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private JPanel crearPanelCentral() {
 		JPanel panelCentral = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(5, 5, 5, 5); // Para la separacion entre los componentes que se añaden
+		gbc.insets = new Insets(5, 5, 5, 5);
 
-		JPanel Proveedores = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JTextField txtfiltro = new JTextField(10);
-		Proveedores.add(new JLabel("Filtrado: "));
-		Proveedores.add(txtfiltro);
+		JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+		panelBusqueda.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(0, 150, 200))); 
+																										
 
-		DocumentListener filtro = new DocumentListener() {
+		JLabel lblBuscar = new JLabel("Buscar Pedido:");
+		lblBuscar.setForeground(Color.WHITE);
+		lblBuscar.setForeground(Color.BLACK);
+		lblBuscar.setFont(new Font("Arial", Font.BOLD, 13));
+
+		JTextField txtfiltro = new JTextField(20) {
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+				g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+						java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+				g2.setColor(new Color(0, 100, 255));
+				g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+				g2.dispose();
+				super.paintComponent(g);
+			}
+		};
+		txtfiltro.setOpaque(false);
+		txtfiltro.setBorder(BorderFactory.createEmptyBorder(5, 12, 5, 12));
+
+		String[] criterios = { "Nº Pedido", "Proveedor" };
+		JComboBox<String> comboCriterio = new JComboBox<>(criterios);
+		comboCriterio.setPreferredSize(new Dimension(120, 30));
+
+		panelBusqueda.add(lblBuscar);
+		panelBusqueda.add(txtfiltro);
+		panelBusqueda.add(comboCriterio);
+
+		txtfiltro.getDocument().addDocumentListener(new DocumentListener() {
+			private void ejecutarFiltro() {
+				String texto = txtfiltro.getText().toLowerCase();
+				String criterio = (String) comboCriterio.getSelectedItem();
+				ArrayList<Pedido> filtrados = new ArrayList<>();
+
+				for (Pedido p : listaPedidosActivos) {
+					boolean coincide = false;
+					if ("Nº Pedido".equals(criterio)) {
+						coincide = p.getId().toLowerCase().contains(texto);
+					} else {
+						coincide = p.getProveedor().toLowerCase().contains(texto);
+					}
+					if (coincide)
+						filtrados.add(p);
+				}
+				cargarTablaDesdeLista(filtrados);
+			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				filtroPedido(txtfiltro.getText());
-
+				ejecutarFiltro();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				filtroPedido(txtfiltro.getText());
-
+				ejecutarFiltro();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-
+				ejecutarFiltro();
 			}
-
-		};
-		txtfiltro.getDocument().addDocumentListener(filtro);
+		});
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.gridwidth = 1;
-		gbc.weightx = 0.0;
-		gbc.weighty = 0.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.WEST;
-		panelCentral.add(Proveedores, gbc);
-
-		gbc.gridx = 1;
+		gbc.gridwidth = 2;
 		gbc.weightx = 1.0;
-		panelCentral.add(new JLabel(""), gbc);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panelCentral.add(panelBusqueda, gbc);
 
 		Vector<Object> columnas = new Vector<>();
 		columnas.add("Nº pedido");
@@ -257,9 +292,6 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		columnas.add("Proveedor");
 		columnas.add("Eliminar");
 
-		// Vector<Vector<Object>> datos =
-		// DataPedidos.cargaPedidos("resources/db/pedidos.csv");
-
 		modelo = new DefaultTableModel(null, columnas) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -268,63 +300,43 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		};
 
 		tablaPedidos = new JTable(modelo);
-
 		cargarTablaDesdeLista(this.listaPedidosActivos);
-
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
-		tablaPedidos.setRowHeight(20);
+		tablaPedidos.setRowHeight(20); 
 
 		final int[] filaHover = { -1 };
 
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
-
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-
 				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 				if (isSelected) {
 					setBackground(new Color(173, 216, 230));
-					setForeground(table.getSelectionForeground());
 				} else if (row == filaHover[0]) {
 					setBackground(new Color(220, 240, 255));
-					setForeground(table.getForeground());
 				} else {
 					setBackground(Color.WHITE);
-					setForeground(table.getForeground());
 				}
-				setOpaque(true);
 
+				setOpaque(true);
 				String nombreColumna = table.getColumnName(column);
 
 				if (nombreColumna.equals("Eliminar")) {
-
 					setIcon(ICONO_ELIMINAR);
 					setHorizontalAlignment(SwingConstants.CENTER);
-					setToolTipText("Eliminar pedido");
 					setText(null);
-
 				} else if (nombreColumna.equals("Proveedor")) {
-					setIcon(null);
-					setText(null);
-					setToolTipText(null);
+					setHorizontalAlignment(SwingConstants.CENTER);
 					if (value instanceof String && !((String) value).isEmpty()) {
-						ImageIcon icono = getCachedIcon((String) value);
-						if (icono != null)
-							setIcon(icono);
-						else
-							setText("IMG ERROR");
-					} else {
-						setText("N/A");
+						setIcon(getCachedIcon((String) value));
+						setText(null);
 					}
-
 				} else {
 					setIcon(null);
 					setHorizontalAlignment(SwingConstants.CENTER);
-					setToolTipText(null);
 				}
-
 				return this;
 			}
 		};
@@ -337,10 +349,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		tablaPedidos.getColumn("Eliminar").setMinWidth(60);
 
 		JScrollPane scroll = new JScrollPane(tablaPedidos);
-		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.gridwidth = 2;
-		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.BOTH;
 		panelCentral.add(scroll, gbc);
@@ -357,45 +366,23 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			public void mouseClicked(MouseEvent e) {
 				int fila = tablaPedidos.rowAtPoint(e.getPoint());
 				int columna = tablaPedidos.columnAtPoint(e.getPoint());
-
 				if (fila >= 0 && columna >= 0) {
-
 					if (tablaPedidos.getColumnName(columna).equals("Eliminar")) {
 						int confirmado = JOptionPane.showConfirmDialog(JFrameListaPedidos.this,
-								"¿Seguro que deseas eliminar este pedido?", "Confirmar eliminación",
-								JOptionPane.YES_NO_OPTION);
-
+								"¿Seguro que deseas eliminar?", "Confirmar", JOptionPane.YES_NO_OPTION);
 						if (confirmado == JOptionPane.YES_OPTION) {
 							String idParaBorrar = modelo.getValueAt(fila, 0).toString();
-							
-							GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
-					        gestor.borrarPedido(idParaBorrar);
-							
-					        //IAG
-					        listaPedidosActivos.removeIf(p -> p.getId().equals(idParaBorrar));
-					        listaTotalPedidos.removeIf(p -> p.getId().equals(idParaBorrar));
-							
+							new GestorBDInitializerPedido().borrarPedido(idParaBorrar);
+							listaPedidosActivos.removeIf(p -> p.getId().equals(idParaBorrar));
+							listaTotalPedidos.removeIf(p -> p.getId().equals(idParaBorrar));
 							modelo.removeRow(fila);
-
 							actualizarTotales();
-
-							JOptionPane.showMessageDialog(JFrameListaPedidos.this, "Pedido eliminado.");
 						}
-						return;
-					}
-
-					if (e.getClickCount() == 2) {
-						String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-
-						Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-
-						if (pedidoReal != null) {
-							JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-							frameSel.setVisible(true);
-						} else {
-							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
-									"No se puede acceder a este pedido");
-						}
+					} else if (e.getClickCount() == 2) {
+						String id = modelo.getValueAt(fila, 0).toString();
+						Pedido p = buscarPedidoPorId(id);
+						if (p != null)
+							new JFrameSelPedido(p).setVisible(true);
 					}
 				}
 			}
@@ -413,82 +400,13 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 		});
 
-		tablaPedidos.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int fila = tablaPedidos.getSelectedRow();
-				boolean ctrlPresionado = e.isControlDown();
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (fila >= 0) {
-						String idSeleccionado = modelo.getValueAt(fila, 0).toString();
-						Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-
-						if (pedidoReal != null) {
-							JFrameSelPedido frameSel = new JFrameSelPedido(pedidoReal);
-							frameSel.setVisible(true);
-						} else {
-							JOptionPane.showMessageDialog(JFrameListaPedidos.this,
-									"No se puede acceder a este pedido.");
-						}
-					}
-					e.consume();
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-					if (fila >= 0) {
-						int confirmado = JOptionPane.showConfirmDialog(JFrameListaPedidos.this,
-								"¿Seguro que deseas eliminar este pedido?", "Confirmar eliminación",
-								JOptionPane.YES_NO_OPTION);
-
-						if (confirmado == JOptionPane.YES_OPTION) {
-							Object idPedido = modelo.getValueAt(fila, 0);
-							modelo.removeRow(fila);
-							actualizarTotales();
-						}
-					}
-					e.consume();
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_UP) {
-					if (fila > 0) {
-						tablaPedidos.setRowSelectionInterval(fila - 1, fila - 1);
-						tablaPedidos.scrollRectToVisible(tablaPedidos.getCellRect(fila - 1, 0, true));
-					}
-					e.consume();
-				}
-
-				else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					if (fila < modelo.getRowCount() - 1) {
-						tablaPedidos.setRowSelectionInterval(fila + 1, fila + 1);
-						tablaPedidos.scrollRectToVisible(tablaPedidos.getCellRect(fila + 1, 0, true));
-					}
-					e.consume();
-
-				}
-
-				else if (ctrlPresionado && e.getKeyCode() == KeyEvent.VK_E) {
-					dispose();
-					SwingUtilities.invokeLater(() -> new JFrameFarmaciaSel().setVisible(true));
-				}
-
-			}
-
-		});
-
 		JPanel OpcionesInferior = crearOpcionesInferior();
-
-		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.gridwidth = 2;
-		gbc.weightx = 1.0;
 		gbc.weighty = 0.0;
-
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-
 		panelCentral.add(OpcionesInferior, gbc);
 
 		return panelCentral;
-
 	}
 
 	private void actualizarTotales() {
@@ -521,16 +439,15 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	}
 
 	private void filtroPedido(String filtro) {
-	    String filtroLower = filtro.toLowerCase();
-	    ArrayList<Pedido> filtrados = new ArrayList<>();
+		String filtroLower = filtro.toLowerCase();
+		ArrayList<Pedido> filtrados = new ArrayList<>();
 
-	    for (Pedido p : listaPedidosActivos) {
-	        if (p.getId().toLowerCase().contains(filtroLower) || 
-	            p.getProveedor().toLowerCase().contains(filtroLower)) {
-	            filtrados.add(p);
-	        }
-	    }
-	    cargarTablaDesdeLista(filtrados);
+		for (Pedido p : listaPedidosActivos) {
+			if (p.getId().toLowerCase().contains(filtroLower) || p.getProveedor().toLowerCase().contains(filtroLower)) {
+				filtrados.add(p);
+			}
+		}
+		cargarTablaDesdeLista(filtrados);
 	}
 
 	private JPanel crearOpcionesInferior() {
@@ -597,23 +514,23 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		for (Pedido p : listaPedidosHistorial) {
-		    Vector<Object> fila = new Vector<>();
-		    fila.add(p.getId());
+			Vector<Object> fila = new Vector<>();
+			fila.add(p.getId());
 
-		    if (p.getFechaLlegada() != null) {
-		        fila.add(sdf.format(p.getFechaLlegada()));
-		    } else {
-		        fila.add("---");
-		    }
+			if (p.getFechaLlegada() != null) {
+				fila.add(sdf.format(p.getFechaLlegada()));
+			} else {
+				fila.add("---");
+			}
 
-		    int cantidadTotal = 0;
-		    for (Producto prod : p.getProductos()) {
-		        cantidadTotal += prod.getCantidad();
-		    }
+			int cantidadTotal = 0;
+			for (Producto prod : p.getProductos()) {
+				cantidadTotal += prod.getCantidad();
+			}
 
-		    fila.add(cantidadTotal); 
+			fila.add(cantidadTotal);
 
-		    datosHistorial.add(fila);
+			datosHistorial.add(fila);
 		}
 		Vector<String> añosVector = new Vector<>();
 		añosVector.add("Todos");
@@ -733,7 +650,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 				if (e.getClickCount() == 2 && fila >= 0) {
 					String idSeleccionado = model.getValueAt(fila, 0).toString();
 					Pedido pedidoReal = buscarPedidoPorId(idSeleccionado);
-					if (pedidoReal != null) new JFrameSelPedido(pedidoReal);
+					if (pedidoReal != null)
+						new JFrameSelPedido(pedidoReal);
 				}
 			}
 		});
