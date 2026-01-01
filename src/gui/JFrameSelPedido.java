@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -148,16 +149,17 @@ public class JFrameSelPedido extends JFramePrincipal {
 
 		String[] columnas = { "Producto", "Cantidad", "Precio unitario (€)" };
 		
-		ArrayList<Producto> listaProds = pedido.getProductos();
-		Object[][] datos = new Object[listaProds.size()][3];
+		HashMap<Producto,Integer> productos = pedido.getProductos();
+		Object[][] datos = new Object[productos.size()][3];
 		
 		int totalCantidad = 0;
-		for(int i = 0; i < listaProds.size(); i++) {
-			Producto p = listaProds.get(i);
+		int i = 0;
+		for(Producto p:productos.keySet()) {
 			datos[i][0] = p.getNombre();
-			datos[i][1] = p.getCantidad();
+			datos[i][1] = productos.get(p);
 			datos[i][2] = p.getPrecioUnitario();
-			totalCantidad += p.getCantidad();
+			totalCantidad += productos.get(p);
+			i++;
 		}
 
 		JTable tabla = new JTable(new DefaultTableModel(datos, columnas)) {
@@ -182,7 +184,7 @@ public class JFrameSelPedido extends JFramePrincipal {
 			}
 		};
 		
-		for (int i = 0; i < tabla.getColumnCount(); i++) tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		for (int j = 0; j < tabla.getColumnCount(); j++) tabla.getColumnModel().getColumn(j).setCellRenderer(renderer);
 
 		JScrollPane scroll = new JScrollPane(tabla);
 		

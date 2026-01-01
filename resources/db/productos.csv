@@ -1,0 +1,401 @@
+id,nombre,precio_unitario
+1,Warfarina 150mg Frasco 100ml,137.9
+2,Salbutamol 400mg Caja x10,256.35
+3,Salbutamol 850mg Inhalador,116.0
+4,Fluoxetina 10mg Caja x20,244.1
+5,Ibuprofeno 50mg Caja x30,68.0
+6,Warfarina 100mg Inhalador,275.39
+7,Tramadol 100mcg Ampolla,245.02
+8,Clonazepam 1g Blíster x20,201.0
+9,Ibuprofeno 75mg Blíster x10,302.43
+10,Vitamina C 25mg Blíster x20,82.0
+11,Omeprazol 400mg Blíster x20,303.1
+12,Losartán 850mg Blíster x10,246.0
+13,Tramadol 100mg Caja x20,172.4
+14,Levotiroxina 250mg Frasco 100ml,14.5
+15,Metformina 150mg Inhalador,50.0
+16,Sertralina 150mg Caja x60,217.6
+17,Insulina NPH 100mcg Inhalador,190.0
+18,Losartán 500mg Caja x30,64.35
+19,Aspirina 50mg Ampolla,163.3
+20,Cefalexina 850mg Caja x30,18.0
+21,Paracetamol 5mg Blíster x10,341.2
+22,Ketorolac 1g Caja x60,122.8
+23,Cefalexina 10mg Frasco 100ml,81.2
+24,Metformina 50mg Caja x20,257.0
+25,Vitamina C 100mg Frasco 60ml,261.0
+26,Paracetamol 5mg Inhalador,75.0
+27,Diazepam 20mg Frasco 60ml,202.0
+28,Levotiroxina 50mg Frasco 100ml,282.0
+29,Sertralina 500mg Caja x60,216.65
+30,Levotiroxina 50mg Caja x10,275.28
+31,Cefalexina 250mg Frasco 100ml,203.0
+32,Aspirina 10mg Frasco 100ml,136.1
+33,Cefalexina 1g Caja x60,160.0
+34,Paracetamol 150mg Frasco 100ml,83.18
+35,Omeprazol 150mg Frasco 100ml,176.5
+36,Ketorolac 150mg Blíster x10,25.0
+37,Cefalexina 10mg Caja x30,273.1
+38,Vitamina C 75mg Frasco 100ml,303.0
+39,Atorvastatina 20mg Caja x10,240.0
+40,Azitromicina 400mg Caja x30,200.0
+41,Amoxicilina 400mg Caja x10,19.1
+42,Aspirina 150mg Inhalador,63.0
+43,Aspirina 850mg Ampolla,41.1
+44,Metformina 400mg Ampolla,275.8
+45,Fluoxetina 250mg Caja x30,282.5
+46,Omeprazol 100mcg Frasco 100ml,127.89
+47,Amoxicilina 500mg Caja x10,285.15
+48,Fluoxetina 1g Frasco 60ml,133.0
+49,Omeprazol 400mg Caja x60,147.0
+50,Diazepam 400mg Ampolla,143.0
+51,Loratadina 1g Inhalador,143.0
+52,Calcio + Vitamina D 100mg Blíster x10,96.4
+53,Azitromicina 10mg Frasco 100ml,238.0
+54,Aspirina 5mg Inhalador,49.0
+55,Ácido Fólico 10mg Frasco 60ml,299.7
+56,Cefalexina 250mg Caja x20,125.82
+57,Atorvastatina 850mg Inhalador,45.78
+58,Omeprazol 150mg Caja x60,165.92
+59,Omeprazol 400mg Frasco 100ml,282.8
+60,Diclofenac 1g Blíster x20,136.94
+61,Aspirina 50mg Frasco 60ml,19.0
+62,Vitamina C 150mg Caja x30,177.0
+63,Ketorolac 500mg Frasco 60ml,199.97
+64,Levotiroxina 850mg Caja x20,24.5
+65,Cefalexina 100mcg Blíster x20,231.3
+66,Fluoxetina 5mg Ampolla,120.6
+67,Metformina 1g Frasco 100ml,38.6
+68,Levotiroxina 50mg Blíster x10,157.79
+69,Salbutamol 75mg Caja x10,33.1
+70,Ranitidina 500mg Caja x10,120.61
+71,Paracetamol 50mg Frasco 60ml,221.9
+72,Paracetamol 850mg Ampolla,270.0
+73,Ibuprofeno 5mg Caja x10,236.0
+74,Diclofenac 200mg Caja x20,256.24
+75,Paracetamol 200mg Frasco 100ml,189.2
+76,Losartán 850mg Frasco 60ml,294.99
+77,Metformina 200mg Caja x20,151.4
+78,Hidroxicloroquina 200mg Caja x60,338.94
+79,Azitromicina 5mg Caja x30,120.8
+80,Loratadina 400mg Inhalador,47.0
+81,Azitromicina 150mg Caja x30,321.03
+82,Levotiroxina 75mg Inhalador,211.0
+83,Sertralina 10mg Caja x30,286.99
+84,Diazepam 150mg Caja x10,112.0
+85,Aspirina 250mg Caja x20,215.0
+86,Aspirina 500mg Blíster x10,60.4
+87,Clonazepam 500mg Frasco 100ml,189.0
+88,Aspirina 75mg Caja x30,229.7
+89,Insulina NPH 150mg Caja x20,83.0
+90,Aspirina 100mcg Caja x60,67.0
+91,Insulina NPH 850mg Caja x20,338.44
+92,Loratadina 100mg Caja x10,111.1
+93,Tramadol 5mg Frasco 100ml,236.0
+94,Amoxicilina 25mg Caja x30,272.0
+95,Aspirina 200mg Caja x60,78.0
+96,Losartán 1g Ampolla,243.0
+97,Cefalexina 25mg Ampolla,159.52
+98,Warfarina 500mg Ampolla,265.0
+99,Calcio + Vitamina D 850mg Inhalador,139.0
+100,Ácido Fólico 500mg Inhalador,348.1
+101,Prednisona 10mg Frasco 100ml,22.98
+102,Prednisona 1g Caja x30,5.3
+103,Prednisona 150mg Frasco 100ml,293.0
+104,Loratadina 50mg Caja x30,345.05
+105,Levotiroxina 850mg Caja x30,90.06
+106,Sertralina 250mg Blíster x10,188.8
+107,Ranitidina 400mg Caja x60,122.0
+108,Levotiroxina 500mg Ampolla,270.0
+109,Salbutamol 150mg Blíster x10,89.7
+110,Calcio + Vitamina D 400mg Blíster x10,243.0
+111,Tramadol 850mg Frasco 60ml,46.0
+112,Vitamina C 100mcg Blíster x20,251.46
+113,Loratadina 100mg Caja x30,51.0
+114,Metformina 25mg Inhalador,313.4
+115,Diclofenac 5mg Caja x30,184.0
+116,Aspirina 25mg Frasco 60ml,44.4
+117,Insulina Glargina 50mg Ampolla,81.1
+118,Insulina Glargina 250mg Caja x10,244.78
+119,Paracetamol 1g Blíster x20,82.49
+120,Ibuprofeno 1g Caja x10,197.0
+121,Diclofenac 500mg Blíster x10,163.62
+122,Warfarina 250mg Blíster x10,222.57
+123,Atorvastatina 75mg Frasco 100ml,216.0
+124,Azitromicina 1g Frasco 60ml,43.2
+125,Loratadina 150mg Caja x30,345.0
+126,Clonazepam 75mg Blíster x20,8.6
+127,Tramadol 150mg Caja x30,216.0
+128,Salbutamol 200mg Inhalador,121.1
+129,Clonazepam 250mg Frasco 60ml,4.99
+130,Azitromicina 400mg Caja x10,176.0
+131,Enalapril 100mg Blíster x10,309.2
+132,Losartán 1g Caja x30,151.94
+133,Loratadina 850mg Ampolla,322.58
+134,Omeprazol 200mg Caja x20,69.5
+135,Cefalexina 50mg Blíster x10,126.61
+136,Amoxicilina 150mg Caja x30,96.0
+137,Warfarina 25mg Caja x10,170.4
+138,Calcio + Vitamina D 500mg Caja x30,17.4
+139,Diclofenac 5mg Caja x10,187.7
+140,Enalapril 100mcg Caja x60,132.0
+141,Loratadina 500mg Ampolla,2.4
+142,Ranitidina 100mcg Caja x60,21.7
+143,Cefalexina 1g Caja x30,85.0
+144,Insulina Glargina 1g Inhalador,220.3
+145,Vitamina C 200mg Caja x20,56.64
+146,Insulina Glargina 150mg Blíster x10,329.0
+147,Losartán 75mg Caja x30,23.0
+148,Aspirina 100mcg Caja x20,106.0
+149,Warfarina 20mg Blíster x10,43.2
+150,Cefalexina 5mg Caja x10,116.0
+151,Azitromicina 500mg Blíster x10,250.0
+152,Insulina Glargina 150mg Caja x20,284.3
+153,Tramadol 250mg Caja x60,25.42
+154,Ranitidina 100mg Frasco 60ml,311.98
+155,Azitromicina 25mg Frasco 60ml,54.0
+156,Calcio + Vitamina D 25mg Caja x10,249.2
+157,Clonazepam 250mg Blíster x10,260.97
+158,Ibuprofeno 20mg Ampolla,320.9
+159,Losartán 50mg Inhalador,301.2
+160,Losartán 100mg Caja x10,70.69
+161,Atorvastatina 500mg Blíster x10,317.79
+162,Ranitidina 25mg Frasco 100ml,13.0
+163,Hidroxicloroquina 25mg Blíster x20,41.0
+164,Salbutamol 100mcg Frasco 100ml,3.64
+165,Tramadol 25mg Caja x10,80.0
+166,Salbutamol 50mg Ampolla,162.0
+167,Insulina NPH 10mg Caja x30,115.2
+168,Ibuprofeno 150mg Frasco 100ml,126.19
+169,Atorvastatina 75mg Ampolla,213.85
+170,Diazepam 400mg Caja x10,274.86
+171,Enalapril 75mg Blíster x10,52.7
+172,Diazepam 1g Frasco 100ml,252.45
+173,Calcio + Vitamina D 100mg Inhalador,49.1
+174,Diazepam 850mg Caja x20,299.0
+175,Diazepam 20mg Frasco 100ml,14.0
+176,Cefalexina 850mg Ampolla,75.26
+177,Diazepam 500mg Frasco 60ml,61.0
+178,Clonazepam 20mg Inhalador,18.0
+179,Insulina NPH 1g Inhalador,216.5
+180,Atorvastatina 150mg Caja x30,126.8
+181,Insulina Glargina 850mg Frasco 100ml,275.4
+182,Losartán 250mg Frasco 100ml,187.4
+183,Omeprazol 75mg Caja x20,88.0
+184,Diazepam 25mg Frasco 60ml,290.0
+185,Ranitidina 100mg Ampolla,11.6
+186,Vitamina C 150mg Ampolla,186.0
+187,Cefalexina 500mg Caja x30,153.74
+188,Ibuprofeno 500mg Frasco 100ml,206.0
+189,Clonazepam 1g Frasco 60ml,62.0
+190,Fluoxetina 75mg Caja x10,99.0
+191,Amoxicilina 75mg Caja x60,54.0
+192,Losartán 50mg Frasco 100ml,50.13
+193,Salbutamol 250mg Frasco 60ml,161.0
+194,Clonazepam 10mg Blíster x20,139.0
+195,Prednisona 500mg Caja x20,220.83
+196,Ranitidina 25mg Ampolla,106.07
+197,Loratadina 50mg Caja x60,185.0
+198,Tramadol 75mg Caja x20,13.17
+199,Tramadol 150mg Frasco 100ml,104.4
+200,Amoxicilina 20mg Caja x60,3.0
+201,Atorvastatina 100mcg Caja x30,332.7
+202,Azitromicina 75mg Ampolla,42.0
+203,Hidroxicloroquina 1g Blíster x10,16.2
+204,Enalapril 850mg Caja x20,44.0
+205,Salbutamol 200mg Frasco 60ml,280.66
+206,Clonazepam 200mg Frasco 60ml,253.23
+207,Sertralina 75mg Blíster x10,244.0
+208,Losartán 75mg Frasco 100ml,56.2
+209,Diazepam 5mg Frasco 100ml,274.6
+210,Sertralina 75mg Caja x60,149.2
+211,Azitromicina 75mg Frasco 60ml,222.48
+212,Insulina NPH 5mg Inhalador,291.0
+213,Ranitidina 1g Caja x30,288.67
+214,Ketorolac 25mg Caja x10,196.0
+215,Metformina 25mg Blíster x20,15.1
+216,Insulina NPH 50mg Caja x20,90.0
+217,Losartán 500mg Caja x10,16.3
+218,Clonazepam 400mg Frasco 60ml,44.6
+219,Diclofenac 500mg Frasco 100ml,222.34
+220,Omeprazol 100mg Caja x10,293.1
+221,Omeprazol 100mg Ampolla,59.0
+222,Hidroxicloroquina 25mg Caja x20,176.8
+223,Metformina 500mg Ampolla,290.9
+224,Insulina NPH 5mg Caja x60,98.6
+225,Insulina NPH 75mg Caja x30,128.8
+226,Amoxicilina 400mg Blíster x10,133.33
+227,Loratadina 20mg Caja x10,159.0
+228,Ibuprofeno 200mg Blíster x20,153.58
+229,Hidroxicloroquina 75mg Caja x20,293.17
+230,Calcio + Vitamina D 150mg Caja x60,341.24
+231,Tramadol 50mg Caja x30,221.2
+232,Atorvastatina 50mg Frasco 60ml,108.1
+233,Aspirina 400mg Caja x20,104.45
+234,Ketorolac 1g Frasco 100ml,181.0
+235,Losartán 5mg Inhalador,278.13
+236,Diclofenac 400mg Frasco 100ml,124.56
+237,Vitamina C 850mg Frasco 100ml,162.7
+238,Aspirina 25mg Caja x10,184.75
+239,Diclofenac 5mg Inhalador,179.0
+240,Diclofenac 50mg Caja x10,305.7
+241,Diazepam 25mg Ampolla,65.03
+242,Calcio + Vitamina D 850mg Caja x10,38.41
+243,Cefalexina 400mg Blíster x20,298.0
+244,Azitromicina 20mg Blíster x20,340.0
+245,Loratadina 50mg Ampolla,59.4
+246,Levotiroxina 10mg Caja x10,206.5
+247,Salbutamol 150mg Caja x20,263.0
+248,Insulina NPH 150mg Ampolla,324.63
+249,Hidroxicloroquina 75mg Frasco 100ml,142.8
+250,Ketorolac 1g Caja x20,72.45
+251,Insulina NPH 100mcg Caja x10,116.2
+252,Enalapril 150mg Frasco 60ml,231.28
+253,Ranitidina 250mg Blíster x20,13.3
+254,Insulina Glargina 400mg Blíster x20,309.9
+255,Losartán 25mg Frasco 60ml,83.5
+256,Insulina NPH 100mg Blíster x10,284.0
+257,Sertralina 150mg Frasco 100ml,11.38
+258,Clonazepam 400mg Blíster x10,165.0
+259,Paracetamol 250mg Frasco 60ml,53.5
+260,Sertralina 75mg Frasco 100ml,171.13
+261,Fluoxetina 400mg Frasco 100ml,328.0
+262,Diclofenac 500mg Inhalador,166.9
+263,Salbutamol 250mg Caja x30,333.0
+264,Insulina NPH 50mg Caja x60,306.0
+265,Levotiroxina 100mg Caja x30,195.0
+266,Hidroxicloroquina 1g Caja x10,185.36
+267,Azitromicina 1g Blíster x20,39.0
+268,Azitromicina 200mg Inhalador,267.0
+269,Metformina 200mg Caja x10,7.83
+270,Loratadina 1g Frasco 60ml,214.48
+271,Amoxicilina 200mg Blíster x10,274.3
+272,Fluoxetina 100mcg Inhalador,114.06
+273,Ranitidina 200mg Frasco 100ml,341.7
+274,Cefalexina 20mg Frasco 100ml,68.0
+275,Clonazepam 50mg Caja x10,133.12
+276,Clonazepam 400mg Ampolla,118.69
+277,Cefalexina 5mg Ampolla,47.0
+278,Atorvastatina 100mcg Blíster x10,48.31
+279,Insulina Glargina 25mg Frasco 60ml,131.0
+280,Fluoxetina 5mg Caja x30,299.9
+281,Ácido Fólico 25mg Caja x60,291.26
+282,Salbutamol 1g Frasco 60ml,340.0
+283,Loratadina 75mg Caja x30,275.0
+284,Salbutamol 250mg Blíster x20,248.97
+285,Omeprazol 50mg Ampolla,55.0
+286,Vitamina C 400mg Ampolla,240.51
+287,Atorvastatina 500mg Frasco 60ml,208.0
+288,Tramadol 500mg Caja x10,85.0
+289,Metformina 1g Caja x60,220.75
+290,Warfarina 500mg Inhalador,330.0
+291,Ácido Fólico 850mg Inhalador,321.0
+292,Losartán 20mg Caja x30,239.98
+293,Tramadol 20mg Caja x10,305.8
+294,Warfarina 75mg Caja x30,194.0
+295,Enalapril 200mg Caja x20,103.52
+296,Enalapril 100mcg Inhalador,247.42
+297,Fluoxetina 400mg Caja x20,27.66
+298,Cefalexina 400mg Caja x30,294.39
+299,Paracetamol 500mg Blíster x10,11.61
+300,Paracetamol 25mg Ampolla,274.62
+301,Diclofenac 50mg Frasco 60ml,129.21
+302,Sertralina 50mg Blíster x10,63.8
+303,Ranitidina 10mg Caja x10,243.0
+304,Omeprazol 850mg Blíster x10,204.0
+305,Metformina 75mg Caja x20,323.0
+306,Diazepam 25mg Caja x60,278.96
+307,Ranitidina 850mg Inhalador,197.69
+308,Azitromicina 10mg Caja x30,343.4
+309,Diazepam 200mg Frasco 100ml,130.91
+310,Diazepam 400mg Blíster x10,119.02
+311,Loratadina 50mg Blíster x20,61.66
+312,Enalapril 100mcg Blíster x10,116.12
+313,Ácido Fólico 100mg Frasco 100ml,100.0
+314,Levotiroxina 75mg Frasco 60ml,55.73
+315,Prednisona 400mg Blíster x20,278.6
+316,Paracetamol 100mcg Frasco 100ml,318.4
+317,Fluoxetina 100mcg Caja x30,154.0
+318,Omeprazol 200mg Caja x60,344.1
+319,Diclofenac 1g Frasco 100ml,129.0
+320,Vitamina C 150mg Caja x10,23.0
+321,Ácido Fólico 400mg Caja x30,133.3
+322,Loratadina 20mg Frasco 100ml,116.7
+323,Tramadol 10mg Caja x30,243.8
+324,Ibuprofeno 5mg Ampolla,320.0
+325,Azitromicina 10mg Frasco 60ml,66.59
+326,Clonazepam 75mg Frasco 100ml,10.0
+327,Clonazepam 200mg Caja x10,227.9
+328,Ácido Fólico 20mg Inhalador,93.0
+329,Prednisona 500mg Blíster x20,199.09
+330,Loratadina 400mg Caja x30,101.8
+331,Losartán 400mg Caja x10,279.0
+332,Aspirina 200mg Caja x20,37.6
+333,Cefalexina 1g Caja x10,103.0
+334,Levotiroxina 250mg Frasco 60ml,337.97
+335,Ácido Fólico 150mg Blíster x20,194.9
+336,Tramadol 250mg Caja x30,261.51
+337,Insulina Glargina 100mg Caja x20,255.9
+338,Amoxicilina 75mg Blíster x10,62.97
+339,Sertralina 400mg Blíster x10,276.25
+340,Ranitidina 20mg Blíster x10,195.0
+341,Enalapril 250mg Caja x20,332.91
+342,Salbutamol 20mg Blíster x10,257.0
+343,Tramadol 850mg Blíster x10,219.28
+344,Prednisona 75mg Frasco 100ml,205.6
+345,Enalapril 400mg Caja x60,11.0
+346,Insulina NPH 5mg Caja x10,273.0
+347,Metformina 50mg Inhalador,206.0
+348,Vitamina C 50mg Inhalador,331.4
+349,Salbutamol 25mg Caja x60,156.7
+350,Diazepam 250mg Caja x10,123.0
+351,Vitamina C 50mg Frasco 100ml,85.0
+352,Clonazepam 150mg Frasco 100ml,251.0
+353,Ácido Fólico 25mg Frasco 100ml,324.5
+354,Ranitidina 250mg Caja x20,257.07
+355,Clonazepam 5mg Frasco 60ml,257.3
+356,Prednisona 25mg Caja x30,113.24
+357,Loratadina 20mg Inhalador,271.93
+358,Fluoxetina 25mg Frasco 100ml,290.4
+359,Ranitidina 50mg Blíster x10,29.79
+360,Sertralina 5mg Caja x30,206.32
+361,Aspirina 20mg Inhalador,140.21
+362,Diclofenac 400mg Blíster x20,13.63
+363,Ácido Fólico 150mg Caja x10,213.86
+364,Enalapril 5mg Frasco 100ml,132.51
+365,Metformina 20mg Caja x10,163.2
+366,Ketorolac 500mg Caja x20,88.0
+367,Hidroxicloroquina 50mg Blíster x10,339.8
+368,Hidroxicloroquina 100mg Blíster x20,5.0
+369,Diazepam 250mg Frasco 100ml,348.0
+370,Levotiroxina 5mg Ampolla,226.9
+371,Loratadina 20mg Blíster x10,193.2
+372,Losartán 250mg Frasco 60ml,278.2
+373,Prednisona 850mg Caja x20,212.7
+374,Calcio + Vitamina D 25mg Blíster x10,17.9
+375,Enalapril 100mg Inhalador,21.05
+376,Sertralina 200mg Frasco 60ml,246.7
+377,Sertralina 500mg Caja x20,36.0
+378,Sertralina 100mcg Caja x20,219.0
+379,Salbutamol 50mg Blíster x20,176.04
+380,Ranitidina 500mg Inhalador,206.01
+381,Ranitidina 500mg Caja x60,218.14
+382,Insulina NPH 500mg Caja x60,176.8
+383,Levotiroxina 150mg Caja x20,310.72
+384,Sertralina 50mg Caja x20,313.6
+385,Warfarina 850mg Frasco 100ml,98.0
+386,Calcio + Vitamina D 100mcg Ampolla,177.2
+387,Losartán 200mg Frasco 100ml,164.31
+388,Calcio + Vitamina D 1g Caja x20,15.1
+389,Losartán 400mg Blíster x10,305.7
+390,Diclofenac 500mg Caja x20,51.2
+391,Diclofenac 100mcg Caja x10,16.44
+392,Ketorolac 25mg Caja x20,159.85
+393,Ketorolac 75mg Blíster x20,46.67
+394,Hidroxicloroquina 10mg Caja x30,307.0
+395,Aspirina 20mg Frasco 100ml,232.0
+396,Metformina 500mg Frasco 100ml,185.9
+397,Diclofenac 100mg Blíster x20,133.8
+398,Ibuprofeno 100mcg Caja x60,86.65
+399,Omeprazol 20mg Caja x60,254.2
+400,Azitromicina 200mg Frasco 100ml,257.0

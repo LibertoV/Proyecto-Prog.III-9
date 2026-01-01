@@ -1,11 +1,12 @@
 package db;
 
 import java.io.File;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
@@ -14,6 +15,7 @@ import domain.Pedido;
 import domain.Producto;
 import gui.JFramePrincipal;
 import jdbc.GestorBDInitializerPedido;
+import jdbc.GestorBDInitializerProducto;
 
 public class DataPedidos {
 	private static final String IMAGES_PATH = "resources/images/";
@@ -72,63 +74,60 @@ public class DataPedidos {
 		}
 		return data; 
 	}
-	
 	public static List<Pedido> initPedidos() {
-		List<Pedido> pedidos = new ArrayList<>();		
-		
-		
+		Map<String, Pedido> mapaPedidos = new HashMap<>();
+
 		try {
-			// Abrir el fichero
 			File fichero = new File("resources/db/pedidos.csv");
 			Scanner sc = new Scanner(fichero);
-			HashMap<Pedido,ArrayList<Producto>> pedidosMap = new HashMap<Pedido,ArrayList<Producto>>();
-			// Leer el fichero
+
+			if (sc.hasNextLine())
+				sc.nextLine(); // Saltar cabecera
+
 			while (sc.hasNextLine()) {
-			
-				String linea = sc.nextLine();
-				
-				String[] campos = linea.split(",");
-				
-				
-				String id = campos[0];
-				SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
-				Date fecha_orden = formateador.parse(campos[1]);
-				Date fecha_llegada = formateador.parse(campos[2]);
-				String proveedor = campos[3];
-				String nombre = campos[4];
-				int cantidad = Integer.parseInt(campos[5]);
-				double precio_U = Double.parseDouble(campos[6]);
-				int idFarmacia = Integer.parseInt(campos[7]);
-				
-				Pedido pedido = new Pedido(id,proveedor,fecha_orden,fecha_llegada,idFarmacia);
-				Producto producto = new Producto(nombre,cantidad,precio_U);
-				
-				if (pedidosMap.containsKey(pedido)) {
-				    ArrayList<Producto> listaProductos = pedidosMap.get(pedido);
-				    listaProductos.add(producto);
-				} else {
-				    ArrayList<Producto> nuevaListaProductos = new ArrayList<>();
-				    nuevaListaProductos.add(producto);
-				    pedidosMap.put(pedido, nuevaListaProductos);
+				String linea = sc.nextLine().trim();
+				if (linea.isEmpty())
+					continue;
+
+				String[] campos = linea.split(",", -1);
+				if (campos[0].equalsIgnoreCase("id_pedido"))
+					continue;
+
+				String id = campos[0].trim();
+				String fechaOrd = campos[1].trim();
+				String fechaLleg = campos[2].trim();
+				String proveedor = campos[3].trim();
+				int idProducto = Integer.parseInt(campos[4]);
+
+				int cantidad = Integer.parseInt(campos[5].trim());
+				int idFarmacia = Integer.parseInt(campos[6].trim());
+				Pedido p = mapaPedidos.get(id);
+
+				if (p == null) {
+					Date fechaLlegadaSQL = null;
+					if (fechaLleg != null && !fechaLleg.isEmpty() && !fechaLleg.equalsIgnoreCase("null")) {
+						try {
+							fechaLlegadaSQL = Date.valueOf(fechaLleg);
+						} catch (Exception e) {
+							fechaLlegadaSQL = null;
+						}
+					}
+
+					p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), fechaLlegadaSQL, idFarmacia);
+					mapaPedidos.put(id, p);
 				}
 				
+		        GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
+				Producto producto = gestorProductos.obtenerProductoPorId(idProducto);
+				p.agregarProducto(producto,cantidad);
 			}
-			
-			
-			for (Pedido pedido : pedidosMap.keySet()) {
-				for (Producto producto : pedidosMap.get(pedido)) {
-					pedido.agregarProducto(producto);
-				}
-				pedidos.add(pedido);
-			}
-			
-			// Cerrar el fichero
 			sc.close();
 		} catch (Exception e) {
-			System.err.println("Error al cargar datos desde pedidos.csv");
+			System.err.println("Error al cargar pedidos: " + e.getMessage());
 			e.printStackTrace();
 		}
-		return pedidos;
+
+		return new ArrayList<>(mapaPedidos.values());
 	}
 
 }

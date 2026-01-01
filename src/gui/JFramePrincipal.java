@@ -24,7 +24,7 @@ public abstract class JFramePrincipal extends JFrame{
 	public JPanel panel;
 	public static JFrame panelActual;	
 	
-	public static int idFarActual = 0;
+	public static int idFarActual = 1;
 	
 	
 	

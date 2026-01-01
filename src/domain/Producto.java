@@ -2,25 +2,22 @@ package domain;
 
 public class Producto {
 	private String nombre;
-	private int cantidad;
+	private int id;
 	private double precioUnitario;
 
-	public Producto(String nombre, int cantidad, double precioUnitario) {
+	public Producto(int id, String nombre, double precioUnitario) {
 		this.nombre = nombre;
-		this.cantidad = cantidad;
+		this.id = id;
 		this.precioUnitario = precioUnitario;
 	}
 
-	public double getSubtotal() {
-		return cantidad * precioUnitario;
-	}
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public int getCantidad() {
-		return cantidad;
+	public int getId() {
+		return id;
 	}
 
 	public double getPrecioUnitario() {
@@ -30,6 +27,6 @@ public class Producto {
 	// esto sirve para añadir las cosas al JDialog cuandoo estamos añadiendo
 	// productos a un pedido, a esa tabla
 	public Object[] vectorPed() {
-		return new Object[] { nombre, cantidad, precioUnitario };
+		return new Object[] { id,nombre, precioUnitario };
 	}
 }

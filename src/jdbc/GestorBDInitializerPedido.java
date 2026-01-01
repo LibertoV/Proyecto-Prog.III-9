@@ -53,8 +53,7 @@ public class GestorBDInitializerPedido {
 
 			String sqlLineas = "CREATE TABLE IF NOT EXISTS LINEA_PEDIDO (\n"
 					+ " ID_LINEA INTEGER PRIMARY KEY AUTOINCREMENT,\n" + " ID_PEDIDO TEXT NOT NULL,\n"
-					+ " NOMBRE_PRODUCTO TEXT NOT NULL,\n" + " CANTIDAD INTEGER NOT NULL,\n"
-					+ " PRECIO_UNITARIO REAL NOT NULL,\n"
+					+ " ID_PRODUCTO TEXT NOT NULL,\n" + " CANTIDAD INTEGER NOT NULL,\n"
 					+ " FOREIGN KEY (ID_PEDIDO) REFERENCES PEDIDO(ID) ON DELETE CASCADE\n" + ");";
 
 			PreparedStatement pstmtLineas = con.prepareStatement(sqlLineas);
@@ -95,7 +94,7 @@ public class GestorBDInitializerPedido {
 			con.setAutoCommit(false);
 
 			String sqlPedido = "INSERT INTO PEDIDO (ID, FECHA_ORDEN, FECHA_LLEGADA, TOTAL, PROVEEDOR, ID_FARMACIA) VALUES (?,?,?,?,?,?);";
-			String sqlLinea = "INSERT INTO LINEA_PEDIDO (ID_PEDIDO, NOMBRE_PRODUCTO, CANTIDAD, PRECIO_UNITARIO) VALUES (?,?,?,?);";
+			String sqlLinea = "INSERT INTO LINEA_PEDIDO (ID_PEDIDO, ID_PRODUCTO, CANTIDAD) VALUES (?,?,?);";
 
 			PreparedStatement pstPedido = con.prepareStatement(sqlPedido);
 			PreparedStatement pstLinea = con.prepareStatement(sqlLinea);
@@ -118,11 +117,10 @@ public class GestorBDInitializerPedido {
 				pstPedido.setInt(6, p.getIdFarmacia());
 				pstPedido.executeUpdate();
 
-				for (Producto prod : p.getProductos()) {
+				for (Producto prod : p.getProductos().keySet()) {
 					pstLinea.setString(1, p.getId());
-					pstLinea.setString(2, prod.getNombre());
-					pstLinea.setInt(3, prod.getCantidad());
-					pstLinea.setDouble(4, prod.getPrecioUnitario());
+					pstLinea.setInt(2, prod.getId());
+					pstLinea.setInt(3, p.getProductos().get(prod));
 					pstLinea.executeUpdate();
 				}
 			}
@@ -155,6 +153,7 @@ public class GestorBDInitializerPedido {
 			String sqlProductos = "SELECT * FROM LINEA_PEDIDO WHERE ID_PEDIDO = ?";
 			PreparedStatement pstProductos = con.prepareStatement(sqlProductos);
 
+			GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
 			while (rs.next()) {
 				String id = rs.getString("ID");
 				String fechaOrdStr = rs.getString("FECHA_ORDEN");
@@ -179,12 +178,10 @@ public class GestorBDInitializerPedido {
 				ResultSet rsProd = pstProductos.executeQuery();
 
 				while (rsProd.next()) {
-					String nombreProd = rsProd.getString("NOMBRE_PRODUCTO");
+					int idProd = rsProd.getInt("ID_PRODUCTO");
 					int cantidad = rsProd.getInt("CANTIDAD");
-					double precio = rsProd.getDouble("PRECIO_UNITARIO");
-
-					Producto prod = new Producto(nombreProd, cantidad, precio);
-					p.agregarProducto(prod);
+					Producto producto = gestorProductos.obtenerProductoPorId(idProd);
+					p.agregarProducto(producto,cantidad);
 				}
 				rsProd.close(); 
 

@@ -3,6 +3,7 @@ package domain;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Pedido {
@@ -10,7 +11,7 @@ public class Pedido {
 	private String proveedor;
 	private Date fechaOrden;
 	private Date fechaLlegada; // esto podria llegar a ser null
-	private ArrayList<Producto> productos;
+	private HashMap<Producto,Integer> productos;
 	private int idFarmacia;
 	private double totalImportado = 0.0;
 
@@ -20,18 +21,18 @@ public class Pedido {
 		this.fechaOrden = fechaOrden;
 		this.fechaLlegada = fechaLlegada;
 		this.idFarmacia = idFarmacia;
-		this.productos = new ArrayList<>();
+		this.productos = new HashMap<>();
 	}
 
-	public void agregarProducto(Producto p) {
-		this.productos.add(p);
+	public void agregarProducto(Producto p, int cantidad) {
+		productos.put(p, cantidad);
 	}
 
 	public double calcularTotal() {
         if (!productos.isEmpty()) {
             double total = 0;
-            for (Producto p : productos) {
-                total += p.getSubtotal();
+            for (Producto p : productos.keySet()) {
+                total += p.getPrecioUnitario()*productos.get(p);
             }
             return total;
         } else {
@@ -68,7 +69,7 @@ public class Pedido {
 		return fechaLlegada;
 	}
 
-	public ArrayList<Producto> getProductos() {
+	public HashMap<Producto,Integer> getProductos() {
 		return productos;
 	}
 	

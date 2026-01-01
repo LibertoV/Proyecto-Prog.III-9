@@ -524,8 +524,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			}
 
 			int cantidadTotal = 0;
-			for (Producto prod : p.getProductos()) {
-				cantidadTotal += prod.getCantidad();
+			for (Producto prod : p.getProductos().keySet()) {
+				cantidadTotal += p.getProductos().get(prod);
 			}
 
 			fila.add(cantidadTotal);

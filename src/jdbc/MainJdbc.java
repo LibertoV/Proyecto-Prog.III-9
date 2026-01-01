@@ -26,6 +26,7 @@ public class MainJdbc {
         GestorBDInitializerTrabajadores gestorTrabajadores = new GestorBDInitializerTrabajadores();
         GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias();
         GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
+        GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
 
         System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
         // Borramos en orden inverso para evitar errores de claves foráneas
@@ -33,12 +34,15 @@ public class MainJdbc {
         gestorClientes.borrarBBDD();
         gestorTrabajadores.borrarBBDD();
         gestorFarmacias.borrarBBDD();
+        gestorProductos.borrarBBDD();
+        
 
         System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
         gestorFarmacias.crearBBDD();
         gestorClientes.crearBBDD();
         gestorTrabajadores.crearBBDD();
         gestorPedidos.crearBBDD();
+        gestorProductos.crearBBDD();
 
         System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
 
@@ -57,8 +61,12 @@ public class MainJdbc {
         // 3. CLIENTES
         List<Cliente> clientes = initClientes();
         gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
-
-        // 4. PEDIDOS (Lo último, para que existan las farmacias primero)
+        
+        // 4. PRODUCTOS
+        List<Producto> productos = initProductos();
+        gestorProductos.insertarDatos(productos.toArray(new Producto[0]));
+        
+        // 5. PEDIDOS (Lo último, para que existan las farmacias primero)
         List<Pedido> pedidos = initPedidos();
         gestorPedidos.insertarDatos(pedidos.toArray(new Pedido[0]));
 
@@ -91,8 +99,8 @@ public class MainJdbc {
 				System.out.format("Pedido: %s | Fecha: %s | Total: %.2f € | Items: %d\n", p.getId(), p.getFechaOrden(),
 						p.calcularTotal(), p.getProductos().size());
 
-				for (Producto prod : p.getProductos()) {
-					System.out.format("\t -> %s (x%d) - %.2f €\n", prod.getNombre(), prod.getCantidad(),
+				for (Producto prod : p.getProductos().keySet()) {
+					System.out.format("\t -> %s (x%d) - %.2f €\n", prod.getNombre(), p.getProductos().get(prod),
 							prod.getPrecioUnitario());
 				}
 			}
@@ -205,7 +213,33 @@ public class MainJdbc {
 	    }
 	    return farmacias;
 	}
+	public static List<Producto> initProductos(){
+		List<Producto> productos = new ArrayList<>();
 
+	    try {
+	        File fichero = new File("resources/db/productos.csv"); 
+	        Scanner sc = new Scanner(fichero);
+
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine().trim();
+	            if (linea.isEmpty()) continue;
+
+	            String[] campos = linea.split(",");
+	            if (campos[0].equalsIgnoreCase("id")) continue;
+
+	            int id = Integer.parseInt(campos[0].trim());
+	            String nombre = campos[1].trim();
+	            double precioU = Double.parseDouble(campos[2]);
+
+	            Producto p = new Producto(id, nombre, precioU);
+	            productos.add(p);
+	        }
+	        sc.close();
+	    } catch (Exception e) {
+	        System.err.println("Error al cargar productos.csv: " + e.getMessage());
+	    }
+	    return productos;
+	}
 	public static List<Pedido> initPedidos() {
 		Map<String, Pedido> mapaPedidos = new HashMap<>();
 
@@ -229,12 +263,10 @@ public class MainJdbc {
 				String fechaOrd = campos[1].trim();
 				String fechaLleg = campos[2].trim();
 				String proveedor = campos[3].trim();
-				String nombreProd = campos[4].trim();
+				int idProducto = Integer.parseInt(campos[4]);
 
 				int cantidad = Integer.parseInt(campos[5].trim());
-				double precio = Double.parseDouble(campos[6].trim());
-
-				int idFarmacia = Integer.parseInt(campos[7].trim());
+				int idFarmacia = Integer.parseInt(campos[6].trim());
 				Pedido p = mapaPedidos.get(id);
 
 				if (p == null) {
@@ -250,9 +282,10 @@ public class MainJdbc {
 					p = new Pedido(id, proveedor, Date.valueOf(fechaOrd), fechaLlegadaSQL, idFarmacia);
 					mapaPedidos.put(id, p);
 				}
-
-				Producto prod = new Producto(nombreProd, cantidad, precio);
-				p.agregarProducto(prod);
+				
+		        GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
+				Producto producto = gestorProductos.obtenerProductoPorId(idProducto);
+				p.agregarProducto(producto,cantidad);
 			}
 			sc.close();
 		} catch (Exception e) {
