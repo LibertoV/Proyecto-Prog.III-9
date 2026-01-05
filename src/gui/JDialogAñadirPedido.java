@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -36,13 +37,14 @@ public class JDialogAñadirPedido extends JDialog {
 	private JDateChooser dateChooserEstimada;
 	private JTextField txtProveedor;
 	private JFrameListaPedidos padre;
-	private ArrayList<Producto> listaProductos;
+	private HashMap<Producto, Integer> listaProductos;
+	private ArrayList<Producto> productosEnTabla;
 
 	public JDialogAñadirPedido(JFrameListaPedidos parent) {
 		super(parent, "Añadir nuevo pedido", true);
 		this.padre = parent;
-		this.listaProductos = new ArrayList<>();
-		
+		this.listaProductos = new HashMap<Producto, Integer>();
+	    this.productosEnTabla = new ArrayList<Producto>();
 		setLayout(new BorderLayout(10, 10));
 		setSize(new Dimension(500, 600));
 		setLocationRelativeTo(parent);
@@ -68,8 +70,9 @@ public class JDialogAñadirPedido extends JDialog {
 		});
 	}
 
-	public void recibirProducto(Producto p) {
-		listaProductos.add(p);
+	public void recibirProducto(Producto p, int cantidad) {
+		listaProductos.put(p, cantidad);
+		productosEnTabla.add(p);
 		modelo.addRow(p.vectorPed());
 	}
 
@@ -153,7 +156,9 @@ public class JDialogAñadirPedido extends JDialog {
 		btnEliminarFila.addActionListener(e -> {
 			int filaSel = tablaProductos.getSelectedRow();
 			if (filaSel != -1) {
-				listaProductos.remove(filaSel);
+				Producto pParaBorrar = productosEnTabla.get(filaSel);
+				listaProductos.remove(pParaBorrar);
+				productosEnTabla.remove(filaSel);
 				modelo.removeRow(filaSel);
 			} else {
 				JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar.", "Error", JOptionPane.WARNING_MESSAGE);
@@ -201,8 +206,8 @@ public class JDialogAñadirPedido extends JDialog {
 
 			Pedido nuevoPedido = new Pedido(ID, txtProveedor.getText(), fechaSqlPedido, fechaSqlLlegada, JFramePrincipal.idFarActual);
 
-			for (Producto p : listaProductos) {
-				nuevoPedido.agregarProducto(p);
+			for (Producto p : listaProductos.keySet()) {
+				nuevoPedido.agregarProducto(p,listaProductos.get(p));
 			}
 
 			padre.agregarNuevoPedido(nuevoPedido);

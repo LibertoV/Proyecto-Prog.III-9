@@ -4,12 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -27,30 +26,36 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import db.DataAlmacen;
+import domain.Pedido;
+import domain.Producto;
+import jdbc.GestorBDInitializerPedido;
 
 public class JFrameAlmacen extends JFramePrincipal {
     private static final long serialVersionUID = 1L;
     DefaultTableModel modelo;
-    Vector<Vector<Object>> datosOriginales;
+    JTable tablaAlmacen;
+    List<Pedido> datosFiltrados;
     JComboBox<String> combo;
     Vector<String> columnNames;
-    
-    
 
     JFrameAlmacen() {
         this.setTitle("Almacen");
         this.setSize(new Dimension(1200, 850));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
-        this.setFocusable(true); //IAG
+        this.setFocusable(true);
         this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
 
-        // ✅ CAMBIO 1: Cargar datos y crear una copia profunda
-        Vector<Vector<Object>> datosCargados = DataAlmacen.cargarAlmacen();
-        datosOriginales = new Vector<>();
-        for (Vector<Object> fila : datosCargados) {
-            datosOriginales.add(new Vector<>(fila)); // Copia profunda
+        // Cargar datos
+        GestorBDInitializerPedido pedidosBD = new GestorBDInitializerPedido();
+        List<Pedido> datosCargados = pedidosBD.obtenerDatos();
+        datosFiltrados = new ArrayList<>();
+
+        for (Pedido pedido : datosCargados) {
+            LocalDate fechaLlegada = ((java.sql.Date) pedido.getFechaLlegada()).toLocalDate();
+            if (fechaLlegada.isBefore(LocalDate.now()) && pedido.getIdFarmacia() == idFarActual) {
+                datosFiltrados.add(pedido);
+            }
         }
 
         this.add(panelCabecera(), BorderLayout.NORTH);
@@ -61,35 +66,31 @@ public class JFrameAlmacen extends JFramePrincipal {
             public void insertUpdate(DocumentEvent e) {
                 filtroMedicamento(txtfiltro.getText());
             }
-
             @Override
             public void removeUpdate(DocumentEvent e) {
                 filtroMedicamento(txtfiltro.getText());
             }
-
             @Override
             public void changedUpdate(DocumentEvent e) {}
         };
         txtfiltro.getDocument().addDocumentListener(filtro);
 
-        String[] tipoFiltro = { "Nombre", "ID","Categoria", "Proveedor" };
+        String[] tipoFiltro = { "Nombre", "ID", "Proveedor" };
         combo = new JComboBox<>(tipoFiltro);
 
         combo.addActionListener(e -> {
-            txtfiltro.setText("");           // Limpia el campo de texto
-            filtroMedicamento("");           // Restablece la tabla completa
+            txtfiltro.setText("");
+            filtroMedicamento("");
         });
-        
-        
-        
+
         JPanel panelAlmacen = new JPanel(new BorderLayout());
         JPanel panelBusqueda = new JPanel(new FlowLayout());
 
         panelBusqueda.add(txtfiltro);
         panelBusqueda.add(combo);
 
-        panelAlmacen.add(panelBusqueda,BorderLayout.NORTH);
-        panelAlmacen.add(tablaAlmacen(datosOriginales));
+        panelAlmacen.add(panelBusqueda, BorderLayout.NORTH);
+        panelAlmacen.add(tablaAlmacen(datosFiltrados));
 
         this.add(panelAlmacen, BorderLayout.CENTER);
     }
@@ -111,19 +112,16 @@ public class JFrameAlmacen extends JFramePrincipal {
         return panelCabecera;
     };
 
-    JScrollPane tablaAlmacen(Vector<Vector<Object>> datos) {
+    JScrollPane tablaAlmacen(List<Pedido> datos) {
         columnNames = new Vector<String>();
         columnNames.add("ID");
         columnNames.add("Nombre");
-        columnNames.add("Categoria");
         columnNames.add("Stock");
         columnNames.add("Precio/u");
         columnNames.add("Proveedor");
 
         Vector<Vector<Object>> copiaDatos = new Vector<>();
-        for (Vector<Object> fila : datos) {
-            copiaDatos.add(new Vector<>(fila));
-        }
+        obtenerDatos(copiaDatos, datos);
 
         modelo = new DefaultTableModel(copiaDatos, columnNames) {
             public boolean isCellEditable(int row, int column) {
@@ -131,10 +129,10 @@ public class JFrameAlmacen extends JFramePrincipal {
             }
         };
 
-        JTable tablaAlmacen = new JTable(modelo);
+        tablaAlmacen = new JTable(modelo);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         JScrollPane miScrollPane = new JScrollPane(tablaAlmacen);
-        
+
         int columnIndex = columnNames.indexOf("Proveedor");
         if (columnIndex != -1) {
             tablaAlmacen.getColumnModel().getColumn(columnIndex).setCellRenderer(new CustomImageRenderer());
@@ -145,49 +143,77 @@ public class JFrameAlmacen extends JFramePrincipal {
     }
 
     private void filtroMedicamento(String filtro) {
-        System.out.println("actualiza");
         Vector<Vector<Object>> cargaFiltrada = new Vector<>();
         String filtroLower = filtro.toLowerCase().trim();
-        int columnaFiltrada = columnNames.indexOf(combo.getSelectedItem());
-        System.out.println("Tamaño datosOriginales: " + datosOriginales.size());
-
-        if (columnaFiltrada < 0) columnaFiltrada = 0;
+        String criterio = (String) combo.getSelectedItem();
 
         if (filtroLower.isEmpty()) {
-            for (Vector<Object> dato : datosOriginales) {
-                cargaFiltrada.add(new Vector<>(dato));
-            }
+            obtenerDatos(cargaFiltrada, datosFiltrados);
         } else {
-            for (Vector<Object> fila : datosOriginales) {
-                String id = fila.get(columnaFiltrada).toString().toLowerCase();
-                if (id.contains(filtroLower)) {
-                    cargaFiltrada.add(new Vector<>(fila));
+            for (Pedido pedido : datosFiltrados) {
+                for (Producto producto : pedido.getProductos().keySet()) {
+
+                    String valorAComparar = "";
+
+                    if (criterio.equals("ID")) {
+                        valorAComparar = String.valueOf(producto.getId());
+                    } else if (criterio.equals("Nombre")) {
+                        valorAComparar = producto.getNombre();
+                    } else if (criterio.equals("Proveedor")) {
+                        valorAComparar = pedido.getProveedor();
+                    }
+
+                    if (valorAComparar != null && valorAComparar.toLowerCase().contains(filtroLower)) {
+                        Vector<Object> fila = new Vector<>();
+                        fila.add(producto.getId());
+                        fila.add(producto.getNombre());
+                        fila.add(pedido.getProductos().get(producto)); // Stock
+                        fila.add(producto.getPrecioUnitario());
+                        fila.add(pedido.getProveedor());
+
+                        cargaFiltrada.add(fila);
+                    }
                 }
             }
         }
 
-        modelo.setRowCount(0);
-        for (Vector<Object> vector : cargaFiltrada) {
-            modelo.addRow(vector);
+        modelo.setDataVector(cargaFiltrada, columnNames);
+
+        // Reasignar renderer
+        int columnIndex = columnNames.indexOf("Proveedor");
+        if (columnIndex != -1) {
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setCellRenderer(new CustomImageRenderer());
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMaxWidth(120);
+            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMinWidth(120);
         }
-        modelo.fireTableDataChanged();
     }
-    
-    //IAG
+
+    private void obtenerDatos(Vector<Vector<Object>> linea, List<Pedido> datos) {
+        for (Pedido pedido : datos) {
+            for (Producto producto : pedido.getProductos().keySet()) {
+                // ✅ CAMBIO: Eliminado el " " de Categoria en Arrays.asList
+                linea.add(new Vector<>(Arrays.asList(
+                        producto.getId(),
+                        producto.getNombre(),
+                        pedido.getProductos().get(producto),
+                        producto.getPrecioUnitario(),
+                        pedido.getProveedor()
+                )));
+            }
+        }
+    }
+
     class CustomImageRenderer extends DefaultTableCellRenderer {
         private static final long serialVersionUID = 1L;
 
         public CustomImageRenderer() {
-            // Asegurarse de que el renderizador puede pintar el fondo/imagen
             setHorizontalAlignment(SwingConstants.CENTER);
-            setOpaque(true); 
+            setOpaque(true);
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected, boolean hasFocus,int row, int column) {
-            
-            // Lógica de color (mantener el color por defecto de la celda, o el de selección)
-        	if (isSelected) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
                 setBackground(table.getSelectionBackground());
                 setForeground(table.getSelectionForeground());
             } else {
@@ -195,10 +221,9 @@ public class JFrameAlmacen extends JFramePrincipal {
                 setForeground(table.getForeground());
             }
 
-            setIcon(null); 
+            setIcon(null);
             setText(null);
-            
-        
+
             if (value instanceof String && !((String) value).isEmpty()) {
                 ImageIcon icono = getCachedIcon((String) value);
                 if (icono != null)
@@ -208,12 +233,11 @@ public class JFrameAlmacen extends JFramePrincipal {
             } else {
                 setText("N/A");
             }
-            
+
             return this;
         }
     }
-    
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JFrameAlmacen());
     }

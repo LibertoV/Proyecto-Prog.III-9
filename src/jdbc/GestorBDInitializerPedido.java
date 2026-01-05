@@ -162,7 +162,7 @@ public class GestorBDInitializerPedido {
 				int idFarmacia = rs.getInt("ID_FARMACIA");
 
 				Date fechaOrden = Date.valueOf(fechaOrdStr);
-				Date fechaLlegada = null;
+				Date fechaLlegada = Date.valueOf(fechaLlegStr);
 				
 				if (fechaLlegStr != null && !fechaLlegStr.isEmpty() && !fechaLlegStr.equalsIgnoreCase("null")) {
 					try {

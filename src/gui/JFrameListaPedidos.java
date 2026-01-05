@@ -81,6 +81,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
 		this.listaTotalPedidos = (ArrayList<Pedido>) gestor.obtenerDatos();
 
+
 		separarPedidos();
 
 		// Añadir la cabecera

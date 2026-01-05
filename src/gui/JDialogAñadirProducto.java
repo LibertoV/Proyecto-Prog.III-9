@@ -21,17 +21,18 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import domain.Producto;
+import jdbc.GestorBDInitializerProducto;
 
 public class JDialogAñadirProducto extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private JTextField txtNombre;
+	private JBuscadorProducto txtNombre;
 	private JTextField txtPrecio;
 	private JSpinner spinnerCantidad;
 	
 	public JDialogAñadirProducto(JDialogAñadirPedido parent) {
 		super(parent, "Añadir producto", true);
 		setLayout(new BorderLayout(10,10));
-		setSize(new Dimension(250,200));
+		setSize(new Dimension(450,200));
 		setResizable(false);
 		setLocationRelativeTo(parent);
 		
@@ -70,7 +71,18 @@ public class JDialogAñadirProducto extends JDialog {
         gbc.weightx = 1.0; 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        txtNombre = new JTextField(15);
+        GestorBDInitializerProducto prodBD = new GestorBDInitializerProducto();
+        txtNombre =  new JBuscadorProducto(prodBD.obtenerDatos());
+        txtNombre.addActionListener(e -> {
+			Object seleccion = txtNombre.getSelectedItem();
+			
+			if (seleccion instanceof Producto) {
+				Producto p = (Producto) seleccion;
+				txtPrecio.setText(String.valueOf(p.getPrecioUnitario())); 
+			} else {
+				txtPrecio.setText("");
+			}
+		});
         panel.add(txtNombre, gbc);
 
         gbc.gridx = 0;
@@ -89,6 +101,7 @@ public class JDialogAñadirProducto extends JDialog {
 
         gbc.gridx = 1;
         txtPrecio = new JTextField(15);
+        txtPrecio.setEditable(false);
         panel.add(txtPrecio, gbc);
 
         return panel;
@@ -103,15 +116,14 @@ public class JDialogAñadirProducto extends JDialog {
 			
 			int cantidad = (Integer) spinnerCantidad.getValue();
             
-			if (txtNombre.getText().trim().isEmpty() || txtPrecio.getText().trim().isEmpty()) {
+			if (!(txtNombre.getProductoSeleccionado() instanceof Producto)|| txtPrecio.getText().trim().isEmpty()) {
                  JOptionPane.showMessageDialog(this, "Producto Erroneo, no puede quedar campos en blanco", "Error", JOptionPane.WARNING_MESSAGE);
                  return;
             } 
 			
 			try {
-				double precio = Double.parseDouble(txtPrecio.getText().replace(",", "."));
-				Producto nuevoProducto = new Producto(txtNombre.getText(), cantidad, precio);
-				parent.recibirProducto(nuevoProducto);
+				GestorBDInitializerProducto prodBD = new GestorBDInitializerProducto();
+				parent.recibirProducto(prodBD.obtenerProductoPorId(txtNombre.getProductoSeleccionado().getId()),cantidad);
 				dispose();
 				
 			} catch (NumberFormatException ex) {

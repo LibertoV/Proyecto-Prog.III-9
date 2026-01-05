@@ -29,4 +29,8 @@ public class Producto {
 	public Object[] vectorPed() {
 		return new Object[] { id,nombre, precioUnitario };
 	}
+	@Override
+    public String toString() {
+        return nombre; 
+    }
 }
