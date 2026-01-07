@@ -31,6 +31,10 @@ import domain.Producto;
 
 public class JDialogAñadirPedido extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable tablaProductos;
 	private DefaultTableModel modelo;
 	private JDateChooser dateChooserPedido;

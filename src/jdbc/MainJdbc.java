@@ -2,6 +2,7 @@ package jdbc;
 
 import java.io.File;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 
 import db.Cliente;
+import domain.Compra;
 import domain.Farmacia;
 import domain.Pedido;
 import domain.Producto;
@@ -27,6 +29,7 @@ public class MainJdbc {
         GestorBDInitializerFarmacias gestorFarmacias = new GestorBDInitializerFarmacias();
         GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
         GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
+        GestorBDInitializerCompras gestorCompras = new GestorBDInitializerCompras();
 
         System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
         // Borramos en orden inverso para evitar errores de claves foráneas
@@ -35,6 +38,7 @@ public class MainJdbc {
         gestorTrabajadores.borrarBBDD();
         gestorFarmacias.borrarBBDD();
         gestorProductos.borrarBBDD();
+        gestorCompras.borrarBBDD(); 
         
 
         System.out.println("\n--- 1. INICIANDO CREACIÓN DE BBDD ---");
@@ -43,6 +47,7 @@ public class MainJdbc {
         gestorTrabajadores.crearBBDD();
         gestorPedidos.crearBBDD();
         gestorProductos.crearBBDD();
+        gestorCompras.crearBBDD();
 
         System.out.println("\n--- 2. CARGANDO E INSERTANDO DATOS ---");
 
@@ -65,6 +70,10 @@ public class MainJdbc {
         // 4. PRODUCTOS
         List<Producto> productos = initProductos();
         gestorProductos.insertarDatos(productos.toArray(new Producto[0]));
+        
+        //4.5 COMPRAS
+        List<Compra> compras = initCompras();
+        gestorCompras.insertarDatos(compras.toArray(new Compra[0]));
         
         // 5. PEDIDOS (Lo último, para que existan las farmacias primero)
         List<Pedido> pedidos = initPedidos();
@@ -294,5 +303,67 @@ public class MainJdbc {
 		}
 
 		return new ArrayList<>(mapaPedidos.values());
+	}
+	public static List<Compra> initCompras() {
+	    Map<Integer, Compra> mapaCompras = new HashMap<>();
+	    
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	    try {
+	        File fichero = new File("resources/db/compras.csv");
+	        if (!fichero.exists()) {
+	            System.err.println("Archivo compras.csv no encontrado.");
+	            return new ArrayList<>();
+	        }
+
+	        Scanner sc = new Scanner(fichero);
+
+	        if (sc.hasNextLine()) sc.nextLine(); // Saltar cabecera
+
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine().trim();
+	            if (linea.isEmpty()) continue;
+
+	            String[] campos = linea.split(",");
+	            if (campos[0].equalsIgnoreCase("id")) continue;
+
+	            try {
+	                // Lectura de campos según estructura: 
+	                // [0]ID, [1]ID_Farmacia, [2]ID_Cliente, [3]Fecha, [4]ID_Producto, [5]Cantidad
+	                int id = Integer.parseInt(campos[0].trim());
+	                int idFarmacia = Integer.parseInt(campos[1].trim());
+	                int idCliente = Integer.parseInt(campos[2].trim());
+	                String fechaStr = campos[3].trim();
+	                int idProducto = Integer.parseInt(campos[4].trim());
+	                int cantidad = Integer.parseInt(campos[5].trim());
+
+	                Compra c = mapaCompras.get(id);
+
+	                if (c == null) {
+	                    java.util.Date fecha;
+	                    try {
+	                        fecha = sdf.parse(fechaStr);
+	                    } catch (Exception e) {
+	                        fecha = new java.util.Date(); // Fecha actual si falla el parseo
+	                    }
+ 
+	                    // Compra(id, idFarmacia, idCliente, Date, Map<Integer,Integer>)
+	                    c = new Compra(id, idFarmacia, idCliente, fecha, new HashMap<>());
+	                    mapaCompras.put(id, c);
+	                }
+
+	                c.getMapaProductos().put(idProducto, cantidad);
+
+	            } catch (NumberFormatException nfe) {
+	                System.err.println("Error de formato en línea de compra: " + linea);
+	            }
+	        }
+	        sc.close();
+	    } catch (Exception e) {
+	        System.err.println("Error al cargar compras.csv: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return new ArrayList<>(mapaCompras.values());
 	}
 }
