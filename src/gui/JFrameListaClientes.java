@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -60,46 +61,51 @@ public class JFrameListaClientes extends JFramePrincipal {
     private JComboBox<String> combo;
     
     public JFrameListaClientes(){
-        super(); // Importante para heredar idFarActual
-        this.gestorBD.crearBBDD();
+    	super(); 
+        this.gestorBD.crearBBDD(); // Asegura que la tabla existe
         
-        // 1. Cargar TODOS los clientes inicialmente
+        // INTENTO 1: Leer de la Base de Datos (SQLite) IAG
         this.todosLosClientes = gestorBD.obtenerDatos();
         
-        // Lógica de carga de seguridad (CSV)
-        if(this.todosLosClientes == null || this.todosLosClientes.isEmpty()) {
-            System.out.println("Cargando desde CSV...");
-            GestorBDInitializerCliente BDcliente = new GestorBDInitializerCliente();
-            List<Cliente> clientesCSV = BDcliente.obtenerDatos();
-            System.out.println("Clientes del CSV: " + clientesCSV.size());
-            gestorBD.insertarDatos(clientesCSV.toArray(new Cliente[clientesCSV.size()]));
-            this.todosLosClientes = gestorBD.obtenerDatos();
-            System.out.println("Después de insertar: " + this.todosLosClientes.size());
+        // INTENTO 2: Solo si la BD está vacía (0 registros), cargamos el CSV IAG
+        if (this.todosLosClientes == null || this.todosLosClientes.isEmpty()) {
+            System.out.println(">>> BASE DE DATOS VACÍA: Iniciando importación única desde CSV...");
+            
+            List<Cliente> clientesCSV = gestorBD.obtenerDatosCSV(); // El método con el Regex
+            
+            if (!clientesCSV.isEmpty()) {
+                // Guardamos los datos del CSV en el archivo .db para siempre
+                gestorBD.insertarDatos(clientesCSV.toArray(new Cliente[0]));
+                
+                // Ahora que están guardados, los recuperamos de la BD 
+                // para que el objeto 'todosLosClientes' tenga los IDs y cálculos correctos
+                this.todosLosClientes = gestorBD.obtenerDatos();
+                System.out.println(">>> Importación finalizada. Ya no se usará el CSV.");
+            }
+        } else {
+            System.out.println(">>> BASE DE DATOS OK: Saltando carga de CSV.");
         }
+       
         
-        // --- NUEVO: FILTRADO POR COMPRAS EN FARMACIA ACTUAL ---
-        System.out.println("Filtrando clientes para la Farmacia ID: " + this.idFarActual);
-        
+        // 3. Filtrar por Farmacia Actual IAG
         GestorBDInitializerCompras gestorCompras = new GestorBDInitializerCompras();
         List<Compra> listaCompras = gestorCompras.obtenerDatos();
         
-        // Usamos un Set para guardar los IDs de clientes que han comprado en ESTA farmacia
-        Set<Integer> idsClientesConCompras = new HashSet<>();
-        
+        Set<Integer> idsConCompras = new HashSet<>();
         for (Compra c : listaCompras) {
             if (c.getIdFarmacia() == this.idFarActual) {
-                idsClientesConCompras.add(c.getIdCliente());
+                idsConCompras.add(c.getIdCliente());
             }
         }
         
-        // Filtramos la lista principal: Solo mantenemos los que están en el Set
+        // Aplicamos el filtro IAG
         this.clientes = this.todosLosClientes.stream()
-                .filter(c -> idsClientesConCompras.contains(c.getId()))
+                .filter(c -> idsConCompras.contains(c.getId()))
                 .collect(Collectors.toList());
 
-        System.out.println("Clientes totales en BD: " + this.todosLosClientes.size());
-        System.out.println("Clientes mostrados (con compras): " + this.clientes.size());
-        // ------------------------------------------------------
+        // LOG DE SEGURIDAD: Si no ves nada, mira estos números en la consola IAG
+        System.out.println("Clientes totales en sistema: " + this.todosLosClientes.size());
+        System.out.println("Clientes que han comprado en farmacia " + this.idFarActual + ": " + this.clientes.size());
         
         this.datosOriginales = convertirClientesAVector(this.clientes);
         this.setTitle("Lista de Clientes - Farmacia " + this.idFarActual);
@@ -123,7 +129,7 @@ public class JFrameListaClientes extends JFramePrincipal {
             fila.add(cliente.getDni());
             fila.add(cliente.getTlf());
             fila.add(cliente.getFechaUltimaCompra());
-            fila.add(cliente.getRecetasPendientes());
+            fila.add(cliente.getCompras());
             datosTabla.add(fila);
         }
         return datosTabla;
@@ -386,7 +392,7 @@ public class JFrameListaClientes extends JFramePrincipal {
         columnNames.add("DNI");
         columnNames.add("Telefono");
         columnNames.add("Última Compra");
-        columnNames.add("Recetas Pendientes");
+        columnNames.add("Compras");
         
         model = new DefaultTableModel(datosOriginales, columnNames) {
             public boolean isCellEditable(int row, int column) {
@@ -445,11 +451,10 @@ public class JFrameListaClientes extends JFramePrincipal {
         return panelCentral;
     }
     
-    // Método centralizado para abrir la ficha (usado por doble click y botón)
+    //IAG sin cambios
     private void gestionarAperturaFicha() {
         int fila = tablaClientes.getSelectedRow();
         if (fila != -1) {
-            // --- AQUÍ ESTÁ EL CAMBIO PEDIDO: OBTENCIÓN DEL ID LIMPIO ---
             int idClienteSeleccionado = (int)model.getValueAt(fila, 0); 
             
             Cliente clienteSel = null;
@@ -460,12 +465,19 @@ public class JFrameListaClientes extends JFramePrincipal {
                 }
             }
             
-            // Si quieres pasar SOLO el ID y el ID Farmacia, cambia el constructor de JFrameFichaCliente
-            // Ejemplo: new JFrameFichaCliente(idClienteSeleccionado, this.idFarActual).setVisible(true);
-            
-            // Como no tengo tu JFrameFichaCliente, dejo la llamada original pero ya tienes el ID arriba
             if(clienteSel != null) {
                 JFrameFichaCliente ficha = new JFrameFichaCliente(clienteSel);
+                
+                // --- ESTO ES LO QUE TIENES QUE AÑADIR ---
+                ficha.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        // Cuando se cierra la ficha, la lista principal se recarga sola
+                        cargarDatosDesdeBD();
+                    }
+                });
+                
+                
                 ficha.setVisible(true);
             }
         }
@@ -682,5 +694,26 @@ public class JFrameListaClientes extends JFramePrincipal {
             }
             return this;
         }
+    }
+    public void cargarDatosDesdeBD() {
+        
+        this.todosLosClientes = gestorBD.obtenerDatos();
+        
+        GestorBDInitializerCompras gestorCompras = new GestorBDInitializerCompras();
+        List<Compra> listaCompras = gestorCompras.obtenerDatos();
+        
+        Set<Integer> idsConCompras = new HashSet<>();
+        for (Compra c : listaCompras) {
+            if (c.getIdFarmacia() == this.idFarActual) {
+                idsConCompras.add(c.getIdCliente());
+            }
+        }
+        
+        this.clientes = this.todosLosClientes.stream()
+                .filter(c -> idsConCompras.contains(c.getId()))
+                .collect(Collectors.toList());
+
+        
+        actualizarTabla();
     }
 }

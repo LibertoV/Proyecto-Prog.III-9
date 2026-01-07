@@ -6,18 +6,18 @@ public class Cliente {
     private String dni;
     private String tlf;
     private String fechaUltimaCompra;
-    private Integer recetasPendientes;
+    private Integer compras;
     private String email;
     private String direccion;
 
-     public Cliente(int i, String nombre, String dni, String tlf, String fechaUltimaCompra, int recetasPendientes, String email,
+     public Cliente(int i, String nombre, String dni, String tlf, String fechaUltimaCompra, int compras, String email,
 			String direccion) {
     	this.id = i;
     	this.nombre = nombre;
         this.dni = dni;
         this.tlf = tlf;
         this.fechaUltimaCompra = fechaUltimaCompra;
-        this.recetasPendientes = recetasPendientes;
+        this.compras = compras;
         this.email = email;
         this.direccion = direccion;
 	}
@@ -82,14 +82,14 @@ public class Cliente {
 
 
 
-	public Integer getRecetasPendientes() {
-		return recetasPendientes;
+	public Integer getCompras() {
+		return compras;
 	}
 
 
 
-	public void setRecetasPendientes(Integer recetasPendientes) {
-		this.recetasPendientes = recetasPendientes;
+	public void setCompras(Integer compras) {
+		this.compras = compras;
 	}
 
 
@@ -124,7 +124,7 @@ public class Cliente {
 	@Override
     public String toString() {
         return String.format("%d - %s - %s - %s - %s - %s",
-                id, nombre, dni, tlf, fechaUltimaCompra, recetasPendientes, email, direccion);
+                id, nombre, dni, tlf, fechaUltimaCompra, compras, email, direccion);
     }
     
     

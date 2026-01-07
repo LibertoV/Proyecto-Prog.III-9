@@ -1,7 +1,9 @@
 package jdbc;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -49,8 +51,8 @@ public class GestorBDInitializerCliente {
 	                   + " NOMBRE TEXT NOT NULL,\n"
 	                   + " DNI TEXT NOT NULL,\n"
 	                   + " TLF TEXT NOT NULL,\n"
-	                   + " FECHA_ULTIMA_COMPRA TEXT NOT NULL,\n"
-	                   + " RECETAS_PENDIENTES INT NOT NULL,\n"
+	                   + " FECHA_ULTIMA_COMPRA TEXT ,\n"
+	                   + " COMPRAS INT NOT NULL,\n"
 	                   + " EMAIL TEXT NOT NULL,\n"
 	                   + " DIRECCION TEXT NOT NULL\n"
 	                   + ");";
@@ -103,20 +105,38 @@ public class GestorBDInitializerCliente {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se define la plantilla de la sentencia SQL
-			String sql = "INSERT OR IGNORE INTO CLIENTE (ID, NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, RECETAS_PENDIENTES, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?,?);";
-			
+			String sql = "REPLACE INTO CLIENTE (ID, NOMBRE,DNI, TLF,FECHA_ULTIMA_COMPRA, COMPRAS, EMAIL, DIRECCION ) VALUES ( ?,?,?,?,?,?,?,?);";
+			String selCompra = "SELECT MAX(C.FECHA) AS ULTIMA_FECHA, COUNT(*) AS TOTAL_CANTIDAD " +
+                    			"FROM COMPRA C " + 
+                    			"LEFT JOIN LINEA_COMPRA L ON C.ID = L.ID_COMPRA " +
+                    			"WHERE C.ID_CLIENTE = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			
+			PreparedStatement pretsmtSel = con.prepareStatement(selCompra);
 			System.out.println("- Insertando clientes...");
 			
 			//Se recorren los clientes y se insertan uno a uno
-			for (Cliente c : clientes) {				
+			for (Cliente c : clientes) {
+				
+				String fechaMax = "Sin Compras";
+				int totalComprado = 0;
+				pretsmtSel.setInt(1,c.getId());
+				try(ResultSet rs = pretsmtSel.executeQuery()){
+					if(rs.next()) {
+						String fecha= rs.getString("ULTIMA_FECHA");
+						if(fecha != null) {
+							fechaMax = fecha;
+						}
+						totalComprado = rs.getInt("TOTAL_CANTIDAD");
+						
+				}
+				
+				}
 				pstmt.setInt(1, c.getId()); 
 	            pstmt.setString(2, c.getNombre());
 	            pstmt.setString(3, c.getDni());
 	            pstmt.setString(4, c.getTlf());
-	            pstmt.setString(5, c.getFechaUltimaCompra());
-	            pstmt.setInt(6, c.getRecetasPendientes());
+	            pstmt.setString(5, fechaMax);
+	            pstmt.setInt(6, totalComprado);
 	            pstmt.setString(7, c.getEmail());
 	            pstmt.setString(8, c.getDireccion());
 				
@@ -130,6 +150,39 @@ public class GestorBDInitializerCliente {
 			System.err.format("\n* Error al insertar datos de la BBDD: %s", ex.getMessage());
 			ex.printStackTrace();						
 		}				
+	}
+	//IAG sin cambios, para la primera vez que se usa
+	public List<Cliente> obtenerDatosCSV() {
+	    List<Cliente> lista = new ArrayList<>();
+	    // Ajusta la ruta a tu carpeta de recursos
+	    File archivo = new File("resources/db/clientes.csv"); 
+
+	    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+	        String linea = br.readLine(); // Saltar cabecera
+	        while ((linea = br.readLine()) != null) {
+	            // Este Regex separa por comas pero ignora las que están dentro de comillas (direcciones)
+	            String[] datos = linea.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+	            
+	            if (datos.length >= 8) {
+	                try {
+	                    int id = Integer.parseInt(datos[0].trim());
+	                    String nombre = datos[1].trim();
+	                    String dni = datos[2].trim();
+	                    String tlf = datos[3].trim();
+	                    // datos[4] y [5] son la fecha y recetas del CSV (las ignoramos porque las calcularemos)
+	                    String email = datos[6].trim();
+	                    String dir = datos[7].replace("\"", "").trim(); // Quitamos las comillas de la dirección
+
+	                    lista.add(new Cliente(id, nombre, dni, tlf, "N/A", 0, email, dir));
+	                } catch (Exception e) {
+	                    System.err.println("Error en línea: " + e.getMessage());
+	                }
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.err.println("No se encontró el CSV: " + e.getMessage());
+	    }
+	    return lista;
 	}
 	
 	public List<Cliente> obtenerDatos() {
@@ -148,7 +201,7 @@ public class GestorBDInitializerCliente {
 			
 			//Se recorre el ResultSet y se crean objetos Cliente
 			while (rs.next()) {
-				cliente = new Cliente(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("FECHA_ULTIMA_COMPRA"),rs.getInt("RECETAS_PENDIENTES"), rs.getString("EMAIL"), rs.getString("DIRECCION"));
+				cliente = new Cliente(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("FECHA_ULTIMA_COMPRA"),rs.getInt("COMPRAS"), rs.getString("EMAIL"), rs.getString("DIRECCION"));
 				cliente.setId(rs.getInt("ID"));
 				
 				//Se inserta cada nuevo cliente en la lista de clientes
@@ -277,14 +330,14 @@ public class GestorBDInitializerCliente {
 		}		
 	}
 	
-	public void actualizarRecetas(Cliente cliente, Integer newRecetas) {
+	public void actualizarRecetas(Cliente cliente, Integer newCompra) {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se ejecuta la sentencia de borrado de datos
-			String sql = "UPDATE CLIENTE SET RECETAS_PENDIENTES = ? WHERE ID = ?;";
+			String sql = "UPDATE CLIENTE SET COMPRAS = ? WHERE ID = ?;";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);	
-			pstmt.setInt(1, newRecetas);
+			pstmt.setInt(1, newCompra);
 			pstmt.setInt(2, cliente.getId());
 			
 			int result = pstmt.executeUpdate();
@@ -320,7 +373,23 @@ public class GestorBDInitializerCliente {
 		        e.printStackTrace();
 		    }
 	}
-	
+	//IAG sin cambios
+	public void actualizarResumenCompra(int idCliente, String fechaHoy) {
+	    // Esta consulta calcula los nuevos valores basados en la tabla COMPRA
+	    String sql = "UPDATE CLIENTE SET " +
+                "compras = compras + 1, " +
+                "fecha_ultima_compra = ? " +
+                "WHERE id = ?";
+   
+   try (java.sql.Connection con = DriverManager.getConnection(CONNECTION_STRING);
+        java.sql.PreparedStatement pstmt = con.prepareStatement(sql)) {
+       pstmt.setString(1,fechaHoy );
+       pstmt.setInt(2, idCliente);
+       pstmt.executeUpdate();
+   } catch (Exception e) {
+       e.printStackTrace();
+   }
+}
 	//IAG
 	public int obtenerPrimerIdDisponible() {
 	    String sql = "SELECT id FROM CLIENTE ORDER BY id";

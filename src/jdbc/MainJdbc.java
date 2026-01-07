@@ -58,24 +58,27 @@ public class MainJdbc {
             farmacias.add(new Farmacia(1, "Farmacia Default", "Barakaldo"));
         }
         gestorFarmacias.insertarDatos(farmacias.toArray(new Farmacia[0]));
+        gestorProductos.insertarDatos(initProductos().toArray(new Producto[0]));
 
-        // 2. TRABAJADORES
-        List<Trabajador> trabajadores = initTrabajador();
-        gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
+        // 2. ¡IMPORTANTE! Insertar COMPRAS antes que Clientes
+        List<Compra> compras = initCompras();
+        gestorCompras.insertarDatos(compras.toArray(new Compra[0])); 
 
-        // 3. CLIENTES
+        // 3. Ahora insertamos CLIENTES
         List<Cliente> clientes = initClientes();
         gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
         
-        // 4. PRODUCTOS
+        // 4. TRABAJADORES
+        List<Trabajador> trabajadores = initTrabajador();
+        gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
+
+        
+        // 5. PRODUCTOS
         List<Producto> productos = initProductos();
         gestorProductos.insertarDatos(productos.toArray(new Producto[0]));
+
         
-        //4.5 COMPRAS
-        List<Compra> compras = initCompras();
-        gestorCompras.insertarDatos(compras.toArray(new Compra[0]));
-        
-        // 5. PEDIDOS (Lo último, para que existan las farmacias primero)
+        // 6. PEDIDOS (Lo último, para que existan las farmacias primero)
         List<Pedido> pedidos = initPedidos();
         gestorPedidos.insertarDatos(pedidos.toArray(new Pedido[0]));
 
@@ -137,12 +140,11 @@ public class MainJdbc {
 				String nombre = campos[1];
 				String dni = campos[2];
 				String tlf = campos[3];
-				String fecha = campos[4];
-				int recetas = Integer.parseInt(campos[5]);
+				
 				String email = campos[6];
 				String direccion = campos[7];
 
-				Cliente cliente = new Cliente(id, nombre, dni, tlf, fecha, recetas, email, direccion);
+				Cliente cliente = new Cliente(id, nombre, dni, tlf,"N/A",0, email, direccion);
 				clientes.add(cliente);
 			}
 

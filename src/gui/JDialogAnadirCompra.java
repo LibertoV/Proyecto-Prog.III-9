@@ -9,6 +9,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ import javax.swing.SpinnerNumberModel;
 import db.Cliente;
 import domain.Compra;
 import domain.Producto;
+import jdbc.GestorBDInitializerCliente;
 import jdbc.GestorBDInitializerCompras;
 import jdbc.GestorBDInitializerProducto;
 
@@ -40,7 +43,9 @@ public class JDialogAnadirCompra extends JDialog {
 	// Datos de contexto necesarios para crear la compra
 	private Cliente cliente;
 	private int idFarmacia;
-	private JFrameFichaCliente parentFrame; 
+	private JFrameFichaCliente parentFrame;
+
+	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public JDialogAnadirCompra(JFrameFichaCliente parent, Cliente cliente, int idFarmacia) {
 		super(parent, "Añadir Compra", true);
@@ -136,46 +141,41 @@ public class JDialogAnadirCompra extends JDialog {
 		JButton cancelar = new JButton("Cancelar");
 		
 		confirmar.addActionListener(e -> {
-			
-			// 1. Validar que hay producto seleccionado
-			if (!(txtNombre.getProductoSeleccionado() instanceof Producto)) {
-				 JOptionPane.showMessageDialog(this, "Debe seleccionar un producto válido", "Error", JOptionPane.WARNING_MESSAGE);
-				 return;
-			} 
-			
-			try {
-				int cantidad = (Integer) spinnerCantidad.getValue();
-				Producto productoSeleccionado = txtNombre.getProductoSeleccionado();
-				
-				// 2. Crear el objeto COMPRA
-				Compra nuevaCompra = new Compra();
-				nuevaCompra.setIdCliente(this.cliente.getId());
-				nuevaCompra.setIdFarmacia(this.idFarmacia);
-				nuevaCompra.setFecha(new Date()); // Fecha y hora actual
-				
-				// 3. Rellenar el HashMap de productos
-				Map<Integer, Integer> mapaProductos = new HashMap<>();
-				mapaProductos.put(productoSeleccionado.getId(), cantidad);
-				nuevaCompra.setMapaProductos(mapaProductos);
-				
-				// 4. GUARDAR EN BASE DE DATOS
-				GestorBDInitializerCompras gestor = new GestorBDInitializerCompras();
-				
-				// ¡IMPORTANTE! Tienes que tener este método en tu gestor. 
-				// Si tu método se llama 'insertar' o 'addCompra', cámbialo aquí.
-				gestor.insertarDatos(nuevaCompra); 
-				
-				// 5. Refrescar la tabla del padre y cerrar
-				if (parentFrame != null) {
-					parentFrame.actualizarTabla();
-				}
-				dispose();
-				
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			}
-		});
+			    if (!(txtNombre.getProductoSeleccionado() instanceof Producto)) {
+			         JOptionPane.showMessageDialog(this, "Debe seleccionar un producto válido", "Error", JOptionPane.WARNING_MESSAGE);
+			         return;
+			    } 
+			    
+			    try {
+			        int cantidad = (Integer) spinnerCantidad.getValue();
+			        Producto productoSeleccionado = txtNombre.getProductoSeleccionado();
+			        
+			        Compra nuevaCompra = new Compra();
+			        nuevaCompra.setIdCliente(this.cliente.getId());
+			        nuevaCompra.setIdFarmacia(this.idFarmacia);
+			        nuevaCompra.setFecha(new Date());
+			        
+			        Map<Integer, Integer> mapaProductos = new HashMap<>();
+			        mapaProductos.put(productoSeleccionado.getId(), cantidad);
+			        nuevaCompra.setMapaProductos(mapaProductos);
+			        
+			        // --- 1. GUARDAR LA COMPRA ---
+			        new GestorBDInitializerCompras().insertarDatos(nuevaCompra); 
+			        
+			        // --- 2. ACTUALIZAR TOTALES DEL CLIENTE (NUEVO) ---
+			        new GestorBDInitializerCliente().actualizarResumenCompra(this.cliente.getId(), sdf.format(new java.util.Date()));
+			        
+			        // --- 3. REFRESCAR LA FICHA Y CERRAR ---
+			        if (parentFrame != null) {
+			            parentFrame.actualizarTabla();
+			        }
+			        dispose();
+			        
+			    } catch (Exception ex) {
+			        ex.printStackTrace();
+			        JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			    }
+			});
 		
 		cancelar.addActionListener(e -> {
 			dispose();
