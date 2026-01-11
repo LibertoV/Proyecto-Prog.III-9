@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.EventObject;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
@@ -87,6 +88,23 @@ public class JFrameLobby extends JFramePrincipal {
 			int numPedidos = gestorPedidos.cantidadPedidos(idFarmacia);			
 			String cant = String.valueOf(numPedidos) + " pendientes";
 			fila.set(3, cant);
+			
+			Map<Integer, Integer> stockReal = gestorPedidos.obetenerStock(idFarmacia);
+		    
+		    int unidadesTotales = 0;
+		    for (int cantidad : stockReal.values()) {
+		        unidadesTotales += cantidad;
+		    }
+
+		    if (unidadesTotales == 0) {
+		        fila.set(2, "Sin Stock");
+		    } else if (unidadesTotales < 400) {
+		        fila.set(2, "Stock Bajo");
+		    } else if (unidadesTotales < 1000) {
+		        fila.set(2, "Stock Medio");
+		    } else {
+		        fila.set(2, "Stock Óptimo");
+		    }
 		}
 
 		datosOriginales = data;

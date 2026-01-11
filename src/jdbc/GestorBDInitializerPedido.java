@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import domain.Pedido;
@@ -157,6 +158,34 @@ public class GestorBDInitializerPedido {
 		}
 		
 		return cantidad;
+	}
+	
+	public Map<Integer, Integer> obetenerStock(int idFarmacia){
+		Map<Integer, Integer> stockPorProducto = new java.util.HashMap<>();
+		
+		String sqlSelect = "SELECT lp.ID_PRODUCTO, SUM(lp.CANTIDAD) as TOTAL_STOCK " +
+                "FROM LINEA_PEDIDO lp " +
+                "JOIN PEDIDO p ON lp.ID_PEDIDO = p.ID " +
+                "WHERE p.ID_FARMACIA = ? AND (p.FECHA_LLEGADA <= date('now') OR p.FECHA_LLEGADA IS NULL) " +
+                "GROUP BY lp.ID_PRODUCTO";
+		
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+				PreparedStatement pstSelect = con.prepareStatement(sqlSelect)){
+			pstSelect.setInt(1, idFarmacia);
+	        ResultSet rs = pstSelect.executeQuery();
+			
+	        while (rs.next()) {
+	            stockPorProducto.put(rs.getInt("ID_PRODUCTO"), rs.getInt("TOTAL_STOCK"));
+	        }
+			
+			
+		} catch (Exception ex) {
+			System.err.format("\n* Error al obtener datos: %s", ex.getMessage());
+			ex.printStackTrace();
+		}
+
+		
+		return stockPorProducto;
 	}
 
 	public List<Pedido> obtenerDatos() {
