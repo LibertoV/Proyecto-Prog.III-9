@@ -1,245 +1,217 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import domain.Pedido;
 import domain.Producto;
 import jdbc.GestorBDInitializerPedido;
 
 public class JFrameAlmacen extends JFramePrincipal {
-    private static final long serialVersionUID = 1L;
-    DefaultTableModel modelo;
-    JTable tablaAlmacen;
-    List<Pedido> datosFiltrados;
-    JComboBox<String> combo;
-    Vector<String> columnNames;
+	private static final long serialVersionUID = 1L;
+	private DefaultTableModel modelo;
+	private JTable tablaAlmacen;
+	private List<Pedido> datosFiltrados;
+	private JComboBox<String> combo;
+	private Vector<String> columnNames;
 
-    JFrameAlmacen() {
-        this.setTitle("Almacen");
-        this.setSize(new Dimension(1200, 850));
-        this.setLocationRelativeTo(null);
-        this.setLayout(new BorderLayout());
-        this.setFocusable(true);
-        this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
+	private final Color COLOR_FONDO = new Color(245, 247, 250);
+	private final Color COLOR_TABLA_CABECERA = new Color(31, 58, 147);
 
-        // Cargar datos
-        GestorBDInitializerPedido pedidosBD = new GestorBDInitializerPedido();
-        List<Pedido> datosCargados = pedidosBD.obtenerDatos();
-        datosFiltrados = new ArrayList<>();
+	public JFrameAlmacen() {
+		this.setTitle("Gestión de Almacén");
+		this.setSize(new Dimension(1100, 750));
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.getContentPane().setBackground(COLOR_FONDO);
+		this.setLayout(new BorderLayout());
 
-        for (Pedido pedido : datosCargados) {
-            LocalDate fechaLlegada = ((java.sql.Date) pedido.getFechaLlegada()).toLocalDate();
-            if (fechaLlegada.isBefore(LocalDate.now()) && pedido.getIdFarmacia() == idFarActual) {
-                datosFiltrados.add(pedido);
-            }
-        }
+		cargarDatos();
 
-        this.add(panelCabecera(), BorderLayout.NORTH);
+		this.add(crearPanelSuperior(), BorderLayout.NORTH);
 
-        JTextField txtfiltro = new JTextField(15);
-        DocumentListener filtro = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                filtroMedicamento(txtfiltro.getText());
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                filtroMedicamento(txtfiltro.getText());
-            }
-            @Override
-            public void changedUpdate(DocumentEvent e) {}
-        };
-        txtfiltro.getDocument().addDocumentListener(filtro);
+		JPanel contenedorCentral = new JPanel(new BorderLayout(0, 15));
+		contenedorCentral.setOpaque(false);
+		contenedorCentral.setBorder(new EmptyBorder(20, 15, 25, 15));
 
-        String[] tipoFiltro = { "Nombre", "ID", "Proveedor" };
-        combo = new JComboBox<>(tipoFiltro);
+		JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		panelBusqueda.setOpaque(false);
 
-        combo.addActionListener(e -> {
-            txtfiltro.setText("");
-            filtroMedicamento("");
-        });
+		JTextField txtFiltro = new JTextField(20) {
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+				g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+						java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+				g2.setColor(new Color(0, 100, 255));
+				g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+				g2.dispose();
+				super.paintComponent(g);
+			}
+		};
 
-        JPanel panelAlmacen = new JPanel(new BorderLayout());
-        JPanel panelBusqueda = new JPanel(new FlowLayout());
+		txtFiltro.setOpaque(false);
+		txtFiltro.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		txtFiltro.setBackground(new Color(0, 0, 0, 0));
 
-        panelBusqueda.add(txtfiltro);
-        panelBusqueda.add(combo);
+		String[] tipoFiltro = { "Nombre", "ID", "Proveedor" };
+		combo = new JComboBox<>(tipoFiltro);
+		combo.setPreferredSize(new Dimension(120, 35));
 
-        panelAlmacen.add(panelBusqueda, BorderLayout.NORTH);
-        panelAlmacen.add(tablaAlmacen(datosFiltrados));
+		txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
+			public void insertUpdate(DocumentEvent e) {
+				filtrar();
+			}
 
-        this.add(panelAlmacen, BorderLayout.CENTER);
-    }
+			public void removeUpdate(DocumentEvent e) {
+				filtrar();
+			}
 
-    JPanel panelCabecera() {
-        JPanel panelCabecera = new JPanel(new BorderLayout());
-        panelCabecera.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        ImageIcon logo1 = new ImageIcon("resources/images/Casa.png");
-        ImageIcon logoAjustado1 = new ImageIcon(logo1.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
-        JButton Salir = new JButton(logoAjustado1);
-        Salir.setBorder(null);
-        panelCabecera.add(Salir, BorderLayout.WEST);
+			public void changedUpdate(DocumentEvent e) {
+				filtrar();
+			}
 
-        Salir.addActionListener(e -> {
-            dispose();
-            new JFrameFarmaciaSel();
-        });
+			private void filtrar() {
+				filtroMedicamento(txtFiltro.getText());
+			}
+		});
 
-        return panelCabecera;
-    };
+		panelBusqueda.add(new JLabel("Buscar:"));
+		panelBusqueda.add(txtFiltro);
+		panelBusqueda.add(new JLabel("Criterio:"));
+		panelBusqueda.add(combo);
 
-    JScrollPane tablaAlmacen(List<Pedido> datos) {
-        columnNames = new Vector<String>();
-        columnNames.add("ID");
-        columnNames.add("Nombre");
-        columnNames.add("Stock");
-        columnNames.add("Precio/u");
-        columnNames.add("Proveedor");
+		contenedorCentral.add(panelBusqueda, BorderLayout.NORTH);
+		contenedorCentral.add(configurarTabla(), BorderLayout.CENTER);
 
-        Vector<Vector<Object>> copiaDatos = new Vector<>();
-        obtenerDatos(copiaDatos, datos);
+		this.add(contenedorCentral, BorderLayout.CENTER);
+		this.setVisible(true);
+	}
 
-        modelo = new DefaultTableModel(copiaDatos, columnNames) {
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+	private void cargarDatos() {
+		GestorBDInitializerPedido pedidosBD = new GestorBDInitializerPedido();
+		List<Pedido> datosCargados = pedidosBD.obtenerDatos();
+		datosFiltrados = new ArrayList<>();
 
-        tablaAlmacen = new JTable(modelo);
-        tablaAlmacen.getTableHeader().setReorderingAllowed(false);
-        JScrollPane miScrollPane = new JScrollPane(tablaAlmacen);
+		if (datosCargados != null) {
+			for (Pedido pedido : datosCargados) {
+				if (pedido.getIdFarmacia() == idFarActual) {
+					datosFiltrados.add(pedido);
+				}
+			}
+		}
+	}
 
-        int columnIndex = columnNames.indexOf("Proveedor");
-        if (columnIndex != -1) {
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setCellRenderer(new CustomImageRenderer());
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMaxWidth(120);
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMinWidth(120);
-        }
-        return miScrollPane;
-    }
+	private JPanel crearPanelSuperior() {
+		JPanel panelHeader = new JPanel(new BorderLayout());
+		panelHeader.setBackground(Color.WHITE);
+		panelHeader.setPreferredSize(new Dimension(0, 60));
+		panelHeader.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 
-    private void filtroMedicamento(String filtro) {
-        Vector<Vector<Object>> cargaFiltrada = new Vector<>();
-        String filtroLower = filtro.toLowerCase().trim();
-        String criterio = (String) combo.getSelectedItem();
+		ImageIcon logo1 = new ImageIcon("resources/images/Casa.png");
+		Image imgEscalada = logo1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		JButton btnVolver = new JButton(new ImageIcon(imgEscalada));
 
-        if (filtroLower.isEmpty()) {
-            obtenerDatos(cargaFiltrada, datosFiltrados);
-        } else {
-            for (Pedido pedido : datosFiltrados) {
-                for (Producto producto : pedido.getProductos().keySet()) {
+		btnVolver.setBorderPainted(false);
+		btnVolver.setContentAreaFilled(false);
+		btnVolver.setFocusPainted(false);
+		btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-                    String valorAComparar = "";
+		btnVolver.addActionListener(e -> {
+			dispose();
+			new JFrameFarmaciaSel();
+		});
 
-                    if (criterio.equals("ID")) {
-                        valorAComparar = String.valueOf(producto.getId());
-                    } else if (criterio.equals("Nombre")) {
-                        valorAComparar = producto.getNombre();
-                    } else if (criterio.equals("Proveedor")) {
-                        valorAComparar = pedido.getProveedor();
-                    }
+		JLabel lblTitulo = new JLabel("STOCK DE MEDICAMENTOS");
+		lblTitulo.setFont(new Font("ARIAL", Font.BOLD, 16));
+		lblTitulo.setHorizontalAlignment(JLabel.CENTER);
 
-                    if (valorAComparar != null && valorAComparar.toLowerCase().contains(filtroLower)) {
-                        Vector<Object> fila = new Vector<>();
-                        fila.add(producto.getId());
-                        fila.add(producto.getNombre());
-                        fila.add(pedido.getProductos().get(producto)); // Stock
-                        fila.add(producto.getPrecioUnitario());
-                        fila.add(pedido.getProveedor());
+		panelHeader.add(btnVolver, BorderLayout.WEST);
+		panelHeader.add(lblTitulo, BorderLayout.CENTER);
 
-                        cargaFiltrada.add(fila);
-                    }
-                }
-            }
-        }
+		return panelHeader;
+	}
 
-        modelo.setDataVector(cargaFiltrada, columnNames);
+	private JScrollPane configurarTabla() {
+		columnNames = new Vector<>(Arrays.asList("ID", "Medicamento", "Cantidad", "Precio", "Proveedor"));
+		Vector<Vector<Object>> data = new Vector<>();
+		obtenerDatos(data, datosFiltrados);
 
-        // Reasignar renderer
-        int columnIndex = columnNames.indexOf("Proveedor");
-        if (columnIndex != -1) {
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setCellRenderer(new CustomImageRenderer());
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMaxWidth(120);
-            tablaAlmacen.getColumnModel().getColumn(columnIndex).setMinWidth(120);
-        }
-    }
+		modelo = new DefaultTableModel(data, columnNames) {
+			@Override
+			public boolean isCellEditable(int r, int c) {
+				return false;
+			}
+		};
 
-    private void obtenerDatos(Vector<Vector<Object>> linea, List<Pedido> datos) {
-        for (Pedido pedido : datos) {
-            for (Producto producto : pedido.getProductos().keySet()) {
-                // ✅ CAMBIO: Eliminado el " " de Categoria en Arrays.asList
-                linea.add(new Vector<>(Arrays.asList(
-                        producto.getId(),
-                        producto.getNombre(),
-                        pedido.getProductos().get(producto),
-                        producto.getPrecioUnitario(),
-                        pedido.getProveedor()
-                )));
-            }
-        }
-    }
+		tablaAlmacen = new JTable(modelo);
+		tablaAlmacen.setRowHeight(30);
+		tablaAlmacen.setShowVerticalLines(false);
 
-    class CustomImageRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
+		JTableHeader header = tablaAlmacen.getTableHeader();
+		header.setBackground(COLOR_TABLA_CABECERA);
+		header.setForeground(Color.WHITE);
+		header.setFont(new Font("ARIAL", Font.BOLD, 13));
+		header.setPreferredSize(new Dimension(0, 35));
 
-        public CustomImageRenderer() {
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setOpaque(true);
-        }
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		tablaAlmacen.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		tablaAlmacen.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            if (isSelected) {
-                setBackground(table.getSelectionBackground());
-                setForeground(table.getSelectionForeground());
-            } else {
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
-            }
+		return new JScrollPane(tablaAlmacen);
+	}
 
-            setIcon(null);
-            setText(null);
+	private void filtroMedicamento(String filtro) {
+		Vector<Vector<Object>> cargaFiltrada = new Vector<>();
+		String filtroLower = filtro.toLowerCase().trim();
+		String criterio = (String) combo.getSelectedItem();
 
-            if (value instanceof String && !((String) value).isEmpty()) {
-                ImageIcon icono = getCachedIcon((String) value);
-                if (icono != null)
-                    setIcon(icono);
-                else
-                    setText("IMG ERROR");
-            } else {
-                setText("N/A");
-            }
+		for (Pedido pedido : datosFiltrados) {
+			for (Producto producto : pedido.getProductos().keySet()) {
+				String valor = "";
+				if ("ID".equals(criterio))
+					valor = String.valueOf(producto.getId());
+				else if ("Nombre".equals(criterio))
+					valor = producto.getNombre();
+				else if ("Proveedor".equals(criterio))
+					valor = pedido.getProveedor();
 
-            return this;
-        }
-    }
+				if (valor.toLowerCase().contains(filtroLower)) {
+					cargaFiltrada.add(new Vector<>(
+							Arrays.asList(producto.getId(), producto.getNombre(), pedido.getProductos().get(producto),
+									producto.getPrecioUnitario() + " €", pedido.getProveedor())));
+				}
+			}
+		}
+		modelo.setDataVector(cargaFiltrada, columnNames);
+	}
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JFrameAlmacen());
-    }
+	private void obtenerDatos(Vector<Vector<Object>> linea, List<Pedido> datos) {
+		for (Pedido pedido : datos) {
+			for (Producto producto : pedido.getProductos().keySet()) {
+				linea.add(new Vector<>(
+						Arrays.asList(producto.getId(), producto.getNombre(), pedido.getProductos().get(producto),
+								producto.getPrecioUnitario() + " €", pedido.getProveedor())));
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			idFarActual = 1;
+			new JFrameAlmacen();
+		});
+	}
 }
-
