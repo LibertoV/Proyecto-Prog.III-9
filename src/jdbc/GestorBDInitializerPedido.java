@@ -136,6 +136,28 @@ public class GestorBDInitializerPedido {
 			ex.printStackTrace();
 		}
 	}
+	
+	public int cantidadPedidos(int idFarmacia) {
+		int cantidad = 0;
+		String sqlSelect = "SELECT COUNT(DISTINCT ID) FROM PEDIDO WHERE ID_FARMACIA = ? AND FECHA_LLEGADA >= date('now')";
+		
+		try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+				PreparedStatement pstSelect = con.prepareStatement(sqlSelect)){
+			
+			pstSelect.setInt(1, idFarmacia);
+			ResultSet rs = pstSelect.executeQuery();
+			
+			if(rs.next()) {
+				cantidad = rs.getInt(1);
+			}
+			
+		}catch (Exception ex) {
+			System.err.format("\n* Error al obtener datos: %s", ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		return cantidad;
+	}
 
 	public List<Pedido> obtenerDatos() {
 		List<Pedido> pedidos = new ArrayList<>();
