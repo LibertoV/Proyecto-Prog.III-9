@@ -52,7 +52,9 @@ public class GestorBDInitializerTrabajadores {
 	                   + " PUESTO TEXT NOT NULL,\n"
 	                   + " NSS TEXT NOT NULL,\n"
 	                   + " TURNO TEXT, \n"
-	                   + " SALARIO TEXT NOT NULL\n"
+	                   + " SALARIO TEXT NOT NULL,\n"
+	                   + " ID_FARMACIA INTEGER,\n"
+	                   + " FOREIGN KEY (ID_FARMACIA) REFERENCES FARMACIA(ID)\n"
 	                   + ");";
 	        
 	        PreparedStatement pstmt = con.prepareStatement(sql);
@@ -104,8 +106,8 @@ public class GestorBDInitializerTrabajadores {
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {
 			//Se define la plantilla de la sentencia SQL
 			String sql = "INSERT OR IGNORE INTO TRABAJADOR " +
-		             "(ID, NOMBRE, DNI, TLF, EMAIL, DIRECCION, PUESTO, NSS, TURNO, SALARIO) " +
-		             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		             "(ID, NOMBRE, DNI, TLF, EMAIL, DIRECCION, PUESTO, NSS, TURNO, SALARIO, ID_FARMACIA) " +
+		             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -124,7 +126,7 @@ public class GestorBDInitializerTrabajadores {
 	            pstmt.setString(8, t.getNss());
 	            pstmt.setString(9, t.getTurno());
 	            pstmt.setString(10, t.getSalario());
-	            
+	            pstmt.setInt(11, t.getIdFarmacia());
 				
 				if (1 == pstmt.executeUpdate()) {					
 					System.out.format("\n - Trabajador insertado: %s", t.toString());
@@ -154,7 +156,7 @@ public class GestorBDInitializerTrabajadores {
 			
 			//Se recorre el ResultSet y se crean objetos Cliente
 			while (rs.next()) {
-				trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getString("SALARIO"));
+				trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getString("SALARIO"), rs.getInt("ID_FARMACIA"));
 				trabajador.setId(rs.getInt("ID"));
 				
 				//Se inserta cada nuevo cliente en la lista de clientes
@@ -174,6 +176,25 @@ public class GestorBDInitializerTrabajadores {
 		
 		return trabajadores;
 	}
+	
+	public void asignarTrabajadorAFarmacia(int idTrabajador, int idFarmacia) {
+	    String sql = "UPDATE TRABAJADOR SET ID_FARMACIA = ? WHERE ID = ?;";
+	    
+	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        
+	        pstmt.setInt(1, idFarmacia);
+	        pstmt.setInt(2, idTrabajador);
+	        
+	        int rows = pstmt.executeUpdate();
+	        if (rows > 0) {
+	            System.out.println("✓ Trabajador " + idTrabajador + " asignado a Farmacia " + idFarmacia);
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al asignar: " + e.getMessage());
+	    }
+	}
+	
 	public void actualizarNombre(Trabajador trabajador, String newNombre) {
 		//Se abre la conexión y se obtiene el Statement
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING)) {

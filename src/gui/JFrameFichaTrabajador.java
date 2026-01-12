@@ -65,7 +65,7 @@ public class JFrameFichaTrabajador extends JFramePrincipal {
 		this.add(crearParteAbajo(),BorderLayout.SOUTH);
 		this.setFocusable(true); //IAG
 		this.setVisible(true);
-		this.addKeyListener(listenerVolver(JFrameListaClientes.class));
+		this.addKeyListener(listenerVolver(JFrameListaTrabajadores.class));
     }
 
     private JPanel crearCabecera() {

@@ -14,10 +14,11 @@ public class Trabajador {
 	private String nss;
 	private String turno;
 	private String salario;
+	private int idFarmacia;
 
 	
 	public Trabajador(int id, String nombre, String dni, String telefono, String email, String direccion,
-			String puesto, String nss,String turno, String salario) {
+			String puesto, String nss,String turno, String salario, int idFarmacia) {
 		this.id = id;
 		this.nombre = nombre;
 		this.dni = dni;
@@ -28,6 +29,7 @@ public class Trabajador {
 		this.nss = nss;
 		this.turno = turno;
 		this.salario = salario;
+		this.idFarmacia = idFarmacia;
 	}
 
 
@@ -118,4 +120,15 @@ public class Trabajador {
 	public String toString() {
 		return nombre + " (" + dni + ")";
 	}
+
+
+	public int getIdFarmacia() {
+		return idFarmacia;
+	}
+
+
+	public void setIdFarmacia(int idFarmacia) {
+		this.idFarmacia = idFarmacia;
+	}
+	
 }

@@ -44,6 +44,7 @@ import db.DataCliente;
 import db.DataTrabajador;
 import domain.Trabajador;
 import jdbc.GestorBDInitializerCliente;
+import jdbc.GestorBDInitializerFarmacias;
 import jdbc.GestorBDInitializerTrabajadores;
 
 
@@ -72,6 +73,10 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	        this.trabajadores = gestorBD.obtenerDatos();
 	        System.out.println("Después de insertar: " + this.trabajadores.size());
 	    }
+		
+		this.trabajadores = trabajadores.stream()
+	            .filter(t -> t.getIdFarmacia() == JFramePrincipal.idFarActual)
+	            .toList();
 		
 		this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
 		
@@ -108,44 +113,38 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 
 
 	private static List<Trabajador> initTrabajador() {
-		List<Trabajador> trabajadores = new ArrayList<>();		
-		
-		
-		try {
-			// Abrir el fichero
-			File fichero = new File("resources/db/trabajadores.csv");
-			Scanner sc = new Scanner(fichero);
-			
-			// Leer el fichero
-			while (sc.hasNextLine()) {
-			
-				String linea = sc.nextLine();
-				
-				String[] campos = linea.split(",");
-				if (campos[0].equalsIgnoreCase("id")) {
-				    continue;
-				}
-				int id = Integer.parseInt(campos[0]);
-				String nombre = campos[1];
-				String dni = campos[2];
-				String tlf = campos[3];
-				String email = campos[4];
-				String direccion = campos[5];
-				String puesto = campos[6];
-				String nss = campos[7];
-				String turno = campos[8];
-				String salario = campos[9];
-				
-				Trabajador trabajador = new Trabajador(id,nombre,dni,tlf,email,direccion,puesto,nss,turno,salario);
-				trabajadores.add(trabajador);
-			}
-			
-			// Cerrar el fichero
-			sc.close();
-		} catch (Exception e) {
-			System.err.println("Error al cargar datos desde trabajadores.csv");
-		}
-		return trabajadores;
+	    List<Trabajador> trabajadores = new ArrayList<>();
+	    int numTotalFarmacias = 30; 
+	    int contador = 0;
+	    try {
+	        File fichero = new File("resources/db/trabajadores.csv");
+	        Scanner sc = new Scanner(fichero);
+	        while (sc.hasNextLine()) {
+	            String linea = sc.nextLine();
+	            String[] campos = linea.split(",");
+	            if (campos[0].equalsIgnoreCase("id")) continue;
+
+	            int id = Integer.parseInt(campos[0]);
+	            String nombre = campos[1];
+	            String dni = campos[2];
+	            String tlf = campos[3];
+	            String email = campos[4];
+	            String direccion = campos[5];
+	            String puesto = campos[6];
+	            String nss = campos[7];
+	            String turno = campos[8];
+	            String salario = campos[9];
+	            int idFarmaciaAsignada = (contador % numTotalFarmacias) + 1;
+	            
+	            Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno, salario, idFarmaciaAsignada);
+	            trabajadores.add(trabajador);
+	            contador++;
+	        }
+	        sc.close();
+	    } catch (Exception e) {
+	        System.err.println("Error al cargar datos desde trabajadores.csv");
+	    }
+	    return trabajadores;
 	}
 
 
@@ -209,17 +208,23 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		
 		return panelCentral;
 	}
+	//Modificada con IAG
+	private void actualizarTabla() {
+	    
+	    this.trabajadores = gestorBD.obtenerDatos().stream()
+	            .filter(t -> t.getIdFarmacia() == JFramePrincipal.idFarActual)
+	            .toList();
+	            
+	    this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
+	    
+	    model.setRowCount(0);
+	    for (Vector<Object> vector : datosOriginales) {
+	        model.addRow(vector);
+	    }
+	    model.fireTableDataChanged();
+	}
 	
-	 private void actualizarTabla() {
-			this.trabajadores = gestorBD.obtenerDatos();
-			this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
-			
-			model.setRowCount(0);
-	    	for (Vector<Object> vector : datosOriginales) {
-				model.addRow(vector);
-			}
-	    	model.fireTableDataChanged();
-		}
+	
 	private JPanel crearPanelCabecera() {
 		JComponent componentes[] = new JComponent[12];
 		JPanel panelCabecera = new JPanel(new BorderLayout());
@@ -446,8 +451,8 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	                    textoPuesto.getText().trim(),
 	                    textoNss.getText().trim(),
 	                    textoTurno.getText().trim(),
-	                    textoSalario.getText().trim()
-	                    
+	                    textoSalario.getText().trim(),
+	                    JFramePrincipal.idFarActual
 	                );
 	                
 	                // Insertar en BD

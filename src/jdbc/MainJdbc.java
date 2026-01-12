@@ -68,10 +68,20 @@ public class MainJdbc {
         List<Cliente> clientes = initClientes();
         gestorClientes.insertarDatos(clientes.toArray(new Cliente[0]));
         
-        // 4. TRABAJADORES
         List<Trabajador> trabajadores = initTrabajador();
-        gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
 
+     
+     for (Trabajador t : trabajadores) {
+         if (t.getId() == 1 || t.getId() == 3) {
+             t.setIdFarmacia(1); // Trabajadores 1 y 3 a la Farmacia 1
+         } else if (t.getId() == 2) {
+             t.setIdFarmacia(2); // Trabajador 2 a la Farmacia 2
+         } else {
+             t.setIdFarmacia(1); // El resto a la farmacia por defecto
+         }
+     }
+
+     gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
         
         // 5. PRODUCTOS
         List<Producto> productos = initProductos();
@@ -91,7 +101,21 @@ public class MainJdbc {
         System.out.println("--- Pedidos ---");
         List<Pedido> pedidosRecuperados = gestorPedidos.obtenerDatos();
         printPedidos(pedidosRecuperados);
+        
+        imprimirPersonalPorFarmacia(gestorTrabajadores, farmaciasRecuperadas);
+        
     }
+	
+	private static void imprimirPersonalPorFarmacia(GestorBDInitializerTrabajadores gT, List<Farmacia> farmacias) {
+	    List<Trabajador> todos = gT.obtenerDatos();
+	    System.out.println("\n--- DISTRIBUCIÓN DE PERSONAL ---");
+	    for (Farmacia f : farmacias) {
+	        System.out.println("Farmacia: " + f.getNombre());
+	        todos.stream()
+	             .filter(t -> t.getIdFarmacia() == f.getId())
+	             .forEach(t -> System.out.println("   -> " + t.getNombre() + " (" + t.getPuesto() + ")"));
+	    }
+	}
 	
 	private static void printTrabajadores(List<Trabajador> trabajadores) {
 		if (!trabajadores.isEmpty()) {
@@ -182,11 +206,11 @@ public class MainJdbc {
 				String puesto = campos[6];
 				String nss = campos[7];
 				String turno = campos[8];
-				Float salario = Float.parseFloat(campos[9]);
+				String salario = campos[9];
 
-				// Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email,
-				// direccion, puesto, nss, turno,salario);
-				// trabajadores.add(trabajador);
+				 Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email,
+				 direccion, puesto, nss, turno,salario,0);
+				 trabajadores.add(trabajador);
 			}
 
 			// Cerrar el fichero
