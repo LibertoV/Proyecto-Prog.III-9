@@ -150,18 +150,20 @@ public class GestorBDInitializerTrabajadores {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, 0);
 			
-			//Se ejecuta la sentencia y se obtiene el ResultSet con los resutlados
+			
 			ResultSet rs = pstmt.executeQuery();			
 			Trabajador trabajador;
 			
-			//Se recorre el ResultSet y se crean objetos Cliente
 			while (rs.next()) {
-				trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getString("SALARIO"), rs.getInt("ID_FARMACIA"));
-				trabajador.setId(rs.getInt("ID"));
-				
-				//Se inserta cada nuevo cliente en la lista de clientes
-				trabajadores.add(trabajador);
+			
+			    int idFarmacia = rs.getInt("ID_FARMACIA"); 
+			    
+			    trabajador = new Trabajador(rs.getInt("ID"), rs.getString("NOMBRE"), rs.getString("DNI"), rs.getString("TLF"), rs.getString("EMAIL"), rs.getString("DIRECCION"), rs.getString("PUESTO"),rs.getString("NSS"), rs.getString("TURNO"), rs.getString("SALARIO"), idFarmacia);
+			
+			    trabajador.setId(rs.getInt("ID"));
+			    trabajadores.add(trabajador);
 			}
+			
 			
 			System.out.format("\n- Se han recuperado %d trabajadores...", trabajadores.size());			
 			
@@ -177,23 +179,7 @@ public class GestorBDInitializerTrabajadores {
 		return trabajadores;
 	}
 	
-	public void asignarTrabajadorAFarmacia(int idTrabajador, int idFarmacia) {
-	    String sql = "UPDATE TRABAJADOR SET ID_FARMACIA = ? WHERE ID = ?;";
-	    
-	    try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
-	         PreparedStatement pstmt = con.prepareStatement(sql)) {
-	        
-	        pstmt.setInt(1, idFarmacia);
-	        pstmt.setInt(2, idTrabajador);
-	        
-	        int rows = pstmt.executeUpdate();
-	        if (rows > 0) {
-	            System.out.println("✓ Trabajador " + idTrabajador + " asignado a Farmacia " + idFarmacia);
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("Error al asignar: " + e.getMessage());
-	    }
-	}
+
 	
 	public void actualizarNombre(Trabajador trabajador, String newNombre) {
 		//Se abre la conexión y se obtiene el Statement

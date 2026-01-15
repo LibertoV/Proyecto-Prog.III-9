@@ -30,7 +30,7 @@ public class MainJdbc {
         GestorBDInitializerPedido gestorPedidos = new GestorBDInitializerPedido();
         GestorBDInitializerProducto gestorProductos = new GestorBDInitializerProducto();
         GestorBDInitializerCompras gestorCompras = new GestorBDInitializerCompras();
-
+        GestorBDInitializerVentas gestorVentas = new GestorBDInitializerVentas();
         System.out.println("\n--- 0. LIMPIEZA DE BBDD ANTIGUA ---");
         // Borramos en orden inverso para evitar errores de claves foráneas
         gestorPedidos.borrarBBDD();
@@ -70,16 +70,6 @@ public class MainJdbc {
         
         List<Trabajador> trabajadores = initTrabajador();
 
-     
-     for (Trabajador t : trabajadores) {
-         if (t.getId() == 1 || t.getId() == 3) {
-             t.setIdFarmacia(1); // Trabajadores 1 y 3 a la Farmacia 1
-         } else if (t.getId() == 2) {
-             t.setIdFarmacia(2); // Trabajador 2 a la Farmacia 2
-         } else {
-             t.setIdFarmacia(1); // El resto a la farmacia por defecto
-         }
-     }
 
      gestorTrabajadores.insertarDatos(trabajadores.toArray(new Trabajador[0]));
         
@@ -207,9 +197,9 @@ public class MainJdbc {
 				String nss = campos[7];
 				String turno = campos[8];
 				String salario = campos[9];
-
+				int idFarmacia = Integer.parseInt(campos[10]);
 				 Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email,
-				 direccion, puesto, nss, turno,salario,0);
+				 direccion, puesto, nss, turno,salario,idFarmacia);
 				 trabajadores.add(trabajador);
 			}
 

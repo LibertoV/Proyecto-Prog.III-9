@@ -59,6 +59,8 @@ public class JFrameListaClientes extends JFramePrincipal {
     private GestorBDInitializerCliente gestorBD = new GestorBDInitializerCliente();
     private JTable tablaClientes;
     private JComboBox<String> combo;
+    private final Color COLOR_CABECERA_TABLA = new Color(31, 58, 147);
+    private final Color COLOR_FONDO = new Color(245, 247, 250);
     
     public JFrameListaClientes(){
     	super(); 
@@ -138,12 +140,12 @@ public class JFrameListaClientes extends JFramePrincipal {
     private JPanel crearPanelCabecera() {
         JPanel panelCabecera = new JPanel(new BorderLayout());
         panelCabecera.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        panelCabecera.setBackground(new Color(0, 28, 85));
+        panelCabecera.setBackground(COLOR_FONDO);
         JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelFiltro.setBackground(new Color(0, 28, 85));
+        panelFiltro.setBackground(COLOR_FONDO);
         
         JButton añadir = new JButton();
-        añadir.setBackground(new Color(166, 225, 250));
+        añadir.setBackground(Color.white);
         añadir.setText("+ Añadir cliente");
         ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
         ImageIcon logoAjustado2 = new ImageIcon(logoAñadir.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
@@ -157,17 +159,23 @@ public class JFrameListaClientes extends JFramePrincipal {
         
         DocumentListener doclistener = new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) { filtroCliente(txtFiltro.getText()); }
+            public void insertUpdate(DocumentEvent e) { 
+            	filtroCliente(txtFiltro.getText());
+            	}
             @Override
-            public void removeUpdate(DocumentEvent e) { filtroCliente(txtFiltro.getText()); }
+            public void removeUpdate(DocumentEvent e) {
+            	filtroCliente(txtFiltro.getText()); 
+            	}
             @Override
-            public void changedUpdate(DocumentEvent e) { System.out.println("Cambiando Texto"); }
+            public void changedUpdate(DocumentEvent e) {
+            	System.out.println("Cambiando Texto"); 
+            	}
         };
         
         txtFiltro.getDocument().addDocumentListener(doclistener);
         String[]tipoFiltro ={"Nombre", "ID", "DNI"};
         combo = new JComboBox<>(tipoFiltro);
-        combo.setBackground(new Color(166, 225, 250));
+        combo.setBackground(Color.white);
         combo.setForeground(Color.black);
         combo.setPreferredSize(new Dimension(100, 35));
         combo.setFont(new Font("Century Gothic", Font.BOLD, 14));
@@ -178,12 +186,12 @@ public class JFrameListaClientes extends JFramePrincipal {
         panelFiltro.add(combo);
         panelFiltro.add(añadir, BorderLayout.EAST);
         JPanel panelBusqueda = new JPanel();
-        panelBusqueda.setBackground(new Color(0, 28, 85));
+        panelBusqueda.setBackground(COLOR_FONDO);
         
         JLabel bCliente = new JLabel("Buscar Cliente");
         bCliente.setFont(new Font("Century Gothic", Font.BOLD, 16));
-        bCliente.setBackground(new Color(0, 28, 85));
-        bCliente.setForeground(Color.white);
+        bCliente.setBackground(COLOR_FONDO);
+        bCliente.setForeground(Color.black);
         panelBusqueda.add(bCliente);
         
         panelBusqueda.add(txtFiltro);
@@ -402,7 +410,7 @@ public class JFrameListaClientes extends JFramePrincipal {
         
         tablaClientes = new JTable(model);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
-        
+        tablaClientes.setFont(new Font("Century Gothic", Font.BOLD, 14));
         CustomHeaderRenderer headerRenderer = new CustomHeaderRenderer(tablaClientes);
         tablaClientes.getTableHeader().setDefaultRenderer(headerRenderer);
         
@@ -427,7 +435,7 @@ public class JFrameListaClientes extends JFramePrincipal {
         titledBorder.setTitleFont(new Font("Century Gothic",Font.BOLD,14));
         scrollPane.setForeground(Color.white);
         scrollPane.setBorder(titledBorder);
-        scrollPane.setBackground(new Color(126, 232, 250));
+        scrollPane.setBackground(COLOR_FONDO);
         panelCentral.add(scrollPane);
         
         tablaClientes.addKeyListener(new KeyListener() {
@@ -451,7 +459,7 @@ public class JFrameListaClientes extends JFramePrincipal {
         return panelCentral;
     }
     
-    //IAG sin cambios
+    //IAG sin cambios con gemini
     private void gestionarAperturaFicha() {
         int fila = tablaClientes.getSelectedRow();
         if (fila != -1) {
@@ -559,17 +567,17 @@ public class JFrameListaClientes extends JFramePrincipal {
 
     private JPanel crearPanelInferior() {
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT,10,15));
-        panelInferior.setBackground(new Color(0, 28, 85));
+        panelInferior.setBackground(COLOR_FONDO);
         
         JButton verFichaCliente = new JButton("Ver ficha");
         verFichaCliente.setFont(new Font("Century Gothic", Font.BOLD, 14));
-        verFichaCliente.setBackground(new Color(166, 225, 250));
+        verFichaCliente.setBackground(Color.white);
         verFichaCliente.setForeground(Color.black);
         verFichaCliente.addActionListener(e -> gestionarAperturaFicha());
         
         JButton eliminar = new JButton("Eliminar");
         eliminar.setFont(new Font("Century Gothic", Font.BOLD, 14));
-        eliminar.setBackground(new Color(166, 225, 250));
+        eliminar.setBackground(Color.white);
         eliminar.setForeground(Color.black);
         eliminar.addActionListener(e->{
             int fila = tablaClientes.getSelectedRow();
@@ -647,8 +655,8 @@ public class JFrameListaClientes extends JFramePrincipal {
             setHorizontalAlignment(CENTER);
             setFont(table.getTableHeader().getFont().deriveFont(Font.BOLD));
             setBorder(BorderFactory.createEtchedBorder());
-            setBackground(HEADER_BG_COLOR);
-            setForeground(HEADER_FG_COLOR);
+            setBackground(COLOR_CABECERA_TABLA);
+            setForeground(Color.white);
         }
 
         @Override
@@ -664,26 +672,23 @@ public class JFrameListaClientes extends JFramePrincipal {
         private final Color DATA_BG_COLOR = new Color(166, 225, 250);
         private final Color ALT_DATA_BG_COLOR = Color.WHITE; 
         private final Color SELECTION_BG_COLOR = new Color(70, 130, 180); 
-        
+        private final Font letraGothic = new Font("Century Gothic", Font.PLAIN, 14);
         public CustomDataCellRenderer() {
             setOpaque(true);
+            setFont(letraGothic);
         }
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
-            
+            setFont(letraGothic);
             setText(value != null ? value.toString() : "");
             
             if (isSelected) {
                 setBackground(SELECTION_BG_COLOR);
                 setForeground(Color.WHITE);
             } else {
-                if (row % 2 == 0) { 
-                    setBackground(DATA_BG_COLOR); 
-                } else { 
-                    setBackground(ALT_DATA_BG_COLOR); 
-                }
+                setBackground(COLOR_FONDO);
                 setForeground(Color.BLACK); 
             }
             setHorizontalAlignment(CENTER);

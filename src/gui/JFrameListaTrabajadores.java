@@ -18,8 +18,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -38,6 +40,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
+
 
 import db.Cliente;
 import db.DataCliente;
@@ -62,35 +66,38 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	
 	
 	public JFrameListaTrabajadores() {
-		this.gestorBD.crearBBDD();
-		
-		this.trabajadores = gestorBD.obtenerDatos();
-		if(this.trabajadores == null || this.trabajadores.isEmpty()) {
-	        System.out.println("Cargando desde CSV...");
-	        List<Trabajador> trabajadoresCSV = initTrabajador();
-	        System.out.println("Trabajadores del CSV: " + trabajadoresCSV.size());
-	        gestorBD.insertarDatos(trabajadoresCSV.toArray(new Trabajador[trabajadoresCSV.size()]));
-	        this.trabajadores = gestorBD.obtenerDatos();
-	        System.out.println("Después de insertar: " + this.trabajadores.size());
+
+	    this.gestorBD.crearBBDD();
+	    
+	    List<Trabajador> todos = gestorBD.obtenerDatos();
+	    
+	    if(todos == null || todos.isEmpty()) {
+	        gestorBD.insertarDatos(initTrabajador().toArray(new Trabajador[0]));
+	        todos = gestorBD.obtenerDatos();
 	    }
-		
-		this.trabajadores = trabajadores.stream()
+	    
+	    
+	    this.trabajadores = todos.stream()
 	            .filter(t -> t.getIdFarmacia() == JFramePrincipal.idFarActual)
-	            .toList();
-		
-		this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
-		
-		this.setTitle("Lista de Trabajadores");
-		this.setSize(new Dimension(1000,750));
-		this.setLocationRelativeTo(null);
-		
-		this.add(crearPanelCabecera(), BorderLayout.NORTH);
-		this.add(crearPanelCentral(), BorderLayout.CENTER);
-		this.add(crearPanelInferior(),BorderLayout.SOUTH);
-		this.setFocusable(true); //IAG
-		this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
-	}
+	            .collect(Collectors.toList());
+	    
+	    System.out.println("\nTrabajadores filtrados para farmacia " + JFramePrincipal.idFarActual + ": " + this.trabajadores.size());
 	
+	    this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
+
+	    this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
+	    
+	    this.setTitle("Lista de Trabajadores - Farmacia " + JFramePrincipal.idFarActual);
+	    this.setSize(new Dimension(1000,750));
+	    this.setLocationRelativeTo(null);
+	    
+	    this.add(crearPanelCabecera(), BorderLayout.NORTH);
+	    this.add(crearPanelCentral(), BorderLayout.CENTER);
+	    this.add(crearPanelInferior(), BorderLayout.SOUTH);
+	    
+	    this.setFocusable(true);
+	    this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
+	}
 
 
 	private Vector<Vector<Object>> convertirTrabajadoresAVector(List<Trabajador> trabajadores) {
@@ -134,9 +141,9 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	            String nss = campos[7];
 	            String turno = campos[8];
 	            String salario = campos[9];
-	            int idFarmaciaAsignada = (contador % numTotalFarmacias) + 1;
+	            int idFarmacia = Integer.parseInt(campos[10]);
 	            
-	            Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno, salario, idFarmaciaAsignada);
+	            Trabajador trabajador = new Trabajador(id, nombre, dni, tlf, email, direccion, puesto, nss, turno, salario, idFarmacia);
 	            trabajadores.add(trabajador);
 	            contador++;
 	        }
@@ -211,9 +218,9 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	//Modificada con IAG
 	private void actualizarTabla() {
 	    
-	    this.trabajadores = gestorBD.obtenerDatos().stream()
+		this.trabajadores = gestorBD.obtenerDatos().stream()
 	            .filter(t -> t.getIdFarmacia() == JFramePrincipal.idFarActual)
-	            .toList();
+	            .collect(Collectors.toList());  // ✓ Lista mutable
 	            
 	    this.datosOriginales = convertirTrabajadoresAVector(this.trabajadores);
 	    
@@ -283,14 +290,6 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		panelFiltro.add(eliminar,BorderLayout.EAST);
 		
 		
-		
-		Vector<Vector<Object>> data = convertirTrabajadoresAVector(gestorBD.obtenerDatos());
-
-		
-		datosOriginales = new Vector<>();
-        for (Vector<Object> fila : data) {
-            datosOriginales.add(new Vector<>(fila));
-        }
 		
 		txtFiltro = new ModernTextField(20);
 		
@@ -589,37 +588,30 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	
 	private void filtroTrabajador(String filtro) {
 		 
-		 Vector<Vector<Object>> data = convertirTrabajadoresAVector(this.trabajadores);
-			
-			datosOriginales = new Vector<>();
-	        for (Vector<Object> fila : data) {
-	            datosOriginales.add(new Vector<>(fila));
+		Vector<Vector<Object>> datosDeEstaFarmacia = convertirTrabajadoresAVector(this.trabajadores);
+	    
+	    Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
+	    String filtroLower = filtro.toLowerCase();
+	    
+	    if(filtro.isEmpty()) {
+	        cargaFiltrada.addAll(datosDeEstaFarmacia);
+	    } else {
+	        for(Vector<Object> fila : datosDeEstaFarmacia) {
+	            String nombre = fila.get(1).toString().toLowerCase();
+	            String dni = fila.get(2).toString().toLowerCase();
+	            
+	            if(nombre.contains(filtroLower) || dni.contains(filtroLower)) {
+	                cargaFiltrada.add(fila);
+	            }
 	        }
-	        
-	        
-	    	Vector<Vector<Object>> cargaFiltrada = new Vector<Vector<Object>>();
-	    	String filtroLower = filtro.toLowerCase();
-	    	
-	    	if(filtro.isEmpty()) {
-	    		cargaFiltrada.addAll(datosOriginales);
-	    	}else {
-	    		for(Vector<Object> fila : datosOriginales) {
-	        		String nombreCliente = fila.get(1).toString().toLowerCase();
-	        		String dniCliente = fila.get(2).toString().toLowerCase();
-	        		
-	        		if(nombreCliente.contains(filtroLower)|| dniCliente.contains(filtroLower)) {
-	        			cargaFiltrada.add(fila);
-	        			
-	        		}
-	    		}
-	    	
-	    	}
-	    	
-	    	model.setRowCount(0);
-	    	for (Vector<Object> vector : cargaFiltrada) {
-				model.addRow(vector);
-			}
-	    	model.fireTableDataChanged();
+	    }
+	    
+	    model.setRowCount(0);
+	    for (Vector<Object> vector : cargaFiltrada) {
+	        model.addRow(vector);
+	    }
+	    model.fireTableDataChanged();
+	
 	    	
 	    	
 	    	
