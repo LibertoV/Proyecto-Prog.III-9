@@ -121,7 +121,7 @@ public class JFrameVentas extends JFramePrincipal {
         tablaVentas.getTableHeader().setFont(new Font("ARIAL", Font.BOLD, 13));
         JScrollPane scrollPane = new JScrollPane(tablaVentas);
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Listado de Ventas");
-        titledBorder.setTitleFont(new Font("Century Gothic", Font.BOLD, 14));
+        titledBorder.setTitleFont(letraGothic);
         scrollPane.setBorder(titledBorder);
         scrollPane.setBackground(COLOR_FONDO);
         panelCentral.setBackground(COLOR_FONDO);
@@ -138,7 +138,7 @@ public class JFrameVentas extends JFramePrincipal {
 
         String[] opciones = {"Todas", "Últimos 7 días", "Último mes", "Último año"};
         filtroCombo = new JComboBox<>(opciones);
-        filtroCombo.setFont(new Font("Century Gothic", Font.BOLD, 14));
+        filtroCombo.setFont(letraGothic);
         filtroCombo.addActionListener(e -> aplicarFiltroPorFecha());
         filtroCombo.setBackground(COLOR_FONDO);
         panelFiltro.add(filtroCombo);

@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -63,7 +64,9 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	private List<Trabajador> trabajadores;
 	private Vector<String> columnNames = new Vector<>();
 	private GestorBDInitializerTrabajadores gestorBD = new GestorBDInitializerTrabajadores();
-	
+	private final Color COLOR_FONDO = new Color(245, 247, 250);
+	private final Color COLOR_TABLA_CABECERA = new Color(31, 58, 147);
+	private final Font letraGothic = new Font("Century Gothic", Font.BOLD, 14);
 	
 	public JFrameListaTrabajadores() {
 
@@ -93,7 +96,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 	    
 	    this.add(crearPanelCabecera(), BorderLayout.NORTH);
 	    this.add(crearPanelCentral(), BorderLayout.CENTER);
-	    this.add(crearPanelInferior(), BorderLayout.SOUTH);
+	
 	    
 	    this.setFocusable(true);
 	    this.addKeyListener(listenerVolver(JFrameFarmaciaSel.class));
@@ -156,12 +159,6 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 
 
 
-	private JPanel crearPanelInferior() {
-		JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton historial = new JButton("Historial");
-		panelInferior.add(historial);
-		return panelInferior;
-	}
 
 	private JPanel crearPanelCentral() {
 		JPanel panelCentral = new JPanel(new BorderLayout());
@@ -203,15 +200,25 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 				}
 			}
 		});
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < columnNames.size(); i++) {
+			tablaTrabajadores.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
 
-
+        tablaTrabajadores.getTableHeader().setBackground(COLOR_TABLA_CABECERA);
+        tablaTrabajadores.getTableHeader().setForeground(Color.white);
+        tablaTrabajadores.getTableHeader().setReorderingAllowed(false);
+        tablaTrabajadores.setRowHeight(30);
+        tablaTrabajadores.getTableHeader().setFont(new Font("ARIAL", Font.BOLD, 13));
         JScrollPane scrollPane = new JScrollPane(tablaTrabajadores);
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Listado de Trabajadores");
-        titledBorder.setTitleFont(new Font("Century Gothic",Font.BOLD,14));
+        titledBorder.setTitleFont(letraGothic);
         scrollPane.setBorder(titledBorder);
-        
+        scrollPane.setBackground(COLOR_FONDO);
 		panelCentral.add(scrollPane);
-		
+		panelCentral.setBackground(COLOR_FONDO);
 		
 		return panelCentral;
 	}
@@ -236,17 +243,17 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		JComponent componentes[] = new JComponent[12];
 		JPanel panelCabecera = new JPanel(new BorderLayout());
 		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		
+		panelCabecera.setBackground(COLOR_FONDO);
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		JButton añadir = new JButton("+ Añadir Trabajador");
 		ImageIcon logoAñadir = new ImageIcon("resources/images/añadirCliente.png");
 		ImageIcon logoAjustado2 = new ImageIcon(logoAñadir.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		añadir.setIcon(logoAjustado2);
-		añadir.setBackground(Color.white);
-		añadir.setFont(new Font("Century Gothic",Font.BOLD,14));
+		añadir.setBackground(COLOR_FONDO);
+		añadir.setFont(letraGothic);
 		panelFiltro.add(añadir, BorderLayout.EAST);
-		
+		panelFiltro.setBackground(COLOR_FONDO);
 		añadir.addActionListener((e)->{
 			nuevoTrabajador();
 			
@@ -255,6 +262,50 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		});
 		JButton editar = new JButton("Editar");
 		editar.setFont(new Font("Century Gothic",Font.BOLD,14));
+		editar.setBackground(COLOR_FONDO);
+		//IAG sin modificar claude
+		editar.addActionListener(e->{
+			int fila = tablaTrabajadores.getSelectedRow();
+		    
+		    // Verificar si hay una fila seleccionada
+		    if (fila == -1) {
+		        JOptionPane.showMessageDialog(
+		            this,
+		            "Por favor, seleccione un trabajador de la tabla",
+		            "Ningún trabajador seleccionado",
+		            JOptionPane.WARNING_MESSAGE
+		        );
+		        return;
+		    }
+		    
+		    // Obtener el ID del trabajador seleccionado
+		    int id = (int) model.getValueAt(fila, 0);
+		    
+		    // Buscar el trabajador en la lista
+		    Trabajador trabajadorSel = null;
+		    for (Trabajador trabajador : trabajadores) {
+		        if (trabajador.getId() == id) {
+		            trabajadorSel = trabajador;
+		            break;
+		        }
+		    }
+		    
+		    // Abrir la ficha del trabajador
+		    if (trabajadorSel != null) {
+		        JFrameFichaTrabajador frameSel = new JFrameFichaTrabajador(trabajadorSel);
+		        
+		        // Añadir listener para recargar la tabla cuando se cierre la ficha
+		        frameSel.addWindowListener(new java.awt.event.WindowAdapter() {
+		            @Override
+		            public void windowClosed(java.awt.event.WindowEvent e) {
+		                actualizarTabla();
+		            }
+		        });
+		        
+		        frameSel.setVisible(true);
+		    }
+		});
+		
 		panelFiltro.add(editar,BorderLayout.EAST);
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.setBackground(new Color(182, 23, 75));
@@ -323,6 +374,7 @@ public class JFrameListaTrabajadores extends JFramePrincipal {
 		buscar.setFont(new Font("Century Gothic",Font.BOLD,14));
 		panelBusqueda.add(buscar);
 		panelBusqueda.add(txtFiltro);
+		panelBusqueda.setBackground(COLOR_FONDO);
 		panelCabecera.add(panelBusqueda,BorderLayout.CENTER);
 		
 		panelCabecera.add(panelFiltro,BorderLayout.EAST);
