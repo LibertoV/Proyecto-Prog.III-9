@@ -26,7 +26,7 @@ public class JFrameAlmacen extends JFramePrincipal {
 
 	private final Color COLOR_FONDO = new Color(245, 247, 250);
 	private final Color COLOR_TABLA_CABECERA = new Color(31, 58, 147);
-
+	private final Font letraGothic = new Font("Century Gothic", Font.BOLD, 14);
 	public JFrameAlmacen() {
 		this.setTitle("Gestión de Almacén");
 		this.setSize(new Dimension(1100, 750));
@@ -45,7 +45,7 @@ public class JFrameAlmacen extends JFramePrincipal {
 
 		JPanel panelBusqueda = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		panelBusqueda.setOpaque(false);
-
+		//IAG sin modificar
 		JTextField txtFiltro = new JTextField(20) {
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
@@ -64,11 +64,12 @@ public class JFrameAlmacen extends JFramePrincipal {
 		txtFiltro.setOpaque(false);
 		txtFiltro.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		txtFiltro.setBackground(new Color(0, 0, 0, 0));
-
+		
 		String[] tipoFiltro = { "Nombre", "ID", "Proveedor" };
 		combo = new JComboBox<>(tipoFiltro);
 		combo.setPreferredSize(new Dimension(120, 35));
-
+		combo.setBackground(COLOR_FONDO);
+		combo.setFont(letraGothic);
 		txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
 				filtrar();
@@ -86,10 +87,14 @@ public class JFrameAlmacen extends JFramePrincipal {
 				filtroMedicamento(txtFiltro.getText());
 			}
 		});
-
-		panelBusqueda.add(new JLabel("Buscar:"));
+		
+		JLabel buscar =new JLabel("Buscar:");
+		buscar.setFont(letraGothic);
+		JLabel criterio = new JLabel("Criterio:");
+		criterio.setFont(letraGothic);
+		panelBusqueda.add(buscar);
 		panelBusqueda.add(txtFiltro);
-		panelBusqueda.add(new JLabel("Criterio:"));
+		panelBusqueda.add(criterio);
 		panelBusqueda.add(combo);
 
 		contenedorCentral.add(panelBusqueda, BorderLayout.NORTH);

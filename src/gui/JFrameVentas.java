@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import domain.Venta;
@@ -35,18 +36,22 @@ public class JFrameVentas extends JFramePrincipal {
 
     private static final long serialVersionUID = 1L;
     private Vector<Vector<Object>> datosOriginales;
+    private Vector<Vector<Object>> todosdatosOriginales;
     private DefaultTableModel model;
     private JTextField txtFiltro;
     private JComboBox<String> filtroCombo;
     private List<Venta> ventas;
     private GestorBDInitializerVentas gestorVentas = new GestorBDInitializerVentas();
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
+	private final Color COLOR_FONDO = new Color(245, 247, 250);
+	private final Color COLOR_TABLA_CABECERA = new Color(31, 58, 147);
+	private final Font letraGothic = new Font("Century Gothic", Font.BOLD, 14);
+	
     public JFrameVentas() {
         this.setTitle("Lista de Ventas - Farmacia " + JFramePrincipal.idFarActual);
         this.setSize(new Dimension(1000, 750));
         this.setLocationRelativeTo(null);
-
+        setBackground(COLOR_FONDO);
         cargarVentas();
 
         this.add(crearPanelCabecera(), BorderLayout.NORTH);
@@ -58,7 +63,11 @@ public class JFrameVentas extends JFramePrincipal {
 
     private void cargarVentas() {
         this.ventas = gestorVentas.obtenerVentasPorFarmacia(JFramePrincipal.idFarActual);
-        this.datosOriginales = convertirVentasAVector(this.ventas);
+        this.todosdatosOriginales = convertirVentasAVector(this.ventas);
+        this.datosOriginales = new Vector<>();
+        for (Vector<Object> fila : this.todosdatosOriginales) {
+            this.datosOriginales.add(new Vector<>(fila));
+        }
     }
 
     private Vector<Vector<Object>> convertirVentasAVector(List<Venta> ventas) {
@@ -97,14 +106,25 @@ public class JFrameVentas extends JFramePrincipal {
         };
 
         JTable tablaVentas = new JTable(model);
+		tablaVentas.setShowVerticalLines(false);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < columnNames.size(); i++) {
+			tablaVentas.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+	
         tablaVentas.getTableHeader().setReorderingAllowed(false);
-        tablaVentas.setRowHeight(25);
-
+        tablaVentas.setRowHeight(30);
+        tablaVentas.setBackground(COLOR_FONDO);
+        tablaVentas.getTableHeader().setBackground(COLOR_TABLA_CABECERA);
+        tablaVentas.getTableHeader().setForeground(Color.white);
+        tablaVentas.getTableHeader().setFont(new Font("ARIAL", Font.BOLD, 13));
         JScrollPane scrollPane = new JScrollPane(tablaVentas);
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Listado de Ventas");
         titledBorder.setTitleFont(new Font("Century Gothic", Font.BOLD, 14));
         scrollPane.setBorder(titledBorder);
-
+        scrollPane.setBackground(COLOR_FONDO);
+        panelCentral.setBackground(COLOR_FONDO);
         panelCentral.add(scrollPane);
 
         return panelCentral;
@@ -120,6 +140,7 @@ public class JFrameVentas extends JFramePrincipal {
         filtroCombo = new JComboBox<>(opciones);
         filtroCombo.setFont(new Font("Century Gothic", Font.BOLD, 14));
         filtroCombo.addActionListener(e -> aplicarFiltroPorFecha());
+        filtroCombo.setBackground(COLOR_FONDO);
         panelFiltro.add(filtroCombo);
 
         txtFiltro = new ModernTextField(20);
@@ -161,7 +182,9 @@ public class JFrameVentas extends JFramePrincipal {
             dispose();
             new JFrameFarmaciaSel();
         });
-
+        panelBusqueda.setBackground(COLOR_FONDO);
+        panelCabecera.setBackground(COLOR_FONDO);
+        panelFiltro.setBackground(COLOR_FONDO);
         return panelCabecera;
     }
     //Realizado con ayuda de IAG
@@ -176,11 +199,12 @@ public class JFrameVentas extends JFramePrincipal {
                 .sum();
         JLabel lblIngresos = new JLabel(String.format("Ingresos totales: %.2f €", totalIngresos));
         lblIngresos.setFont(new Font("Century Gothic", Font.BOLD, 14));
-        
+        lblIngresos.setBackground(COLOR_FONDO);
+        lblTotal.setBackground(COLOR_FONDO);
         panelInferior.add(lblTotal);
         panelInferior.add(new JLabel("  |  "));
         panelInferior.add(lblIngresos);
-        
+        panelInferior.setBackground(COLOR_FONDO);
         return panelInferior;
     }
 
@@ -210,34 +234,35 @@ public class JFrameVentas extends JFramePrincipal {
                 this.ventas = gestorVentas.obtenerVentasPorFarmacia(JFramePrincipal.idFarActual);
                 break;
         }
-
+        this.datosOriginales = convertirVentasAVector(this.ventas);
+        txtFiltro.setText("");
         actualizarTabla();
     }
 
     private void actualizarTabla() {
-        this.datosOriginales = convertirVentasAVector(this.ventas);
-
-        model.setRowCount(0);
-        for (Vector<Object> vector : datosOriginales) {
-            model.addRow(vector);
-        }
-        model.fireTableDataChanged();
-        
-        // Actualizar panel inferior
-        remove(getContentPane().getComponent(2)); 
-        add(crearPanelInferior(), BorderLayout.SOUTH);
-        revalidate();
-        repaint();
+    	 model.setRowCount(0);
+    	    for (Vector<Object> vector : datosOriginales) {
+    	        model.addRow(vector);
+    	    }
+    	    model.fireTableDataChanged();
+    	    
+    	    
+    	    remove(getContentPane().getComponent(2)); 
+    	    add(crearPanelInferior(), BorderLayout.SOUTH);
+    	    revalidate();
+    	    repaint();
     }
 
     private void filtroVenta(String filtro) {
         Vector<Vector<Object>> cargaFiltrada = new Vector<>();
         String filtroLower = filtro.toLowerCase();
 
+        Vector<Vector<Object>> datosActuales = convertirVentasAVector(this.ventas);
+        
         if (filtro.isEmpty()) {
-            cargaFiltrada.addAll(datosOriginales);
+            cargaFiltrada.addAll(datosActuales);
         } else {
-            for (Vector<Object> fila : datosOriginales) {
+            for (Vector<Object> fila : datosActuales) {
                 String fecha = fila.get(1).toString().toLowerCase();
                 String cliente = fila.get(2).toString().toLowerCase();
                 String producto = fila.get(3).toString().toLowerCase();
@@ -254,7 +279,7 @@ public class JFrameVentas extends JFramePrincipal {
         }
         model.fireTableDataChanged();
     }
-
+ 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new JFrameVentas());
     }

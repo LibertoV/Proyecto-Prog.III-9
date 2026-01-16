@@ -410,7 +410,7 @@ public class JFrameListaClientes extends JFramePrincipal {
         
         tablaClientes = new JTable(model);
         tablaClientes.getTableHeader().setReorderingAllowed(false);
-        tablaClientes.setFont(new Font("Century Gothic", Font.BOLD, 14));
+        tablaClientes.setFont(new Font("Arial", Font.PLAIN, 13));
         CustomHeaderRenderer headerRenderer = new CustomHeaderRenderer(tablaClientes);
         tablaClientes.getTableHeader().setDefaultRenderer(headerRenderer);
         
@@ -649,11 +649,11 @@ public class JFrameListaClientes extends JFramePrincipal {
         private static final long serialVersionUID = 1L;
         private final Color HEADER_BG_COLOR = new Color(124, 122, 122);
         private final Color HEADER_FG_COLOR = Color.WHITE; 
-        
+        private final Font letraArial = new Font("Arial", Font.BOLD, 13);
         public CustomHeaderRenderer(JTable table) {
             setOpaque(true);
             setHorizontalAlignment(CENTER);
-            setFont(table.getTableHeader().getFont().deriveFont(Font.BOLD));
+            setFont(letraArial);
             setBorder(BorderFactory.createEtchedBorder());
             setBackground(COLOR_CABECERA_TABLA);
             setForeground(Color.white);
@@ -672,16 +672,16 @@ public class JFrameListaClientes extends JFramePrincipal {
         private final Color DATA_BG_COLOR = new Color(166, 225, 250);
         private final Color ALT_DATA_BG_COLOR = Color.WHITE; 
         private final Color SELECTION_BG_COLOR = new Color(70, 130, 180); 
-        private final Font letraGothic = new Font("Century Gothic", Font.PLAIN, 14);
+        private final Font letraArial = new Font("Arial", Font.PLAIN, 13);
         public CustomDataCellRenderer() {
             setOpaque(true);
-            setFont(letraGothic);
+            setFont(letraArial);
         }
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
-            setFont(letraGothic);
+            setFont(letraArial);
             setText(value != null ? value.toString() : "");
             
             if (isSelected) {
