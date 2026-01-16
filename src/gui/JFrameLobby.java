@@ -89,7 +89,7 @@ public class JFrameLobby extends JFramePrincipal {
 			String cant = String.valueOf(numPedidos) + " pendientes";
 			fila.set(3, cant);
 			
-			Map<Integer, Integer> stockReal = gestorPedidos.obetenerStock(idFarmacia);
+			Map<Integer, Integer> stockReal = gestorPedidos.obtenerStock(idFarmacia);
 		    
 		    int unidadesTotales = 0;
 		    for (int cantidad : stockReal.values()) {

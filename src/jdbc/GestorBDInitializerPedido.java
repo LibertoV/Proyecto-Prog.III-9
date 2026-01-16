@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -160,14 +161,17 @@ public class GestorBDInitializerPedido {
 		return cantidad;
 	}
 	
-	public Map<Integer, Integer> obetenerStock(int idFarmacia){
+	public Map<Integer, Integer> obtenerStock(int idFarmacia){
 		Map<Integer, Integer> stockPorProducto = new java.util.HashMap<>();
 		
+		// Corrección sugerida para la Query
 		String sqlSelect = "SELECT lp.ID_PRODUCTO, SUM(lp.CANTIDAD) as TOTAL_STOCK " +
-                "FROM LINEA_PEDIDO lp " +
-                "JOIN PEDIDO p ON lp.ID_PEDIDO = p.ID " +
-                "WHERE p.ID_FARMACIA = ? AND (p.FECHA_LLEGADA <= date('now') OR p.FECHA_LLEGADA IS NULL) " +
-                "GROUP BY lp.ID_PRODUCTO";
+		        "FROM LINEA_PEDIDO lp " +
+		        "JOIN PEDIDO p ON lp.ID_PEDIDO = p.ID " + // Asegúrate que la columna se llama ID o ID_PEDIDO
+		        "WHERE p.ID_FARMACIA = ? " +
+		        "AND p.FECHA_LLEGADA IS NOT NULL " + // Solo lo que ya ha llegado
+		        "AND p.FECHA_LLEGADA <= date('now') " + // Y que la fecha sea hoy o anterior
+		        "GROUP BY lp.ID_PRODUCTO";
 		
 		try (Connection con = DriverManager.getConnection(CONNECTION_STRING);
 				PreparedStatement pstSelect = con.prepareStatement(sqlSelect)){
@@ -176,6 +180,7 @@ public class GestorBDInitializerPedido {
 			
 	        while (rs.next()) {
 	            stockPorProducto.put(rs.getInt("ID_PRODUCTO"), rs.getInt("TOTAL_STOCK"));
+	            System.out.println("si");
 	        }
 			
 			
@@ -183,8 +188,6 @@ public class GestorBDInitializerPedido {
 			System.err.format("\n* Error al obtener datos: %s", ex.getMessage());
 			ex.printStackTrace();
 		}
-
-		
 		return stockPorProducto;
 	}
 
