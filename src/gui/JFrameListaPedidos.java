@@ -42,6 +42,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import db.DataPedidos;
 import domain.Pedido;
@@ -66,7 +67,18 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private ArrayList<Pedido> listaTotalPedidos = new ArrayList<>();
 	private ArrayList<Pedido> listaPedidosActivos = new ArrayList<>();
 	private ArrayList<Pedido> listaPedidosHistorial = new ArrayList<>();
-
+	
+	private final Color COLOR_FONDO = new Color(245, 247, 250);
+	private final Color COLOR_TABLA_CABECERA = new Color(31, 58, 147);
+	private final Font letraGothic = new Font("Century Gothic", Font.BOLD, 14);
+	private final String[] LOGOS_PROVEEDORES = {
+		    "resources/images/Logo_Bayer.svg.png",
+		    "resources/images/Lilly-Logo.svg.png",
+		    "resources/images/Logo_Sanofi_(2022).png",
+		    "resources/images/roche-logo-blue.png",
+		    "resources/images/AbbVieLogo_AbbVie dark blue.png"
+		};
+	
 	public JFrameListaPedidos() {
 
 		// sirve para cargar solo una vez la imagen de la papelera eliminar
@@ -77,7 +89,8 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		this.setTitle("Lista de Pedidos");
 		this.setSize(new Dimension(1200, 850));
 		this.setLocationRelativeTo(null);
-
+		this.getContentPane().setBackground(COLOR_FONDO);
+		
 		GestorBDInitializerPedido gestor = new GestorBDInitializerPedido();
 		this.listaTotalPedidos = (ArrayList<Pedido>) gestor.obtenerDatos();
 
@@ -143,7 +156,10 @@ public class JFrameListaPedidos extends JFramePrincipal {
 	private JPanel crearPanelCabecera() {
 		JPanel panelCabecera = new JPanel(new BorderLayout());
 		panelCabecera.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+		panelCabecera.setBackground(Color.WHITE);
+		panelCabecera.setPreferredSize(new Dimension(0, 60));
+		panelCabecera.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+		
 		JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		lblNumPedidos = new JLabel("0", SwingConstants.RIGHT);
@@ -151,16 +167,22 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		lblNumPedidos.setBackground(Color.WHITE);
 		lblNumPedidos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		lblNumPedidos.setOpaque(true);
-		panelFiltro.add(new JLabel("Numero de pedidos: "));
+		JLabel npedidos = new JLabel("Numero de pedidos: ");
+		panelFiltro.add(npedidos);
+		npedidos.setBackground(COLOR_FONDO);
 		panelFiltro.add(lblNumPedidos);
-
+		npedidos.setFont(letraGothic);
+		
 		lblValorTotal = new JLabel("0.00", SwingConstants.RIGHT);
 		lblValorTotal.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		lblValorTotal.setOpaque(true);
 		lblValorTotal.setBackground(Color.WHITE);
 		lblValorTotal.setPreferredSize(new Dimension(100, 20));
-
-		panelFiltro.add(new JLabel("Valor total: "));
+		
+		JLabel lblValor =new JLabel("Valor total: ");
+		panelFiltro.add(lblValor);
+		lblValor.setBackground(COLOR_FONDO);
+		lblValor.setFont(letraGothic);
 		panelFiltro.add(lblValorTotal);
 		panelCabecera.add(panelFiltro, BorderLayout.EAST);
 
@@ -175,6 +197,13 @@ public class JFrameListaPedidos extends JFramePrincipal {
 			new JFrameFarmaciaSel();
 
 		});
+		
+		JLabel lblTitulo = new JLabel("LISTA DE PEDIDOS");
+		lblTitulo.setFont(new Font("ARIAL", Font.BOLD, 16));
+		lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+		
+		JPanel panelDerecha = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+		panelDerecha.setBackground(Color.WHITE);
 
 		JLabel lblReloj = new JLabel("Hora...");
 		lblReloj.setFont(new Font("Arial", Font.BOLD, 14));
@@ -203,9 +232,21 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		return panelCabecera;
 
 	}
+	
+	private ImageIcon getRandomProveedorIcon() {
+	    try {
+	        String logoPath = LOGOS_PROVEEDORES[new java.util.Random().nextInt(LOGOS_PROVEEDORES.length)];
+	        ImageIcon icono = new ImageIcon(logoPath);
+	        Image img = icono.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+	        return new ImageIcon(img);
+	    } catch (Exception e) {
+	        return null;
+	    }
+	}
 
 	private JPanel crearPanelCentral() {
 		JPanel panelCentral = new JPanel(new GridBagLayout());
+		panelCentral.setBackground(COLOR_FONDO);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -214,6 +255,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 																										
 
 		JLabel lblBuscar = new JLabel("Buscar Pedido:");
+		lblBuscar.setFont(letraGothic);
 		lblBuscar.setForeground(Color.WHITE);
 		lblBuscar.setForeground(Color.BLACK);
 		lblBuscar.setFont(new Font("Arial", Font.BOLD, 13));
@@ -304,7 +346,13 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		cargarTablaDesdeLista(this.listaPedidosActivos);
 		tablaPedidos.getTableHeader().setReorderingAllowed(false);
 		tablaPedidos.setRowHeight(20); 
-
+		
+		JTableHeader header = tablaPedidos.getTableHeader();
+		header.setBackground(COLOR_TABLA_CABECERA);
+		header.setForeground(Color.WHITE);
+		header.setFont(new Font("ARIAL", Font.BOLD, 13));
+		header.setPreferredSize(new Dimension(0, 35));
+		
 		final int[] filaHover = { -1 };
 
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
@@ -329,11 +377,12 @@ public class JFrameListaPedidos extends JFramePrincipal {
 					setHorizontalAlignment(SwingConstants.CENTER);
 					setText(null);
 				} else if (nombreColumna.equals("Proveedor")) {
-					setHorizontalAlignment(SwingConstants.CENTER);
-					if (value instanceof String && !((String) value).isEmpty()) {
-						setIcon(getCachedIcon((String) value));
-						setText(null);
-					}
+				    setHorizontalAlignment(SwingConstants.CENTER);
+				    if (value instanceof String && !((String) value).isEmpty()) {
+				        setIcon(getRandomProveedorIcon());  
+				        setText(null);
+				    }
+				
 				} else {
 					setIcon(null);
 					setHorizontalAlignment(SwingConstants.CENTER);
@@ -453,6 +502,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 	private JPanel crearOpcionesInferior() {
 		JPanel panelOpciones = new JPanel(new GridBagLayout());
+		panelOpciones.setBackground(COLOR_FONDO);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -476,6 +526,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 	private JPanel crearAñadir() {
 		JPanel panelañadir = new JPanel();
+		panelañadir.setBackground(COLOR_FONDO);
 		panelañadir.setLayout(new BoxLayout(panelañadir, BoxLayout.Y_AXIS));
 		panelañadir.setBorder(BorderFactory.createTitledBorder("Añadir y elimina pedidos"));
 
@@ -505,6 +556,7 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		panelhistorial.setLayout(new BoxLayout(panelhistorial, BoxLayout.Y_AXIS));
 		panelhistorial.setBorder(BorderFactory.createTitledBorder("Historial (+24h antigüedad)"));
 		panelhistorial.setPreferredSize(new Dimension(400, 200));
+		panelhistorial.setBackground(COLOR_FONDO);
 
 		Vector<Object> columnas = new Vector<>();
 		columnas.add("Id");
@@ -548,10 +600,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 		añosVector.addAll(años);
 
 		JComboBox<String> comboAños = new JComboBox<>(añosVector);
+		comboAños.setBackground(COLOR_FONDO);
+		comboAños.setFont(letraGothic);
 
 		JPanel panelFiltro = new JPanel();
 		panelFiltro.setLayout(new FlowLayout(FlowLayout.LEFT));
-		panelFiltro.add(new JLabel("Filtrar por año:"));
+		JLabel lblFiltro = new JLabel("Filtrar por año:");
+		panelFiltro.add(lblFiltro);
+		lblFiltro.setFont(letraGothic);
 		panelFiltro.add(comboAños);
 		panelFiltro.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelFiltro.getPreferredSize().height));
 
@@ -564,6 +620,14 @@ public class JFrameListaPedidos extends JFramePrincipal {
 
 		JTable tablaHistorial = new JTable(model);
 		tablaHistorial.getTableHeader().setReorderingAllowed(false);
+		tablaHistorial.setRowHeight(30);
+		tablaHistorial.setShowVerticalLines(false);
+		
+		JTableHeader headerHist = tablaHistorial.getTableHeader();
+		headerHist.setBackground(COLOR_TABLA_CABECERA);
+		headerHist.setForeground(Color.WHITE);
+		headerHist.setFont(new Font("ARIAL", Font.BOLD, 13));
+		headerHist.setPreferredSize(new Dimension(0, 35));
 
 		final int[] filaHover = { -1 };
 
